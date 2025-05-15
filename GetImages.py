@@ -5,7 +5,7 @@ from io import BytesIO
 import astroquery
 from astropy.coordinates import SkyCoord	
 from astropy import units as u
-from astroquery.hips2fits import Hips2Fits
+from astroquery.hips2fits import hips2Fits
 from astropy.io import fits
 import numpy as np
 from PIL import Image
