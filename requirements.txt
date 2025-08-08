@@ -3,4 +3,4 @@ astropy>=6
 tzwhere
 pytz
 timezonefinder
-astroquery==0.4.7
+astroquery==0.4.8
