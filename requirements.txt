@@ -1,5 +1,5 @@
-numpy>=1.25.1
-astropy>=5.0.1
+numpy
+astropy>=6
 tzwhere
 pytz
 timezonefinder
