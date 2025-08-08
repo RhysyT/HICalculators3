@@ -6,7 +6,7 @@ import astropy
 import astroquery
 from astropy.coordinates import SkyCoord	
 from astropy import units as u
-from astroquery import hips2Fits
+from astroquery import Hips2Fits
 from astropy.io import fits
 import numpy as np
 from PIL import Image
@@ -111,3 +111,4 @@ if st.sidebar.button("Retrieve Image"):
 			)
 	except Exception as e:
 		st.error(f"Error retrieving image: {e}")
+
