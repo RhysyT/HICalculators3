@@ -238,7 +238,6 @@ with st.container():
                 projection="TAN",
                 format=return_format,
                 stretch=stretch_name,
-                gamma=float(gamma),
             )
             if min_cut.strip() != "":
                 kwargs["min_cut"] = float(min_cut)
