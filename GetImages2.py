@@ -320,12 +320,13 @@ with st.container():
             try:
                 payload = query_fits()
                 hdu = payload[0]
-                data = hdu.data
-                wcs = WCS(hdu.header)
+                #data = hdu.data
+               # wcs = WCS(hdu.header)
                 with fits.open(io.BytesIO(payload)) as hdul:
                     #hdu = hdul[0]
-                    #data = hdu.data
-                    #wcs = WCS(hdu.header)
+                    hdu = payload[0]
+                    data = hdu.data
+                    wcs = WCS(hdu.header)
 
                     # normalize for display
                     interval = PercentileInterval(p_hi, lower_percentile=p_lo)
