@@ -12,6 +12,7 @@ import streamlit as st
 
 from astropy import units as u
 from astropy.coordinates import SkyCoord
+from astropy.coordinates import Longitude, Latitude, Angle
 from astropy.io import fits
 from astropy.visualization import (ImageNormalize, MinMaxInterval, PercentileInterval,
                                    AsinhStretch, LinearStretch, LogStretch, SqrtStretch)
@@ -192,6 +193,11 @@ with st.container():
             st.error("Could not parse coordinates : %s" % str(e))
             st.stop()
 
+ra_angle = Longitude(center_ra, u.deg)
+dec_angle = Latitude(center_dec, u.deg)
+fov_angle = Angle(fov_deg, u.deg)
+rot_angle = Angle(0.0, u.deg)
+
 with st.container():
     st.subheader("2. Data set & output")
 
@@ -230,11 +236,11 @@ with st.container():
         def query_rgb(return_format):
             kwargs = dict(
                 hips=rgb_url,
-                ra=center_ra,
-                dec=center_dec,
+                ra=ra_angle,
+                dec=dec_angle,
                 width=int(out_w),
                 height=int(out_h),
-                fov=float(fov_deg),
+                fov=fov_angle,
                 projection="TAN",
                 format=return_format,
                 stretch=stretch_name,
@@ -301,11 +307,11 @@ with st.container():
         def query_fits():
             return hips2fits.query(
                 hips=band_url,
-                ra=center_ra,
-                dec=center_dec,
+                ra=ra_angle,
+                dec=dec_angle,
                 width=int(out_w),
                 height=int(out_h),
-                fov=float(fov_deg),
+                fov=fov_angle,
                 projection="TAN",
                 format="fits"
             )
