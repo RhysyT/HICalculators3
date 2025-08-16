@@ -4,3 +4,4 @@ tzwhere
 pytz
 timezonefinder
 astroquery
+matplotlib
