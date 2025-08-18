@@ -181,7 +181,7 @@ with band_col:
 
 with format_col:
     # For color we’ll fetch JPG/PNG; for single band we default to FITS for science download.
-    out_format = st.selectbox("Download format", ["PNG", "FITS"], index=0 if mode == "Color composite" else 1)
+    out_format = st.selectbox("Download format", ["PNG", "FITS"], index=0 if mode == "Color composite" else 1, help="Format for the downloaded image. A preview image will be shown below, regardless of the format selected")
 
 # Row 4: Comment
 st.write('After the image is retrieved, scroll to the bottom for download options.')
