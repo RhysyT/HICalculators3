@@ -28,7 +28,6 @@ st.write('<style>div.block-container{padding-bottom:0rem;}</style>', unsafe_allo
 # Check for a previously retrieved image in the session state. This is used to prevent updates to the GUI from removing the current
 # image from the display
 if "preview_image" not in st.session_state:
-    st.write('No preview image parameter in session, setting to None')
     st.session_state["last_preview_png"] = None   # Set the parameter just so it exists and can be checked
 
 preview_slot = st.empty()    # Used for (re)drawing the preview image every new run
@@ -106,7 +105,8 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
         st.write('Preview image parameter exists but is empty, okay to overwrite')
         # If the user doesn't want to show the axes :
         if not show_axes:
-            st.session_state["last_preview_png"] = st.image(img_array, caption=caption, use_column_width=True)
+            st.session_state["last_preview_png"] = True
+            st.image(img_array, caption=caption, use_column_width=True)
             return None
 
         # More complex case where user does want the axes
@@ -115,7 +115,8 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
         ax.imshow(img_array, origin="lower")
         ax.set_xlabel("RA")
         ax.set_ylabel("Dec")
-        st.session_state["last_preview_png"] = st.pyplot(fig, clear_figure=True)
+        st.session_state["last_preview_png"] = True
+        st.pyplot(fig, clear_figure=True)
         return fig
 
 
@@ -290,9 +291,11 @@ if fetch:
             ax.set_xlabel("RA")
             ax.set_ylabel("Dec")
             st.pyplot(fig, clear_figure=True)
+            st.session_state["last_preview_png"] = True
         # Otherwise, don't show the axes
         else:
-            st.session_state["last_preview_png"] = st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
+            st.session_state["last_preview_png"] = True
+            st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
 
 
         # Downloads
