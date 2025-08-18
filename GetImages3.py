@@ -267,7 +267,7 @@ if fetch:
         #render_with_optional_wcs_axes(colour_img, wcs_for_axes, show_axes, caption=caption)
 
         # Downloads
-        png_buf = to_png_bytes_from_array(img)
+        png_buf = to_png_bytes_from_array(colour_img)
         st.download_button(
             label="Download PNG",
             data=png_buf,
