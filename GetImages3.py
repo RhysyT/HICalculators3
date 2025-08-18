@@ -28,6 +28,7 @@ st.write('<style>div.block-container{padding-bottom:0rem;}</style>', unsafe_allo
 # Check for a previously retrieved image in the session state. This is used to prevent updates to the GUI from removing the current
 # image from the display
 if "preview_image" not in st.session_state:
+    st.write('No preview image parameter in session, setting to None')
     st.session_state["last_preview_png"] = None   # Set the parameter just so it exists and can be checked
 
 preview_slot = st.empty()    # Used for (re)drawing the preview image every new run
@@ -102,6 +103,7 @@ def to_png_bytes_from_array(img_array):
 def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     # Only proceed if a preview image doesn't already exist
     if st.session_state["last_preview_png"] is None:
+        st.write('Preview image parameter exists but is empty, okay to overwrite')
         # If the user doesn't want to show the axes :
         if not show_axes:
             st.session_state["last_preview_png"] = st.image(img_array, caption=caption, use_column_width=True)
@@ -199,6 +201,7 @@ st.markdown("---")
 # Action: fetch image
 # ---------------------------
 if fetch:
+    st.write('Emptying image preview parameter')
     # Button pressed, so now we clear the session state
     st.session_state["last_preview_png"] = None
     print('Running fetch')
