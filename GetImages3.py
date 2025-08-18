@@ -27,10 +27,10 @@ st.write('<style>div.block-container{padding-bottom:0rem;}</style>', unsafe_allo
 
 # Check for a previously retrieved image in the session state. This is used to prevent updates to the GUI from removing the current
 # image from the display
-if "last_preview_png" not in st.session_state:
+if "preview_image" not in st.session_state:
     st.session_state["last_preview_png"] = None   # bytes
-    st.session_state["last_caption"] = ""
-    st.session_state["last_downloads"] = {}       # {"png": bytes, "fits": bytes}
+    #st.session_state["last_caption"] = ""
+    #st.session_state["last_downloads"] = {}       # {"png": bytes, "fits": bytes}
 
 preview_slot = st.empty()    # Used for (re)drawing the preview image every new run
 
@@ -103,7 +103,7 @@ def to_png_bytes_from_array(img_array):
 # Show the image either as a plain image (st.image) or with WCS axes (matplotlib WCSAxes).
 def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     if not show_axes:
-        st.image(img_array, caption=caption, use_column_width=True)
+        st.session_state["last_preview_png"] = st.image(img_array, caption=caption, use_column_width=True)
         return None
 
     fig = plt.figure(figsize=(7, 7))
@@ -307,7 +307,7 @@ if fetch:
         png8 = (stretched * 255.0).astype(numpy.uint8)
         png_buf = to_png_bytes_from_array(png8)
         st.download_button(
-            label="Download PNG (quicklook)",
+            label="Download PNG",
             data=png_buf,
             file_name=f"{name_tag}_{survey_name.replace(' ', '')}_{band_choice}.png",
             mime="image/png",
