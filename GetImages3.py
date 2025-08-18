@@ -110,7 +110,6 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
         st.image(img_array, caption=caption, use_column_width=True)    # The preview image itself
         st.session_state["last_preview_png"] = 'image'                    # Sets that a preview image has now been shown
         st.write('Preview parameter =', st.session_state["last_preview_png"])
-        stop
         return None
 
     # More complex case where user does want the axes
