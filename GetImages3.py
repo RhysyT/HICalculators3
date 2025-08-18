@@ -215,10 +215,9 @@ st.markdown("---")
 
 # Main button : fetch the image !
 if fetch:
-    st.write('Running fetch - emptying image preview parameter')
+    #st.write('Running fetch - emptying image preview parameter')
     # Button pressed, so now we clear the image preview parameter
-    st.session_state["last_preview_png"] = None
-    print('Running fetch')
+    #st.session_state["last_preview_png"] = None
     # Parse coordinates
     ra = parse_ra(ra_text)
     dec = parse_dec(dec_text)
