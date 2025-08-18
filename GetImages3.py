@@ -262,6 +262,8 @@ if fetch:
         # result is an RGB image array; flip vertically for correct display as in the user's script
         colour_img = numpy.flip(result, axis=0)
         caption = f"{survey_name}  —  color  —  {width} × {height} px  —  FOV {fov_value} {fov_unit}"
+        # NOT SURE THIS NEXT LINE SHOULD BE THERE
+        st.session_state["last_preview_png"] = 'matplot' if show_axes else 'image'
         # DON'T DRAW THE IMAGE HERE - only at the end when we know if needs to be redrawn or not
         #render_with_optional_wcs_axes(colour_img, wcs_for_axes, show_axes, caption=caption)
 
