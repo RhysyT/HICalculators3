@@ -103,9 +103,8 @@ def to_png_bytes_from_array(img_array):
 # Show the image either as a plain image (st.image) or with WCS axes (matplotlib WCSAxes).
 def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     if not show_axes:
-        if st.session_state["last_preview_png"] is not None:
-            st.session_state["last_preview_png"] = st.image(img_array, caption=caption, use_column_width=True)
-            st.image(img_array, caption=caption, use_column_width=True)
+        st.session_state["last_preview_png"] = st.image(img_array, caption=caption, use_column_width=True)
+        st.image(img_array, caption=caption, use_column_width=True)
         return None
 
     fig = plt.figure(figsize=(7, 7))
@@ -286,9 +285,8 @@ if fetch:
             ax.set_ylabel("Dec")
             st.pyplot(fig, clear_figure=True)
         else:
-            if st.session_state["last_preview_png"] is not None:
-                st.session_state["last_preview_png"] = st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
-                st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
+            st.session_state["last_preview_png"] = st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
+            st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
 
         # Downloads
         # FITS file
