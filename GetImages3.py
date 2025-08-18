@@ -13,6 +13,18 @@ from astropy.wcs import WCS
 from astropy.io import fits as pyfits
 from astroquery.hips2fits import hips2fits
 
+# STYLE
+# Remove the menu button
+st.markdown(""" <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style> """, unsafe_allow_html=True)
+
+# Remove vertical whitespace padding
+st.write('<style>div.block-container{padding-top:0rem;}</style>', unsafe_allow_html=True)
+st.write('<style>div.block-container{padding-bottom:0rem;}</style>', unsafe_allow_html=True)
+
+
 # Check for a previously retrieved image in the session state. This is used to prevent updates to the GUI from removing the current
 # image from the display
 if "last_preview_png" not in st.session_state:
@@ -107,28 +119,28 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
 # Row 1: Input coordinates and FOV
 c1, c2, c3, c4 = st.columns([1, 1, 1, 1])    # ChatGPT preferred 1.2, 1.2 for the first, but this is asymmetrical and weird
 with c1:
-    ra_text = st.text_input("RA  —  decimal degrees or HH:MM:SS", "191.1332558422000")
+    ra_text = st.text_input("RA  —  decimal degrees or HH:MM:SS", "191.1332558422000", help="Must be J2000, but fairly liberal. Enter something sensible and astropy will try its best")
 with c2:
-    dec_text = st.text_input("Dec  —  decimal degrees or DD:MM:SS", "11:11:25.74")
+    dec_text = st.text_input("Dec  —  decimal degrees or DD:MM:SS", "11:11:25.74", help="Must be J2000, but fairly liberal. Enter something sensible and astropy will try its best")
 with c3:
-    fov_value = st.number_input("Field of view value", min_value=0.001, value=3.5, step=0.5, format="%.3f")
+    fov_value = st.number_input("Field of view value", min_value=0.001, value=3.5, step=0.5, format="%.3f", help="Assumes a simple square field of view")
 with c4:
     fov_unit = st.selectbox("FOV units", ["arcsec", "arcmin", "deg"], index=1)
 
 # Row 2: Pixel scale and target name
 c5, c6, c7, c8 = st.columns([1, 1, 1, 1])
 with c5:
-    pix_value = st.number_input("Pixel scale value", min_value=0.001, value=1.0, step=0.1, format="%.3f")
+    pix_value = st.number_input("Pixel scale value", min_value=0.001, value=1.0, step=0.1, format="%.3f", help="Pixel scale in the specified units. May break if too far outside the survey's native resolution")
 with c6:
     pix_unit = st.selectbox("Pixel scale units", ["arcsec / pixel", "arcmin / pixel"], index=0)
 with c7:
-    show_axes = st.checkbox("Show WCS axes", value=False)
+    show_axes = st.checkbox("Show WCS axes", value=False, help="Shows WCS axes in the preview image")
 with c8:
-    name_tag = st.text_input("Output basename", "Target")
+    name_tag = st.text_input("Output basename", "Target", help="Optional, but useful for specifying the name of the file ahead of time for downloads")
 
 # Row 3: Survey and band selection
 # Keep to DESI, SDSS, GALEX as requested — offer color composites or individual bands.
-survey_col, band_col, format_col, _ = st.columns([1.5, 1.5, 1, 0.5])
+survey_col, band_col, format_col = st.columns([1, 1, 1])    # ChatGPT preferred some weird asymmetrical four-column format for some reason !
 
 SURVEYS = {
     "DESI Legacy Surveys DR10": {
@@ -159,13 +171,13 @@ SURVEYS = {
 }
 
 with survey_col:
-    survey_name = st.selectbox("Survey", list(SURVEYS.keys()), index=0)
+    survey_name = st.selectbox("Survey", list(SURVEYS.keys()), index=0, help="Specify which survey to use. Not necessarily a full list of every survey supported by HIP2FITS !")
 
 with band_col:
-    mode = st.selectbox("Mode", ["Color composite", "Single band"], index=0)
+    mode = st.selectbox("Mode", ["Color composite", "Single band"], index=0, help="Choose whether to have a multi-colour image (e.g. RGB, where available) or a single waveband - the latter can be in FITS format")
     band_choice = None
     if mode == "Single band":
-        band_choice = st.selectbox("Band", list(SURVEYS[survey_name]["bands"].keys()))
+        band_choice = st.selectbox("Band", list(SURVEYS[survey_name]["bands"].keys()), help="If a single waveband was requested, here you can specify it. Survey-dependent.")
 
 with format_col:
     # For color we’ll fetch JPG/PNG; for single band we default to FITS for science download.
