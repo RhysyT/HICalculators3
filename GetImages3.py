@@ -346,6 +346,7 @@ if fetch:
 
 # Draw the image preview only at the end. This makes it easy to preseve the existing image, if there is one
 # Only draw the image if there is one
+st.session_state["last_preview_png"] = 'image'
 st.write('Preparing to draw image ! Image preview state :', st.session_state["last_preview_png"])
 if st.session_state["last_preview_png"] is not None:
     # Now there are four possibilities and different ways to draw the image. Firstly the two cases of colour composites :
