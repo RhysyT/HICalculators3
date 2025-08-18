@@ -28,36 +28,36 @@ from astroquery.hips2fits import hips2fits
 # RGB HiPS datasets (rendered server-side; downloadable as JPG/PNG)
 RGB_DATASETS = OrderedDict([
     # Label                             HiPS base (CDS/Aladin)
-    ("SDSS (DR12, default colours)",    "http://alasky.u-strasbg.fr/SDSS/DR12/color"),
-    ("SDSS (DR9, alternative colours)", "http://alasky.u-strasbg.fr/SDSS/DR9/color"),
-    ("DSS2 coloured",                   "http://alasky.u-strasbg.fr/DSS/DSSColor"),
-    ("GALEX GR6/7 coloured",            "http://alasky.u-strasbg.fr/GALEX/GR6-07/AllSkyColor"),
-    ("DESI Legacy Survey (DR9) grz",    "http://alasky.u-strasbg.fr/DESI-Legacy-Survey/DR9/color"),
+    ("SDSS (DR12, default colours)",    "https://alasky.u-strasbg.fr/SDSS/DR12/color"),
+    ("SDSS (DR9, alternative colours)", "https://alasky.u-strasbg.fr/SDSS/DR9/color"),
+    ("DSS2 coloured",                   "https://alasky.u-strasbg.fr/DSS/DSSColor"),
+    ("GALEX GR6/7 coloured",            "https://alasky.u-strasbg.fr/GALEX/GR6-07/AllSkyColor"),
+    ("DESI Legacy Survey (DR9) grz",    "https://alasky.u-strasbg.fr/DESI-Legacy-Survey/DR9/color"),
 ])
 
 # Single-band HiPS datasets for FITS downloads + display with WCS axes
 # Map: group -> list of (label, hips_url)
 SINGLE_BAND = OrderedDict([
     ("SDSS (DR12)", [
-        ("u", "http://alasky.u-strasbg.fr/SDSS/DR12/u"),
-        ("g", "http://alasky.u-strasbg.fr/SDSS/DR12/g"),
-        ("r", "http://alasky.u-strasbg.fr/SDSS/DR12/r"),
-        ("i", "http://alasky.u-strasbg.fr/SDSS/DR12/i"),
-        ("z", "http://alasky.u-strasbg.fr/SDSS/DR12/z"),
+        ("u", "https://alasky.u-strasbg.fr/SDSS/DR12/u"),
+        ("g", "https://alasky.u-strasbg.fr/SDSS/DR12/g"),
+        ("r", "https://alasky.u-strasbg.fr/SDSS/DR12/r"),
+        ("i", "https://alasky.u-strasbg.fr/SDSS/DR12/i"),
+        ("z", "https://alasky.u-strasbg.fr/SDSS/DR12/z"),
     ]),
     ("DSS2", [
-        ("blue",  "http://alasky.u-strasbg.fr/DSS/DSS2-blue"),
-        ("red",   "http://alasky.u-strasbg.fr/DSS/DSS2-red"),
-        ("ir",    "http://alasky.u-strasbg.fr/DSS/DSS2-infrared"),
+        ("blue",  "https://alasky.u-strasbg.fr/DSS/DSS2-blue"),
+        ("red",   "https://alasky.u-strasbg.fr/DSS/DSS2-red"),
+        ("ir",    "https://alasky.u-strasbg.fr/DSS/DSS2-infrared"),
     ]),
     ("GALEX GR6/7", [
-        ("FUV", "http://alasky.u-strasbg.fr/GALEX/GR6-07/FUV"),
-        ("NUV", "http://alasky.u-strasbg.fr/GALEX/GR6-07/NUV"),
+        ("FUV", "https://alasky.u-strasbg.fr/GALEX/GR6-07/FUV"),
+        ("NUV", "https://alasky.u-strasbg.fr/GALEX/GR6-07/NUV"),
     ]),
     ("DESI Legacy Survey (DR9)", [
-        ("g", "http://alasky.u-strasbg.fr/DESI-Legacy-Survey/DR9/g"),
-        ("r", "http://alasky.u-strasbg.fr/DESI-Legacy-Survey/DR9/r"),
-        ("z", "http://alasky.u-strasbg.fr/DESI-Legacy-Survey/DR9/z"),
+        ("g", "https://alasky.u-strasbg.fr/DESI-Legacy-Survey/DR9/g"),
+        ("r", "https://alasky.u-strasbg.fr/DESI-Legacy-Survey/DR9/r"),
+        ("z", "https://alasky.u-strasbg.fr/DESI-Legacy-Survey/DR9/z"),
     ]),
 ])
 
