@@ -32,7 +32,10 @@ if "last_preview_png" in st.session_state:
 if "last_preview_png" not in st.session_state:
     st.write('Preview parameter not found, setting to None')
     st.session_state["last_preview_png"] = None   # Set the parameter just so it exists and can be checked
-    #st.session_state["last_caption"] = ""         # Empty string to hold caption data
+    # Parameters to hold the actual image and caption data, in addition to the pure flag variable above
+    st.session_state["preview_png_bytes"] = None   # bytes
+    st.session_state["preview_caption"] = ""
+    st.session_state["preview_fits_bytes"] = None
 
 preview_slot = st.empty()    # Used for (re)drawing the preview image every new run
 
@@ -100,6 +103,8 @@ def to_png_bytes_from_array(img_array):
     buf = io.BytesIO()
     im.save(buf, format="PNG")
     buf.seek(0)
+    # Save the image data to the permanent array
+    st.session_state["preview_png_bytes"] = buf.getvalue()
     return buf
 
 # Show the image either as a plain image (st.image) or with WCS axes (matplotlib WCSAxes).
@@ -110,6 +115,8 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
         st.image(img_array, caption=caption, use_column_width=True)    # The preview image itself
         st.session_state["last_preview_png"] = 'image'                    # Sets that a preview image has now been shown
         st.write('Preview parameter =', st.session_state["last_preview_png"])
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
         return None
 
     # More complex case where user does want the axes
@@ -261,7 +268,9 @@ if fetch:
         # result is an RGB image array; flip vertically for correct display as in the user's script
         colour_img = numpy.flip(result, axis=0)
         caption = f"{survey_name}  —  color  —  {width} × {height} px  —  FOV {fov_value} {fov_unit}"
-        # NOT SURE THIS NEXT LINE SHOULD BE THERE
+        # Save the caption to the permament array
+        st.session_state["preview_caption"] = caption
+        # Update the image preview flag
         st.session_state["last_preview_png"] = 'matplot' if show_axes else 'image'
         # DON'T DRAW THE IMAGE HERE - only at the end when we know if needs to be redrawn or not
         #render_with_optional_wcs_axes(colour_img, wcs_for_axes, show_axes, caption=caption)
