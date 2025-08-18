@@ -105,6 +105,7 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     if not show_axes:
         if st.session_state["last_preview_png"] is not None:
             st.session_state["last_preview_png"] = st.image(img_array, caption=caption, use_column_width=True)
+            st.image(img_array, caption=caption, use_column_width=True)
         return None
 
     fig = plt.figure(figsize=(7, 7))
@@ -287,6 +288,7 @@ if fetch:
         else:
             if st.session_state["last_preview_png"] is not None:
                 st.session_state["last_preview_png"] = st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
+                st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
 
         # Downloads
         # FITS file
