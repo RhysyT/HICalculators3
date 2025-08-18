@@ -100,19 +100,21 @@ def to_png_bytes_from_array(img_array):
 
 # Show the image either as a plain image (st.image) or with WCS axes (matplotlib WCSAxes).
 def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
-    # If the user doesn't want to show the axes :
-    if not show_axes:
-        st.session_state["last_preview_png"] = st.image(img_array, caption=caption, use_column_width=True)
-        return None
+    # Only proceed if a preview image doesn't already exist
+    if st.session_state["last_preview_png"] is None:
+        # If the user doesn't want to show the axes :
+        if not show_axes:
+            st.session_state["last_preview_png"] = st.image(img_array, caption=caption, use_column_width=True)
+            return None
 
-    # More complex case where user does want the axes
-    fig = plt.figure(figsize=(7, 7))
-    ax = plt.subplot(111, projection=wcs_obj)
-    ax.imshow(img_array, origin="lower")
-    ax.set_xlabel("RA")
-    ax.set_ylabel("Dec")
-    st.session_state["last_preview_png"] = st.pyplot(fig, clear_figure=True)
-    return fig
+        # More complex case where user does want the axes
+        fig = plt.figure(figsize=(7, 7))
+        ax = plt.subplot(111, projection=wcs_obj)
+        ax.imshow(img_array, origin="lower")
+        ax.set_xlabel("RA")
+        ax.set_ylabel("Dec")
+        st.session_state["last_preview_png"] = st.pyplot(fig, clear_figure=True)
+        return fig
 
 
 # 2) Set up the GUI
