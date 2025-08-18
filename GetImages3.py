@@ -32,6 +32,7 @@ if "last_preview_png" in st.session_state:
 if "last_preview_png" not in st.session_state:
     st.write('Preview parameter not found, setting to None')
     st.session_state["last_preview_png"] = None   # Set the parameter just so it exists and can be checked
+    st.session_state["last_caption"] = ""         " Empty string to hold caption data
 
 preview_slot = st.empty()    # Used for (re)drawing the preview image every new run
 
@@ -107,7 +108,7 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     # If the user doesn't want to show the axes :
     if not show_axes:
         st.image(img_array, caption=caption, use_column_width=True)    # The preview image itself
-        st.session_state["last_preview_png"] = True                    # Sets that a preview image has now been shown
+        st.session_state["last_preview_png"] = 'image'                    # Sets that a preview image has now been shown
         st.write('Preview parameter =', st.session_state["last_preview_png"])
         return None
 
@@ -118,7 +119,7 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     ax.set_xlabel("RA")
     ax.set_ylabel("Dec")
     st.pyplot(fig, clear_figure=True)                # The preview image itself
-    st.session_state["last_preview_png"] = True      # Sets that a preview image has now been shown
+    st.session_state["last_preview_png"] = 'matplot'      # Sets that a preview image has now been shown
     st.write('Preview parameter =', st.session_state["last_preview_png"])
     return fig
 
@@ -201,9 +202,18 @@ with final_col:
 
 st.markdown("---")
 
-# ---------------------------
-# Action: fetch image
-# ---------------------------
+
+# EDITS NEEDED
+# We want to :
+# -- If no image created, draw a new one on Fetch
+# -- If an image created and none previously, draw it on Fetch
+# -- If an image created and something previously, replace it on Fetch
+# Would it help to draw it at the end ?
+# If we did that, it would draw whatever existed in the stored parameter and this would run every time we update any part of the GUI.
+# If the stored parameter was nothing, then nothing would be draw. But ONLY the Fetch button itself generates image data, so updating
+# the other GUI buttons wouldn't change anything. So this should work !
+
+# Main button : fetch the image !
 if fetch:
     st.write('Running fetch - emptying image preview parameter')
     # Button pressed, so now we clear the image preview parameter
@@ -251,9 +261,10 @@ if fetch:
 
     if mode == "Color composite":
         # result is an RGB image array; flip vertically for correct display as in the user's script
-        img = numpy.flip(result, axis=0)
+        colour_img = numpy.flip(result, axis=0)
         caption = f"{survey_name}  —  color  —  {width} × {height} px  —  FOV {fov_value} {fov_unit}"
-        render_with_optional_wcs_axes(img, wcs_for_axes, show_axes, caption=caption)
+        # DON'T DRAW THE IMAGE HERE - only at the end when we know if needs to be redrawn or not
+        #render_with_optional_wcs_axes(colour_img, wcs_for_axes, show_axes, caption=caption)
 
         # Downloads
         png_buf = to_png_bytes_from_array(img)
@@ -293,13 +304,15 @@ if fetch:
             im = ax.imshow(stretched, origin="lower", cmap="gray")
             ax.set_xlabel("RA")
             ax.set_ylabel("Dec")
-            st.pyplot(fig, clear_figure=True)            # The image parameter itself
-            st.session_state["last_preview_png"] = True  # Sets that an image has now been shown
+            # DON'T DRAW THE IMAGE HERE, only at the end !!!
+            #st.pyplot(fig, clear_figure=True)            # The image parameter itself
+            st.session_state["last_preview_png"] = 'matplot'  # Sets that an image has now been shown
         # Otherwise, don't show the axes
         else:
             # As above, show the image and then update the preview parameter
-            st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
-            st.session_state["last_preview_png"] = True
+            # DON'T DRAW THE IMAGE HERE
+            #st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
+            st.session_state["last_preview_png"] = 'image'
 
 
         # Downloads
@@ -331,5 +344,41 @@ if fetch:
             mime="image/png",
         )
 
-# Footer hint (kept minimal per instructions)
-#st.caption("HIPS2FITS powered — minimal UI, no heavy error trapping. Happy hunting for photons.")
+# Draw the image preview only at the end. This makes it easy to preseve the existing image, if there is one
+# Only draw the image if there is one
+if st.session_state["last_preview_png"] is not None:
+    # Now there are four possibilities and different ways to draw the image. Firstly the two cases of colour composites :
+    if st.session_state["last_preview_png"] == 'image':
+        # 1,2) Colour composite with and without axes. Both cases handled by the render_ subroutine. All input parameters
+        # have been set above in "fetch".
+        if mode == "Color composite":
+            render_with_optional_wcs_axes(colour_img, wcs_for_axes, show_axes, caption=caption)
+
+    # Next the cases of a greyscale preview of a FITS file.
+    # 3) Greyscale, no axes
+    if st.session_state["last_preview_png"] == 'matplot' and show_axes == 'False':
+        st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
+    # 4) Greyscale, show axes
+    if st.session_state["last_preview_png"] == 'matplot' and show_axes == 'True':     
+        st.pyplot(fig, clear_figure=True)
+        
+            
+                
+    # 3) FITS greyscale, no axes 
+    # 4) FITS greyscale, show axes
+
+    
+    #if st.session_state["last_preview_png"] == 'image':
+    #    # Colour composite image - all the input parameters will have been set by this stage in the "fetch" routine above
+    #    if mode == "Color composite"
+    #        if not show_axes:
+    #        #st.image(img_array, caption=caption, use_column_width=True)    # The preview image itself
+    #        render_with_optional_wcs_axes(colour_img, wcs_for_axes, show_axes, caption=caption)
+
+    #    # Alternatively show the greyscale plot, again the input parameters are set above
+    #    if mode ! = "Color composite":
+    #        st.pyplot(fig, clear_figure=True)
+
+    #if st.session_state["last_preview_png"] == 'matplot':
+    #    st.pyplot(fig, clear_figure=True)
+
