@@ -28,9 +28,7 @@ st.write('<style>div.block-container{padding-bottom:0rem;}</style>', unsafe_allo
 # Check for a previously retrieved image in the session state. This is used to prevent updates to the GUI from removing the current
 # image from the display
 if "preview_image" not in st.session_state:
-    st.session_state["last_preview_png"] = None   # bytes
-    #st.session_state["last_caption"] = ""
-    #st.session_state["last_downloads"] = {}       # {"png": bytes, "fits": bytes}
+    st.session_state["last_preview_png"] = None   # Set the parameter just so it exists and can be checked
 
 preview_slot = st.empty()    # Used for (re)drawing the preview image every new run
 
@@ -102,17 +100,18 @@ def to_png_bytes_from_array(img_array):
 
 # Show the image either as a plain image (st.image) or with WCS axes (matplotlib WCSAxes).
 def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
+    # If the user doesn't want to show the axes :
     if not show_axes:
         st.session_state["last_preview_png"] = st.image(img_array, caption=caption, use_column_width=True)
-        st.image(img_array, caption=caption, use_column_width=True)
         return None
 
+    # More complex case where user does want the axes
     fig = plt.figure(figsize=(7, 7))
     ax = plt.subplot(111, projection=wcs_obj)
     ax.imshow(img_array, origin="lower")
     ax.set_xlabel("RA")
     ax.set_ylabel("Dec")
-    st.pyplot(fig, clear_figure=True)
+    st.session_state["last_preview_png"] = st.pyplot(fig, clear_figure=True)
     return fig
 
 
@@ -272,6 +271,7 @@ if fetch:
 
         # Use grayscale preview with optional WCS axes
         fig = None
+        # If the user wants to show the axes :
         if show_axes:
             fig = plt.figure(figsize=(7, 7))
             # Prefer WCS from header if present and plausible; otherwise use constructed WCS
@@ -284,9 +284,10 @@ if fetch:
             ax.set_xlabel("RA")
             ax.set_ylabel("Dec")
             st.pyplot(fig, clear_figure=True)
+        # Otherwise, don't show the axes
         else:
             st.session_state["last_preview_png"] = st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
-            st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
+
 
         # Downloads
         # FITS file
