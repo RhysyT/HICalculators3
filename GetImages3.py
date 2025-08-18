@@ -362,8 +362,8 @@ if st.session_state["last_preview_png"] is not None:
 
     # Next the cases of a greyscale preview of a FITS file.
     # 3) Greyscale, no axes
-    if st.session_state["last_preview_png"] == 'matplot' and show_axes == 'False':
+    if st.session_state["last_preview_png"] == 'matplot' and show_axes == False:
         st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
     # 4) Greyscale, show axes
-    if st.session_state["last_preview_png"] == 'matplot' and show_axes == 'True':     
+    if st.session_state["last_preview_png"] == 'matplot' and show_axes == True:     
         st.pyplot(fig, clear_figure=True)
