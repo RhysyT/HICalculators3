@@ -215,6 +215,8 @@ st.markdown("---")
 
 # Main button : fetch the image !
 if fetch:
+    st.write('Attempting image retrieval...')
+    st.write('Image preview parameter = ',st.session_state["last_preview_png"])
     #st.write('Running fetch - emptying image preview parameter')
     # Button pressed, so now we clear the image preview parameter
     #st.session_state["last_preview_png"] = None
@@ -306,12 +308,14 @@ if fetch:
             # DON'T DRAW THE IMAGE HERE, only at the end !!!
             #st.pyplot(fig, clear_figure=True)            # The image parameter itself
             st.session_state["last_preview_png"] = 'matplot'  # Sets that an image has now been shown
+            st.write('Updated preview parameter = ',st.session_state["last_preview_png"])
         # Otherwise, don't show the axes
         else:
             # As above, show the image and then update the preview parameter
             # DON'T DRAW THE IMAGE HERE
             #st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
             st.session_state["last_preview_png"] = 'image'
+            st.write('Updated preview parameter = ',st.session_state["last_preview_png"])
 
 
         # Downloads
@@ -345,7 +349,7 @@ if fetch:
 
 # Draw the image preview only at the end. This makes it easy to preseve the existing image, if there is one
 # Only draw the image if there is one
-st.write('Image preview state :', st.session_state["last_preview_png"])
+st.write('Preparing to draw image ! Image preview state :', st.session_state["last_preview_png"])
 if st.session_state["last_preview_png"] is not None:
     # Now there are four possibilities and different ways to draw the image. Firstly the two cases of colour composites :
     if st.session_state["last_preview_png"] == 'image':
