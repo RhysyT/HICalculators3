@@ -108,6 +108,7 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     if not show_axes:
         st.image(img_array, caption=caption, use_column_width=True)    # The preview image itself
         st.session_state["last_preview_png"] = True                    # Sets that a preview image has now been shown
+        st.write('Preview parameter =', st.session_state["last_preview_png"])
         return None
 
     # More complex case where user does want the axes
@@ -118,6 +119,7 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     ax.set_ylabel("Dec")
     st.pyplot(fig, clear_figure=True)                # The preview image itself
     st.session_state["last_preview_png"] = True      # Sets that a preview image has now been shown
+    st.write('Preview parameter =', st.session_state["last_preview_png"])
     return fig
 
 
