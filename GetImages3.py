@@ -32,7 +32,7 @@ if "last_preview_png" in st.session_state:
 if "last_preview_png" not in st.session_state:
     st.write('Preview parameter not found, setting to None')
     st.session_state["last_preview_png"] = None   # Set the parameter just so it exists and can be checked
-    st.session_state["last_caption"] = ""         # Empty string to hold caption data
+    #st.session_state["last_caption"] = ""         # Empty string to hold caption data
 
 preview_slot = st.empty()    # Used for (re)drawing the preview image every new run
 
