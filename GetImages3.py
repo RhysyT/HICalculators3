@@ -100,24 +100,22 @@ def to_png_bytes_from_array(img_array):
 
 # Show the image either as a plain image (st.image) or with WCS axes (matplotlib WCSAxes).
 def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
-    # Only proceed if a preview image doesn't already exist
-    if st.session_state["last_preview_png"] is None:
-        st.write('Preview image parameter exists but is empty, okay to overwrite')
-        # If the user doesn't want to show the axes :
-        if not show_axes:
-            st.session_state["last_preview_png"] = True
-            st.image(img_array, caption=caption, use_column_width=True)
-            return None
+    st.write('Preview image parameter exists but is empty, okay to overwrite')
+    # If the user doesn't want to show the axes :
+    if not show_axes:
+        st.image(img_array, caption=caption, use_column_width=True)    # The preview image itself
+        st.session_state["last_preview_png"] = True                    # Sets that a preview image has now been shown
+        return None
 
-        # More complex case where user does want the axes
-        fig = plt.figure(figsize=(7, 7))
-        ax = plt.subplot(111, projection=wcs_obj)
-        ax.imshow(img_array, origin="lower")
-        ax.set_xlabel("RA")
-        ax.set_ylabel("Dec")
-        st.session_state["last_preview_png"] = True
-        st.pyplot(fig, clear_figure=True)
-        return fig
+    # More complex case where user does want the axes
+    fig = plt.figure(figsize=(7, 7))
+    ax = plt.subplot(111, projection=wcs_obj)
+    ax.imshow(img_array, origin="lower")
+    ax.set_xlabel("RA")
+    ax.set_ylabel("Dec")
+    st.pyplot(fig, clear_figure=True)                # The preview image itself
+    st.session_state["last_preview_png"] = True      # Sets that a preview image has now been shown
+    return fig
 
 
 # 2) Set up the GUI
@@ -202,8 +200,8 @@ st.markdown("---")
 # Action: fetch image
 # ---------------------------
 if fetch:
-    st.write('Emptying image preview parameter')
-    # Button pressed, so now we clear the session state
+    st.write('Running fetch - emptying image preview parameter')
+    # Button pressed, so now we clear the image preview parameter
     st.session_state["last_preview_png"] = None
     print('Running fetch')
     # Parse coordinates
@@ -290,12 +288,13 @@ if fetch:
             im = ax.imshow(stretched, origin="lower", cmap="gray")
             ax.set_xlabel("RA")
             ax.set_ylabel("Dec")
-            st.pyplot(fig, clear_figure=True)
-            st.session_state["last_preview_png"] = True
+            st.pyplot(fig, clear_figure=True)            # The image parameter itself
+            st.session_state["last_preview_png"] = True  # Sets that an image has now been shown
         # Otherwise, don't show the axes
         else:
-            st.session_state["last_preview_png"] = True
+            # As above, show the image and then update the preview parameter
             st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
+            st.session_state["last_preview_png"] = True
 
 
         # Downloads
