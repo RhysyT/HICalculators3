@@ -110,6 +110,7 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
         st.image(img_array, caption=caption, use_column_width=True)    # The preview image itself
         st.session_state["last_preview_png"] = 'image'                    # Sets that a preview image has now been shown
         st.write('Preview parameter =', st.session_state["last_preview_png"])
+        stop
         return None
 
     # More complex case where user does want the axes
@@ -346,7 +347,10 @@ if fetch:
 
 # Draw the image preview only at the end. This makes it easy to preseve the existing image, if there is one
 # Only draw the image if there is one
-st.session_state["last_preview_png"] = 'image'
+# Something weird is going on here. The last_preview parameter is not updated even if fetch is called. If it's forced, the image is
+# shown, but alterign the GUI STILL causes an automatic update. That might be because we have to also preseve the other parameters
+# e.g. colour_img, caption, stretched. But we never see the last_preview updated, so we should fix that first !
+#st.session_state["last_preview_png"] = 'image'
 st.write('Preparing to draw image ! Image preview state :', st.session_state["last_preview_png"])
 if st.session_state["last_preview_png"] is not None:
     # Now there are four possibilities and different ways to draw the image. Firstly the two cases of colour composites :
