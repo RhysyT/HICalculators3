@@ -201,6 +201,7 @@ st.markdown("---")
 if fetch:
     # Button pressed, so now we clear the session state
     st.session_state["last_preview_png"] = None
+    print('Running fetch')
     # Parse coordinates
     ra = parse_ra(ra_text)
     dec = parse_dec(dec_text)
