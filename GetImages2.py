@@ -252,11 +252,11 @@ with st.container():
             return hips2fits.query(**kwargs)
 
         if fetch_preview:
-            try:
-                img = query_rgb("jpg")
-                st.image(img, caption=rgb_choice, use_column_width=True)
-            except Exception as e:
-                st.error("HIPS2FITS error : %s" % str(e))
+            #try:
+            img = query_rgb("jpg")
+            st.image(img, caption=rgb_choice, use_column_width=True)
+            #except Exception as e:
+            #    st.error("HIPS2FITS error : %s" % str(e))
 
         if dl_jpg:
             try:
