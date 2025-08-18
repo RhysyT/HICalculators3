@@ -1,54 +1,54 @@
-# streamlit_app.py
-# Streamlit GUI wrapper for HIPS2FITS image retrieval
-# Based on user's proof-of-concept script for astroquery.hips2fits  — see comments for notes.
-# Python 3.9+ (tested with Streamlit Cloud). Minimal error handling by design.
+# Streamlit GUI wrapper for HIPS2FITS image retrieval, based on the example HIP2FITS retrieval script provided online.
+# Re-written by ChatGPT-5. Runs in Python 3.9+ (tested with Streamlit Cloud). Minimal error handling by design.
 
 import io
 import math
 import numpy
 from PIL import Image
-
 import streamlit as st
 import matplotlib.pyplot as plt
-
 import astropy.units as u
 from astropy.coordinates import SkyCoord, Angle, Longitude, Latitude
 from astropy.wcs import WCS
 from astropy.io import fits as pyfits
-
 from astroquery.hips2fits import hips2fits
+
+# Check for a previously retrieved image in the session state. This is used to prevent updates to the GUI from removing the current
+# image from the display
+if "last_preview_png" not in st.session_state:
+    st.session_state["last_preview_png"] = None   # bytes
+    st.session_state["last_caption"] = ""
+    st.session_state["last_downloads"] = {}       # {"png": bytes, "fits": bytes}
+
+preview_slot = st.empty()    # Used for (re)drawing the preview image every new run
 
 st.set_page_config(page_title="HIPS2FITS Viewer", layout="wide")
 
 st.title("HIPS2FITS Viewer")
 
-# ---------------------------
-# Helpers
-# ---------------------------
 
+# 1) Functions called by the GUI modules below
+# Convert RA to degrees, allowing both decimal and sexigesimal input. Astropy has in-built modules to handle this !
 def parse_ra(ra_text):
-    """
-    Accept RA in either decimal degrees or sexagesimal (H:M:S). 
-    If sexagesimal-like, interpret as hourangle; else float degrees.
-    """
-    try:
-        # Decimal degrees path
+    # Assume decimal degrees by default
+    try:   
         return Longitude(float(ra_text) * u.deg)
+    # Otherwise assume sexigesimal formatting
     except Exception:
         # Sexagesimal path (assume hourangle)
         ang = Angle(ra_text, unit=u.hourangle)
         return Longitude(ang.to(u.deg))
+    # *** ADD A FAILSAFE HERE !!! ***
 
+# As above but for declination
 def parse_dec(dec_text):
-    """
-    Accept Dec in either decimal degrees or sexagesimal (D:M:S).
-    """
     try:
         return Latitude(float(dec_text) * u.deg)
     except Exception:
-        ang = Angle(dec_text, unit=u.deg)  # Astropy parses sexagesimal to degrees
+        ang = Angle(dec_text, unit=u.deg)
         return Latitude(ang)
 
+# Convert input field of view to degrees - if in degrees, it doesn't do anything so no changes are made
 def fov_to_deg(value, unit_label):
     if unit_label == "arcsec":
         return (value * u.arcsec).to(u.deg).value
@@ -56,15 +56,14 @@ def fov_to_deg(value, unit_label):
         return (value * u.arcmin).to(u.deg).value
     return float(value)  # degrees
 
+# As above but for the pixel scale
 def pixscale_to_deg(value, unit_label):
     if unit_label == "arcsec / pixel":
         return (value * u.arcsec).to(u.deg).value
     return (value * u.arcmin).to(u.deg).value
 
+# Construct a simple TAN WCS matching the requested center, size, and pixel grid.
 def build_wcs(ra_deg, dec_deg, width, height, fov_deg):
-    """
-    Construct a simple TAN WCS matching the requested center, size, and pixel grid.
-    """
     # Pixel scale in degrees/pixel along the widest dimension (square here)
     cdelt = fov_deg / float(width)
     w = WCS(naxis=2)
@@ -76,6 +75,7 @@ def build_wcs(ra_deg, dec_deg, width, height, fov_deg):
     w.wcs.ctype = ["RA---TAN", "DEC--TAN"]
     return w
 
+# Convert a normal array of bytes into a PNG image 
 def to_png_bytes_from_array(img_array):
     # Expect uint8 RGB array; if float, normalize
     if img_array.dtype != numpy.uint8:
@@ -88,10 +88,8 @@ def to_png_bytes_from_array(img_array):
     buf.seek(0)
     return buf
 
+# Show the image either as a plain image (st.image) or with WCS axes (matplotlib WCSAxes).
 def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
-    """
-    Show the image either as a plain image (st.image) or with WCS axes (matplotlib WCSAxes).
-    """
     if not show_axes:
         st.image(img_array, caption=caption, use_column_width=True)
         return None
@@ -104,22 +102,20 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     st.pyplot(fig, clear_figure=True)
     return fig
 
-# ---------------------------
-# UI layout
-# ---------------------------
 
-# Row 1: Coordinates
-c1, c2, c3, c4 = st.columns([1.2, 1.2, 1, 1])
+# 2) Set up the GUI
+# Row 1: Input coordinates and FOV
+c1, c2, c3, c4 = st.columns([1, 1, 1, 1])    # ChatGPT preferred 1.2, 1.2 for the first, but this is asymmetrical and weird
 with c1:
-    ra_text = st.text_input("RA  —  decimal degrees or H : M : S", "190.833")
+    ra_text = st.text_input("RA  —  decimal degrees or H : M : S", "191.1332558422000")
 with c2:
-    dec_text = st.text_input("Dec  —  decimal degrees or D : M : S", "8:57:11")
+    dec_text = st.text_input("Dec  —  decimal degrees or D : M : S", "11:11:25.74")
 with c3:
-    fov_value = st.number_input("Field of view value", min_value=0.001, value=14.0, step=0.5, format="%.3f")
+    fov_value = st.number_input("Field of view value", min_value=0.001, value=3.5, step=0.5, format="%.3f")
 with c4:
     fov_unit = st.selectbox("FOV units", ["arcsec", "arcmin", "deg"], index=1)
 
-# Row 2: Pixel scale + Axes toggle
+# Row 2: Pixel scale and target name
 c5, c6, c7, c8 = st.columns([1, 1, 1, 1])
 with c5:
     pix_value = st.number_input("Pixel scale value", min_value=0.001, value=1.0, step=0.1, format="%.3f")
