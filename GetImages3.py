@@ -32,7 +32,7 @@ if "last_preview_png" in st.session_state:
 if "last_preview_png" not in st.session_state:
     st.write('Preview parameter not found, setting to None')
     st.session_state["last_preview_png"] = None   # Set the parameter just so it exists and can be checked
-    st.session_state["last_caption"] = ""         " Empty string to hold caption data
+    st.session_state["last_caption"] = ""         # Empty string to hold caption data
 
 preview_slot = st.empty()    # Used for (re)drawing the preview image every new run
 
@@ -361,24 +361,3 @@ if st.session_state["last_preview_png"] is not None:
     # 4) Greyscale, show axes
     if st.session_state["last_preview_png"] == 'matplot' and show_axes == 'True':     
         st.pyplot(fig, clear_figure=True)
-        
-            
-                
-    # 3) FITS greyscale, no axes 
-    # 4) FITS greyscale, show axes
-
-    
-    #if st.session_state["last_preview_png"] == 'image':
-    #    # Colour composite image - all the input parameters will have been set by this stage in the "fetch" routine above
-    #    if mode == "Color composite"
-    #        if not show_axes:
-    #        #st.image(img_array, caption=caption, use_column_width=True)    # The preview image itself
-    #        render_with_optional_wcs_axes(colour_img, wcs_for_axes, show_axes, caption=caption)
-
-    #    # Alternatively show the greyscale plot, again the input parameters are set above
-    #    if mode ! = "Color composite":
-    #        st.pyplot(fig, clear_figure=True)
-
-    #if st.session_state["last_preview_png"] == 'matplot':
-    #    st.pyplot(fig, clear_figure=True)
-
