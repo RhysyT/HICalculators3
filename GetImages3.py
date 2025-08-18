@@ -107,9 +107,9 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
 # Row 1: Input coordinates and FOV
 c1, c2, c3, c4 = st.columns([1, 1, 1, 1])    # ChatGPT preferred 1.2, 1.2 for the first, but this is asymmetrical and weird
 with c1:
-    ra_text = st.text_input("RA  —  decimal degrees or H : M : S", "191.1332558422000")
+    ra_text = st.text_input("RA  —  decimal degrees or HH:MM:SS", "191.1332558422000")
 with c2:
-    dec_text = st.text_input("Dec  —  decimal degrees or D : M : S", "11:11:25.74")
+    dec_text = st.text_input("Dec  —  decimal degrees or DD:MM:SS", "11:11:25.74")
 with c3:
     fov_value = st.number_input("Field of view value", min_value=0.001, value=3.5, step=0.5, format="%.3f")
 with c4:
@@ -171,9 +171,12 @@ with format_col:
     # For color we’ll fetch JPG/PNG; for single band we default to FITS for science download.
     out_format = st.selectbox("Download format", ["PNG", "FITS"], index=0 if mode == "Color composite" else 1)
 
-# Row 4: Action
-get_col, _, _, _ = st.columns([1, 1, 1, 1])
-with get_col:
+# Row 4: Comment
+st.write('After the image is retrieved, scroll to the bottom for download options.')
+
+# Row 5 : Run the script !
+final_col, _, _, _ = st.columns([1, 1, 1, 1])
+with final_col:
     fetch = st.button("Retrieve image")
 
 st.markdown("---")
@@ -299,4 +302,4 @@ if fetch:
         )
 
 # Footer hint (kept minimal per instructions)
-st.caption("HIPS2FITS powered — minimal UI, no heavy error trapping. Happy hunting for photons.")
+#st.caption("HIPS2FITS powered — minimal UI, no heavy error trapping. Happy hunting for photons.")
