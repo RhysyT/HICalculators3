@@ -41,7 +41,7 @@ preview_slot = st.empty()    # Used for (re)drawing the preview image every new 
 st.set_page_config(page_title="HIPS2FITS Viewer", layout="wide")
 
 st.title("HIPS2FITS Don't Lie")
-st.write('## Retrieve and preview astronomical survey data using the HIP2FITS service')
+st.write('### Retrieve and preview astronomical survey data using the HIP2FITS service')
 
 
 # 1) Functions called by the GUI modules below
