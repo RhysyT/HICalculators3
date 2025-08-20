@@ -31,17 +31,19 @@ if "last_preview_png" in st.session_state:
     st.write('Preview parameter =', st.session_state["last_preview_png"])
 if "last_preview_png" not in st.session_state:
     st.write('Preview parameter not found, setting to None')
-    st.session_state["last_preview_png"] = None   # Set the parameter just so it exists and can be checked
-    # Parameters to hold the actual image and caption data, in addition to the pure flag variable above
-    st.session_state["preview_png_bytes"] = None   # bytes
-    st.session_state["preview_caption"] = ""
-    st.session_state["preview_fits_bytes"] = None
+    st.session_state["last_preview_png"] = False   # If it hasn't been set, then no preview image has been created yet
+    # Similarly set other parameters, one to hold the image and one to hold its caption
+    if "preview_png_bytes" not in st.session_state:
+        st.session_state["preview_png_bytes"] = None
+    if "preview_caption" not in st.session_state:
+        st.session_state["preview_caption"] = ""
+
 
 preview_slot = st.empty()    # Used for (re)drawing the preview image every new run
 
 st.set_page_config(page_title="HIPS2FITS Viewer", layout="wide")
 
-st.title("HIPS2FITS Viewer")
+st.title("HIPS2FITS Don't Lie")
 
 
 # 1) Functions called by the GUI modules below
@@ -109,14 +111,22 @@ def to_png_bytes_from_array(img_array):
 
 # Show the image either as a plain image (st.image) or with WCS axes (matplotlib WCSAxes).
 def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
-    st.write('Preview image parameter exists but is empty, okay to overwrite')
+    st.write('Preview image parameter exists but is empty, okay to overwrite')    # LEAVE FOR NOW
     # If the user doesn't want to show the axes :
     if not show_axes:
         st.image(img_array, caption=caption, use_column_width=True)    # The preview image itself
         st.session_state["last_preview_png"] = 'image'                    # Sets that a preview image has now been shown
         st.write('Preview parameter =', st.session_state["last_preview_png"])
         buf = io.BytesIO()
-        fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
+        Image.fromarray(img_array).save(buf, format="PNG")
+        buf.seek(0)
+
+        # Save the image and its caption to session_state parameters
+        st.session_state["preview_png_bytes"] = buf.getvalue()
+        st.session_state["preview_caption"] = caption
+        #st.session_state["preview_drawn_now"] = True
+        
+        # fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
         return None
 
     # More complex case where user does want the axes
@@ -128,6 +138,14 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     st.pyplot(fig, clear_figure=True)                # The preview image itself
     st.session_state["last_preview_png"] = 'matplot'      # Sets that a preview image has now been shown
     st.write('Preview parameter =', st.session_state["last_preview_png"])
+
+    # Save the image and its caption to session_state parameters
+    fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
+    buf.seek(0)
+    st.session_state["preview_png_bytes"] = buf.getvalue()
+    st.session_state["preview_caption"] = caption
+    #st.session_state["preview_drawn_now"] = True
+    
     return fig
 
 
@@ -362,6 +380,10 @@ if fetch:
 # e.g. colour_img, caption, stretched. But we never see the last_preview updated, so we should fix that first !
 #st.session_state["last_preview_png"] = 'image'
 st.write('Preparing to draw image ! Image preview state :', st.session_state["last_preview_png"])
+
+if (st.session_state["preview_png_bytes"] is not None):# and (not st.session_state["preview_drawn_now"]):
+    st.image(st.session_state["preview_png_bytes"], caption=st.session_state["preview_caption"], use_column_width=True)
+
 if st.session_state["last_preview_png"] is not None:
     # Now there are four possibilities and different ways to draw the image. Firstly the two cases of colour composites :
     if st.session_state["last_preview_png"] == 'image':
