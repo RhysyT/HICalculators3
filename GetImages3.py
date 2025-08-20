@@ -58,7 +58,7 @@ def parse_ra(ra_text):
         return Longitude(ang.to(u.deg))
     except:
         st.write('Invalid RA !')
-        return 'Invalid coordinate'
+        return False
     # *** ADD A FAILSAFE HERE !!! ***
     # Probably better to add a flag in the except loop, so that fetch will only execute if the flag is good
 
@@ -68,8 +68,9 @@ def parse_dec(dec_text):
         return Latitude(float(dec_text) * u.deg)
     except Exception:
         ang = Angle(dec_text, unit=u.deg)
-        
         return Latitude(ang)
+    except:
+        return False
 
 # Convert input field of view to degrees - if in degrees, it doesn't do anything so no changes are made
 def fov_to_deg(value, unit_label):
@@ -231,9 +232,13 @@ with final_col:
 st.markdown("---")
 
 
+# Check if the coordinates are safe to proceed
+safetoproceed = False
+if parse_ra(ra_text) is not False and parse_dec(dec_text) is not False:
+    safetoproceed = True
 
 # Main button : fetch the image !
-if fetch:
+if fetch == True and safetoproceed == True:
     st.write('Attempting image retrieval...')
     # Parse coordinates
     ra = parse_ra(ra_text)
