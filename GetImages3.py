@@ -56,10 +56,8 @@ def parse_ra(ra_text):
         # Sexagesimal path (assume hourangle)
         ang = Angle(ra_text, unit=u.hourangle)
         return Longitude(ang.to(u.deg))
-    except:
-        return 'Invalid RA'
-    # *** ADD A FAILSAFE HERE !!! ***
-    # Probably better to add a flag in the except loop, so that fetch will only execute if the flag is good
+        except:
+            return 'Invalid RA'
 
 # As above but for declination
 def parse_dec(dec_text):
@@ -68,8 +66,8 @@ def parse_dec(dec_text):
     except Exception:
         ang = Angle(dec_text, unit=u.deg)
         return Latitude(ang)
-    except:
-        return 'Invalid Dec'
+        except:
+            return 'Invalid Dec'
 
 # Convert input field of view to degrees - if in degrees, it doesn't do anything so no changes are made
 def fov_to_deg(value, unit_label):
