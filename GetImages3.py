@@ -162,14 +162,12 @@ with c4:
     fov_unit = st.selectbox("FOV units", ["arcsec", "arcmin", "deg"], index=1)
 
 # Row 2: Pixel scale and target name
-c5, c6, c7, c8 = st.columns([1, 1, 1, 1])
+c5, c6, c7 = st.columns([1, 1, 2])
 with c5:
     pix_value = st.number_input("Pixel scale value", min_value=0.001, value=1.0, step=0.1, format="%.3f", help="Pixel scale in the specified units. May break if too far outside the survey's native resolution")
 with c6:
     pix_unit = st.selectbox("Pixel scale units", ["arcsec / pixel", "arcmin / pixel"], index=0)
 with c7:
-    show_axes = st.checkbox("Show WCS axes", value=False, help="Shows WCS axes in the preview image")
-with c8:
     name_tag = st.text_input("Output basename", "Target", help="Optional, but useful for specifying the name of the file ahead of time for downloads")
 
 # Row 3: Survey and band selection
@@ -217,7 +215,10 @@ with format_col:
     # For color we’ll fetch JPG/PNG; for single band we default to FITS for science download.
     out_format = st.selectbox("Download format", ["PNG", "FITS"], index=0 if mode == "Color composite" else 1, help="Format for the downloaded image. A preview image will be shown below, regardless of the format selected. FITS downloads only available for single-band images")
 
-# Row 4: Comment
+# Row 4 : toggle axes
+show_axes = st.checkbox("Show WCS axes", value=False, help="Shows WCS axes in the preview image. As with other buttons, the image needs to be retrieved again to update the display")
+
+# Row 5: Comment
 st.write('After the image is retrieved, scroll to the bottom for download options.')
 
 # Row 5 : Run the script !
