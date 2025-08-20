@@ -26,11 +26,8 @@ st.write('<style>div.block-container{padding-bottom:0rem;}</style>', unsafe_allo
 
 
 # Check for a previously retrieved image in the session state. This is used to prevent updates to the GUI from removing the current
-# image from the display
-if "last_preview_png" in st.session_state:
-    st.write('Preview parameter =', st.session_state["last_preview_png"])
+# image from the display. No need to do anyything if the parameter already exists.
 if "last_preview_png" not in st.session_state:
-    st.write('Preview parameter not found, setting to None')
     st.session_state["last_preview_png"] = False   # If it hasn't been set, then no preview image has been created yet
     # Similarly set other parameters, one to hold the image and one to hold its caption
     if "preview_png_bytes" not in st.session_state:
@@ -44,6 +41,7 @@ preview_slot = st.empty()    # Used for (re)drawing the preview image every new 
 st.set_page_config(page_title="HIPS2FITS Viewer", layout="wide")
 
 st.title("HIPS2FITS Don't Lie")
+st.write('## Retrieve and preview astronomical survey data using the HIP2FITS service')
 
 
 # 1) Functions called by the GUI modules below
@@ -111,12 +109,10 @@ def to_png_bytes_from_array(img_array):
 
 # Show the image either as a plain image (st.image) or with WCS axes (matplotlib WCSAxes).
 def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
-    st.write('Preview image parameter exists but is empty, okay to overwrite')    # LEAVE FOR NOW
     # If the user doesn't want to show the axes :
     if not show_axes:
         st.image(img_array, caption=caption, use_container_width=True)    # The preview image itself
         st.session_state["last_preview_png"] = 'image'                    # Sets that a preview image has now been shown
-        st.write('Preview parameter =', st.session_state["last_preview_png"])
         buf = io.BytesIO()
         Image.fromarray(img_array).save(buf, format="PNG")
         buf.seek(0)
@@ -137,7 +133,6 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     ax.set_ylabel("Dec")
     st.pyplot(fig, clear_figure=True)                # The preview image itself
     st.session_state["last_preview_png"] = 'matplot'      # Sets that a preview image has now been shown
-    st.write('Preview parameter =', st.session_state["last_preview_png"])
 
     # Save the image and its caption to session_state parameters
     fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
@@ -241,7 +236,6 @@ st.markdown("---")
 # Main button : fetch the image !
 if fetch:
     st.write('Attempting image retrieval...')
-    st.write('Image preview parameter = ',st.session_state["last_preview_png"])
     # Parse coordinates
     ra = parse_ra(ra_text)
     dec = parse_dec(dec_text)
@@ -334,15 +328,12 @@ if fetch:
             # DON'T DRAW THE IMAGE HERE, only at the end !!!
             #st.pyplot(fig, clear_figure=True)            # The image parameter itself
             st.session_state["last_preview_png"] = 'matplot'  # Sets that an image has now been shown
-            st.write('Updated preview parameter = ',st.session_state["last_preview_png"])
         # Otherwise, don't show the axes
         else:
             # As above, show the image and then update the preview parameter
             # DON'T DRAW THE IMAGE HERE
             #st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_container_width=True, clamp=True)
             st.session_state["last_preview_png"] = 'image'
-            st.write('Updated preview parameter = ',st.session_state["last_preview_png"])
-
 
         # Downloads
         # FITS file
@@ -379,7 +370,6 @@ if fetch:
 # shown, but alterign the GUI STILL causes an automatic update. That might be because we have to also preseve the other parameters
 # e.g. colour_img, caption, stretched. But we never see the last_preview updated, so we should fix that first !
 #st.session_state["last_preview_png"] = 'image'
-st.write('Preparing to draw image ! Image preview state :', st.session_state["last_preview_png"])
 
 if (st.session_state["preview_png_bytes"] is not None):# and (not st.session_state["preview_drawn_now"]):
     st.image(st.session_state["preview_png_bytes"], caption=st.session_state["preview_caption"], use_container_width=True)
