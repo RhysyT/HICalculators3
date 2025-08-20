@@ -50,7 +50,7 @@ st.set_page_config(page_title="HIPS2FITS Viewer", layout="wide")
 st.title("HIPS2FITS Don't Lie")
 st.write('### Retrieve and preview astronomical survey data using the HIP2FITS service')
 st.write('Shows images from a variety of astronomical data sets at a specified field of view and resolution. Uses the astroquery HIPS2FITS service. Yes, you can do this on the HIP2FITS website directly, but this one lets you use different units and has drop-down menus and is just generally friendlier.') 
-st.write("Note that the preview image does not show or update until you press 'Retrieve image'".)
+st.write("Note that the preview image does not show or update until you press 'Retrieve image'.")
 
 # 1) Functions called by the GUI modules below
 # Convert RA to degrees, allowing both decimal and sexigesimal input. Astropy has in-built modules to handle this !
