@@ -333,8 +333,31 @@ if fetch == True and safetoproceed == True:
         if show_axes:
             fig = plt.figure(figsize=(7, 7))
             ax = plt.subplot(111, projection=wcs_for_axes)
+            
+
+            ax.tick_params(axis='both', which='major', direction='out', length=9,  width=1.4)
+            ax.tick_params(axis='both', which='minor', direction='out', length=5,  width=1.1)
+
+            # Slightly easier way of dealing with the axes, by name instead of number
+            ra  = ax.coords[0]
+            dec = ax.coords[1]
+
+            ra.set_axislabel('Right Ascension [J2000]',  fontsize=50, minpad=0.8)
+            dec.set_axislabel('Declination [J2000]', fontsize=50, minpad=0.8)
+
+            # Tick sizes and frequencies
+            ra.set_ticklabel(size=15)
+            dec.set_ticklabel(size=15)
+            ra.set_minor_frequency(5)
+            dec.set_minor_frequency(5)
+
+            # Sexigesimal formatting
+            ra.set_major_formatter('hh:mm:ss')
+            dec.set_major_formatter('dd:mm:ss')
+
             ax.imshow(colour_img, origin="lower")
-            ax.set_xlabel("RA"); ax.set_ylabel("Dec")
+            
+            #ax.set_xlabel("RA"); ax.set_ylabel("Dec")
             buf = io.BytesIO()
             fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
             buf.seek(0)
