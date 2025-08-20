@@ -151,8 +151,8 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     ra  = ax.coords[0]
     dec = ax.coords[1]
 
-    ra.set_axislabel('Right Ascension [J2000]',  fontsize=20, minpad=0.8)
-    dec.set_axislabel('Declination [J2000]', fontsize=20, minpad=0.8)
+    ra.set_axislabel('Right Ascension [J2000]',  fontsize=15, minpad=0.8)
+    dec.set_axislabel('Declination [J2000]', fontsize=15, minpad=0.8)
 
     # Tick sizes and frequencies
     ra.set_ticklabel(size=7)
@@ -340,8 +340,8 @@ if fetch == True and safetoproceed == True:
             ra  = ax.coords[0]
             dec = ax.coords[1]
 
-            ra.set_axislabel('Right Ascension [J2000]',  fontsize=20, minpad=0.8)
-            dec.set_axislabel('Declination [J2000]', fontsize=20, minpad=0.8)
+            ra.set_axislabel('Right Ascension [J2000]',  fontsize=15, minpad=0.8)
+            dec.set_axislabel('Declination [J2000]', fontsize=15, minpad=0.8)
 
             # Tick sizes and frequencies
             ra.set_ticklabel(size=7)
