@@ -53,9 +53,10 @@ def parse_ra(ra_text):
         return Longitude(float(ra_text) * u.deg)
     # Otherwise assume sexigesimal formatting
     except Exception:
-        # Sexagesimal path (assume hourangle)
-        ang = Angle(ra_text, unit=u.hourangle)
-        return Longitude(ang.to(u.deg))
+        try:
+            # Sexagesimal path (assume hourangle)
+            ang = Angle(ra_text, unit=u.hourangle)
+            return Longitude(ang.to(u.deg))
         except:
             return 'Invalid RA'
 
@@ -64,8 +65,9 @@ def parse_dec(dec_text):
     try:
         return Latitude(float(dec_text) * u.deg)
     except Exception:
-        ang = Angle(dec_text, unit=u.deg)
-        return Latitude(ang)
+        try:
+            ang = Angle(dec_text, unit=u.deg)
+            return Latitude(ang)
         except:
             return 'Invalid Dec'
 
