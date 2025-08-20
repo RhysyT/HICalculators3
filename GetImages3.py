@@ -57,8 +57,7 @@ def parse_ra(ra_text):
         ang = Angle(ra_text, unit=u.hourangle)
         return Longitude(ang.to(u.deg))
     except:
-        st.write('Invalid RA !')
-        return False
+        return 'Invalid RA'
     # *** ADD A FAILSAFE HERE !!! ***
     # Probably better to add a flag in the except loop, so that fetch will only execute if the flag is good
 
@@ -70,7 +69,7 @@ def parse_dec(dec_text):
         ang = Angle(dec_text, unit=u.deg)
         return Latitude(ang)
     except:
-        return False
+        return 'Invalid Dec'
 
 # Convert input field of view to degrees - if in degrees, it doesn't do anything so no changes are made
 def fov_to_deg(value, unit_label):
@@ -234,8 +233,11 @@ st.markdown("---")
 
 # Check if the coordinates are safe to proceed
 safetoproceed = False
-if parse_ra(ra_text) is not False and parse_dec(dec_text) is not False:
+if parse_ra(ra_text) != 'Invalid RA' and parse_dec(dec_text) != 'Invalid Dec':
     safetoproceed = True
+
+if fetch == True and safetoproceed == False:
+    st.write('Invalid coordinate(s), please check RA and Dec values !')
 
 # Main button : fetch the image !
 if fetch == True and safetoproceed == True:
