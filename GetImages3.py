@@ -57,6 +57,7 @@ def parse_ra(ra_text):
             # Sexagesimal path (assume hourangle)
             ang = Angle(ra_text, unit=u.hourangle)
             return Longitude(ang.to(u.deg))
+        # If this doesn't work, it must be in a format astropy can't handle
         except:
             return 'Invalid RA'
 
@@ -143,6 +144,7 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     st.session_state["last_preview_png"] = 'matplot'      # Sets that a preview image has now been shown
 
     # Save the image and its caption to session_state parameters
+    buf = io.BytesIO()
     fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
     buf.seek(0)
     st.session_state["preview_png_bytes"] = buf.getvalue()
