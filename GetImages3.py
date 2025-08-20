@@ -384,7 +384,7 @@ st.write('Preparing to draw image ! Image preview state :', st.session_state["la
 if (st.session_state["preview_png_bytes"] is not None):# and (not st.session_state["preview_drawn_now"]):
     st.image(st.session_state["preview_png_bytes"], caption=st.session_state["preview_caption"], use_container_width=True)
 
-if st.session_state["last_preview_png"] is not None:
+if st.session_state["last_preview_png"] is None:
     # Now there are four possibilities and different ways to draw the image. Firstly the two cases of colour composites :
     if st.session_state["last_preview_png"] == 'image':
         # 1,2) Colour composite with and without axes. Both cases handled by the render_ subroutine. All input parameters
