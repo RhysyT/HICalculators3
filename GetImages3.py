@@ -168,7 +168,7 @@ with c5:
 with c6:
     pix_unit = st.selectbox("Pixel scale units", ["arcsec / pixel", "arcmin / pixel"], index=0)
 with c7:
-    name_tag = st.text_input("Output basename", "Target", help="Optional, but useful for specifying the name of the file ahead of time for downloads")
+    name_tag = st.text_input("Name resolver / download file name", "Target", help="Optional, but useful for specifying the name of the file ahead of time for downloads")
 
 # Row 3: Survey and band selection
 # Keep to DESI, SDSS, GALEX as requested — offer color composites or individual bands.
