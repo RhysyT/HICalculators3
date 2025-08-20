@@ -114,7 +114,7 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     st.write('Preview image parameter exists but is empty, okay to overwrite')    # LEAVE FOR NOW
     # If the user doesn't want to show the axes :
     if not show_axes:
-        st.image(img_array, caption=caption, use_column_width=True)    # The preview image itself
+        st.image(img_array, caption=caption, use_container_width=True)    # The preview image itself
         st.session_state["last_preview_png"] = 'image'                    # Sets that a preview image has now been shown
         st.write('Preview parameter =', st.session_state["last_preview_png"])
         buf = io.BytesIO()
@@ -339,7 +339,7 @@ if fetch:
         else:
             # As above, show the image and then update the preview parameter
             # DON'T DRAW THE IMAGE HERE
-            #st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
+            #st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_container_width=True, clamp=True)
             st.session_state["last_preview_png"] = 'image'
             st.write('Updated preview parameter = ',st.session_state["last_preview_png"])
 
@@ -382,7 +382,7 @@ if fetch:
 st.write('Preparing to draw image ! Image preview state :', st.session_state["last_preview_png"])
 
 if (st.session_state["preview_png_bytes"] is not None):# and (not st.session_state["preview_drawn_now"]):
-    st.image(st.session_state["preview_png_bytes"], caption=st.session_state["preview_caption"], use_column_width=True)
+    st.image(st.session_state["preview_png_bytes"], caption=st.session_state["preview_caption"], use_container_width=True)
 
 if st.session_state["last_preview_png"] is not None:
     # Now there are four possibilities and different ways to draw the image. Firstly the two cases of colour composites :
@@ -395,7 +395,7 @@ if st.session_state["last_preview_png"] is not None:
     # Next the cases of a greyscale preview of a FITS file.
     # 3) Greyscale, no axes
     if st.session_state["last_preview_png"] == 'matplot' and show_axes == False:
-        st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_column_width=True, clamp=True)
+        st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_container_width=True, clamp=True)
     # 4) Greyscale, show axes
     if st.session_state["last_preview_png"] == 'matplot' and show_axes == True:     
         st.pyplot(fig, clear_figure=True)
