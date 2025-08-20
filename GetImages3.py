@@ -50,7 +50,7 @@ st.set_page_config(page_title="HIPS2FITS Viewer", layout="wide")
 st.title("HIPS2FITS Don't Lie")
 st.write('### Retrieve and preview astronomical survey data using the HIP2FITS service')
 st.write('Shows images from a variety of astronomical data sets at a specified field of view and resolution. Uses the astroquery HIPS2FITS service. Yes, you can do this on the HIP2FITS website directly, but this one lets you use different units and has drop-down menus and is just generally friendlier.') 
-
+st.write("Note that the preview image does not show or update until you press 'Retrieve image'".)
 
 # 1) Functions called by the GUI modules below
 # Convert RA to degrees, allowing both decimal and sexigesimal input. Astropy has in-built modules to handle this !
@@ -144,15 +144,15 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     # More complex case where user does want the axes
     fig = plt.figure(figsize=(7, 7))
     ax = plt.subplot(111, projection=wcs_obj)
-    ax.tick_params(axis='both', which='major', direction='in', length=9,  width=1.4)
-    ax.tick_params(axis='both', which='minor', direction='in', length=5,  width=1.1)
+    ax.tick_params(axis='both', which='major', direction='out', length=9,  width=1.4)
+    ax.tick_params(axis='both', which='minor', direction='out', length=5,  width=1.1)
 
     # Slightly easier way of dealing with the axes, by name instead of number
     ra  = ax.coords[0]
     dec = ax.coords[1]
 
-    ra.set_axislabel('RA',  fontsize=25, minpad=0.8)
-    dec.set_axislabel('Dec', fontsize=25, minpad=0.8)
+    ra.set_axislabel('Right Ascension [J2000]',  fontsize=50, minpad=0.8)
+    dec.set_axislabel('Declination [J2000]', fontsize=50, minpad=0.8)
 
     # Tick sizes and frequencies
     ra.set_ticklabel(size=15)
