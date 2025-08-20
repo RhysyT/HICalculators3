@@ -57,6 +57,7 @@ def parse_ra(ra_text):
         ang = Angle(ra_text, unit=u.hourangle)
         return Longitude(ang.to(u.deg))
     except:
+        st.write('Invalid RA !')
         return 'Invalid coordinate'
     # *** ADD A FAILSAFE HERE !!! ***
     # Probably better to add a flag in the except loop, so that fetch will only execute if the flag is good
