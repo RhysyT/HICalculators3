@@ -42,7 +42,7 @@ st.set_page_config(page_title="HIPS2FITS Viewer", layout="wide")
 
 st.title("HIPS2FITS Don't Lie")
 st.write('### Retrieve and preview astronomical survey data using the HIP2FITS service')
-st.write('Here I will add more of a description of things.') 
+st.write('Shows images from a variety of astronomical data sets at a specified field of view and resolution. Uses the astroquery HIPS2FITS service. Yes, you can do this on the HIP2FITS website directly, but this one lets you use different units and has drop-down menus and is just generally friendlier.') 
 
 
 # 1) Functions called by the GUI modules below
@@ -294,11 +294,33 @@ if fetch == True and safetoproceed == True:
         st.session_state["last_preview_png"] = 'matplot' if show_axes else 'image'
         # DON'T DRAW THE IMAGE HERE - only at the end when we know if needs to be redrawn or not
 
-        # Downloads
-        png_buf = to_png_bytes_from_array(colour_img)
+        ## Downloads
+        #png_buf = to_png_bytes_from_array(colour_img)
+        #st.download_button(
+        #    label="Download PNG",
+        #    data=png_buf,
+        #    file_name=f"{name_tag}_{survey_name.replace(' ', '')}_color.png",
+        #    mime="image/png",
+        #)
+
+        if show_axes:
+            fig = plt.figure(figsize=(7, 7))
+            ax = plt.subplot(111, projection=wcs_for_axes)
+            ax.imshow(colour_img, origin="lower")
+            ax.set_xlabel("RA"); ax.set_ylabel("Dec")
+            buf = io.BytesIO()
+            fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
+            buf.seek(0)
+            png_bytes = buf.getvalue()
+            st.session_state["preview_png_bytes"] = png_bytes
+        else:
+            png_buf = to_png_bytes_from_array(colour_img)     # also sets session_state["preview_png_bytes"]
+            png_bytes = png_buf.getvalue()
+
+        # DOWNLOAD BUTTON (USE THE SAME BYTES WE JUST SAVED)
         st.download_button(
             label="Download PNG",
-            data=png_buf,
+            data=png_bytes,
             file_name=f"{name_tag}_{survey_name.replace(' ', '')}_color.png",
             mime="image/png",
         )
