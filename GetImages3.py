@@ -42,6 +42,7 @@ st.set_page_config(page_title="HIPS2FITS Viewer", layout="wide")
 
 st.title("HIPS2FITS Don't Lie")
 st.write('### Retrieve and preview astronomical survey data using the HIP2FITS service')
+st.write('Here I will add more of a description of things.') 
 
 
 # 1) Functions called by the GUI modules below
@@ -54,8 +55,10 @@ def parse_ra(ra_text):
     except Exception:
         # Sexagesimal path (assume hourangle)
         ang = Angle(ra_text, unit=u.hourangle)
+        
         return Longitude(ang.to(u.deg))
     # *** ADD A FAILSAFE HERE !!! ***
+    # Probably better to add a flag in the except loop, so that fetch will only execute if the flag is good
 
 # As above but for declination
 def parse_dec(dec_text):
@@ -63,6 +66,7 @@ def parse_dec(dec_text):
         return Latitude(float(dec_text) * u.deg)
     except Exception:
         ang = Angle(dec_text, unit=u.deg)
+        
         return Latitude(ang)
 
 # Convert input field of view to degrees - if in degrees, it doesn't do anything so no changes are made
@@ -71,12 +75,14 @@ def fov_to_deg(value, unit_label):
         return (value * u.arcsec).to(u.deg).value
     if unit_label == "arcmin":
         return (value * u.arcmin).to(u.deg).value
+        
     return float(value)  # degrees
 
 # As above but for the pixel scale
 def pixscale_to_deg(value, unit_label):
     if unit_label == "arcsec / pixel":
         return (value * u.arcsec).to(u.deg).value
+        
     return (value * u.arcmin).to(u.deg).value
 
 # Construct a simple TAN WCS matching the requested center, size, and pixel grid.
@@ -90,6 +96,7 @@ def build_wcs(ra_deg, dec_deg, width, height, fov_deg):
     w.wcs.cdelt = numpy.array([-cdelt, cdelt])
     w.wcs.crval = [ra_deg, dec_deg]
     w.wcs.ctype = ["RA---TAN", "DEC--TAN"]
+    
     return w
 
 # Convert a normal array of bytes into a PNG image 
@@ -105,6 +112,7 @@ def to_png_bytes_from_array(img_array):
     buf.seek(0)
     # Save the image data to the permanent array
     st.session_state["preview_png_bytes"] = buf.getvalue()
+    
     return buf
 
 # Show the image either as a plain image (st.image) or with WCS axes (matplotlib WCSAxes).
@@ -120,9 +128,7 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
         # Save the image and its caption to session_state parameters
         st.session_state["preview_png_bytes"] = buf.getvalue()
         st.session_state["preview_caption"] = caption
-        #st.session_state["preview_drawn_now"] = True
-        
-        # fig.savefig(buf, format="png", dpi=150, bbox_inches="tight")
+
         return None
 
     # More complex case where user does want the axes
@@ -139,7 +145,6 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     buf.seek(0)
     st.session_state["preview_png_bytes"] = buf.getvalue()
     st.session_state["preview_caption"] = caption
-    #st.session_state["preview_drawn_now"] = True
     
     return fig
 
@@ -210,7 +215,7 @@ with band_col:
 
 with format_col:
     # For color we’ll fetch JPG/PNG; for single band we default to FITS for science download.
-    out_format = st.selectbox("Download format", ["PNG", "FITS"], index=0 if mode == "Color composite" else 1, help="Format for the downloaded image. A preview image will be shown below, regardless of the format selected")
+    out_format = st.selectbox("Download format", ["PNG", "FITS"], index=0 if mode == "Color composite" else 1, help="Format for the downloaded image. A preview image will be shown below, regardless of the format selected. FITS downloads only available for single-band images")
 
 # Row 4: Comment
 st.write('After the image is retrieved, scroll to the bottom for download options.')
@@ -223,15 +228,6 @@ with final_col:
 st.markdown("---")
 
 
-# EDITS NEEDED
-# We want to :
-# -- If no image created, draw a new one on Fetch
-# -- If an image created and none previously, draw it on Fetch
-# -- If an image created and something previously, replace it on Fetch
-# Would it help to draw it at the end ?
-# If we did that, it would draw whatever existed in the stored parameter and this would run every time we update any part of the GUI.
-# If the stored parameter was nothing, then nothing would be draw. But ONLY the Fetch button itself generates image data, so updating
-# the other GUI buttons wouldn't change anything. So this should work !
 
 # Main button : fetch the image !
 if fetch:
@@ -257,8 +253,8 @@ if fetch:
         request_format = "fits" if out_format == "FITS" else "fits"  # always retrieve FITS for single-band
 
     # Query HIPS2FITS
-    # Note: Following user's base script, we request TAN projection and full-range cut,
-    # and flip the color image vertically for correct display orientation.
+    # Note: Following user's base script, we request TAN projection and full-range cut, and flip the color 
+    # image vertically for correct display orientation.
     result = hips2fits.query(
         hips=hips_id,
         width=width,
@@ -285,7 +281,6 @@ if fetch:
         # Update the image preview flag
         st.session_state["last_preview_png"] = 'matplot' if show_axes else 'image'
         # DON'T DRAW THE IMAGE HERE - only at the end when we know if needs to be redrawn or not
-        #render_with_optional_wcs_axes(colour_img, wcs_for_axes, show_axes, caption=caption)
 
         # Downloads
         png_buf = to_png_bytes_from_array(colour_img)
@@ -326,7 +321,6 @@ if fetch:
             ax.set_xlabel("RA")
             ax.set_ylabel("Dec")
             # DON'T DRAW THE IMAGE HERE, only at the end !!!
-            #st.pyplot(fig, clear_figure=True)            # The image parameter itself
             st.session_state["last_preview_png"] = 'matplot'  # Sets that an image has now been shown
         # Otherwise, don't show the axes
         else:
@@ -364,16 +358,13 @@ if fetch:
             mime="image/png",
         )
 
-# Draw the image preview only at the end. This makes it easy to preseve the existing image, if there is one
-# Only draw the image if there is one
-# Something weird is going on here. The last_preview parameter is not updated even if fetch is called. If it's forced, the image is
-# shown, but alterign the GUI STILL causes an automatic update. That might be because we have to also preseve the other parameters
-# e.g. colour_img, caption, stretched. But we never see the last_preview updated, so we should fix that first !
-#st.session_state["last_preview_png"] = 'image'
-
-if (st.session_state["preview_png_bytes"] is not None):# and (not st.session_state["preview_drawn_now"]):
+# Draw the image preview only here at the end, rather than as the code goes along. This makes it easy to preseve the existing
+# image, if there is one 
+# If there's an image in the buffer, draw that one
+if (st.session_state["preview_png_bytes"] is not None):
     st.image(st.session_state["preview_png_bytes"], caption=st.session_state["preview_caption"], use_container_width=True)
 
+# If there's no existing image, draw a new one
 if st.session_state["last_preview_png"] is None:
     # Now there are four possibilities and different ways to draw the image. Firstly the two cases of colour composites :
     if st.session_state["last_preview_png"] == 'image':
