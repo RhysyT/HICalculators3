@@ -55,8 +55,9 @@ def parse_ra(ra_text):
     except Exception:
         # Sexagesimal path (assume hourangle)
         ang = Angle(ra_text, unit=u.hourangle)
-        
         return Longitude(ang.to(u.deg))
+    except:
+        return 'Invalid coordinate'
     # *** ADD A FAILSAFE HERE !!! ***
     # Probably better to add a flag in the except loop, so that fetch will only execute if the flag is good
 
