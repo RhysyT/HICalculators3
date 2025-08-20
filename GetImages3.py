@@ -334,9 +334,7 @@ if fetch == True and safetoproceed == True:
             fig = plt.figure(figsize=(7, 7))
             ax = plt.subplot(111, projection=wcs_for_axes)
             
-
             ax.tick_params(axis='both', which='major', direction='out', length=9,  width=1.4)
-            ax.tick_params(axis='both', which='minor', direction='out', length=5,  width=1.1)
 
             # Slightly easier way of dealing with the axes, by name instead of number
             ra  = ax.coords[0]
