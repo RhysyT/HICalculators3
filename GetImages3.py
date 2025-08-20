@@ -138,8 +138,8 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     fig = plt.figure(figsize=(7, 7))
     ax = plt.subplot(111, projection=wcs_obj)
     ax.imshow(img_array, origin="lower")
-    ax.set_xlabel("RA")
-    ax.set_ylabel("Dec")
+    ax.set_xlabel("Right Ascension [J2000]")
+    ax.set_ylabel("Declination [J2000]")
     st.pyplot(fig, clear_figure=True)                # The preview image itself
     st.session_state["last_preview_png"] = 'matplot'      # Sets that a preview image has now been shown
 
@@ -223,7 +223,7 @@ with format_col:
 show_axes = st.checkbox("Show WCS axes", value=False, help="Shows WCS axes in the preview image. As with other buttons, the image needs to be retrieved again to update the display")
 
 # Row 5: Comment
-st.write('After the image is retrieved, scroll to the bottom for download options.')
+st.write('After the image is retrieved, scroll to the bottom for download options. Note that the download buttons do not save the images - use the right-click download option instead if you need to preserve the axes.')
 
 # Row 5 : Run the script !
 final_col, _, _, _ = st.columns([1, 1, 1, 1])
@@ -398,19 +398,20 @@ if fetch == True and safetoproceed == True:
 if (st.session_state["preview_png_bytes"] is not None):
     st.image(st.session_state["preview_png_bytes"], caption=st.session_state["preview_caption"], use_container_width=True)
 
+# DEPRECATED
 # If there's no existing image, draw a new one
-if st.session_state["last_preview_png"] is None:
-    # Now there are four possibilities and different ways to draw the image. Firstly the two cases of colour composites :
-    if st.session_state["last_preview_png"] == 'image':
-        # 1,2) Colour composite with and without axes. Both cases handled by the render_ subroutine. All input parameters
-        # have been set above in "fetch".
-        if mode == "Color composite":
-            render_with_optional_wcs_axes(colour_img, wcs_for_axes, show_axes, caption=caption)
-
-    # Next the cases of a greyscale preview of a FITS file.
-    # 3) Greyscale, no axes
-    if st.session_state["last_preview_png"] == 'matplot' and show_axes == False:
-        st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_container_width=True, clamp=True)
-    # 4) Greyscale, show axes
-    if st.session_state["last_preview_png"] == 'matplot' and show_axes == True:     
-        st.pyplot(fig, clear_figure=True)
+#if st.session_state["last_preview_png"] is None:
+#    # Now there are four possibilities and different ways to draw the image. Firstly the two cases of colour composites :
+#    if st.session_state["last_preview_png"] == 'image':
+#        # 1,2) Colour composite with and without axes. Both cases handled by the render_ subroutine. All input parameters
+#        # have been set above in "fetch".
+#        if mode == "Color composite":
+#            render_with_optional_wcs_axes(colour_img, wcs_for_axes, show_axes, caption=caption)
+#
+#    # Next the cases of a greyscale preview of a FITS file.
+#    # 3) Greyscale, no axes
+#    if st.session_state["last_preview_png"] == 'matplot' and show_axes == False:
+#        st.image(stretched, caption=f"{survey_name}  —  {band_choice}  —  FITS preview", use_container_width=True, clamp=True)
+#    # 4) Greyscale, show axes
+#    if st.session_state["last_preview_png"] == 'matplot' and show_axes == True:     
+#        st.pyplot(fig, clear_figure=True)
