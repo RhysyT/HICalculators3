@@ -151,12 +151,12 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     ra  = ax.coords[0]
     dec = ax.coords[1]
 
-    ra.set_axislabel('RA',  fontsize=14, minpad=0.8)
-    dec.set_axislabel('Dec', fontsize=14, minpad=0.8)
+    ra.set_axislabel('RA',  fontsize=25, minpad=0.8)
+    dec.set_axislabel('Dec', fontsize=25, minpad=0.8)
 
     # Tick sizes and frequencies
-    ra.set_ticklabel(size=12)
-    dec.set_ticklabel(size=12)
+    ra.set_ticklabel(size=15)
+    dec.set_ticklabel(size=15)
     ra.set_minor_frequency(5)
     dec.set_minor_frequency(5)
 
