@@ -6,12 +6,19 @@ import math
 import numpy
 from PIL import Image
 import streamlit as st
+import matplotlib
 import matplotlib.pyplot as plt
 import astropy.units as u
 from astropy.coordinates import SkyCoord, Angle, Longitude, Latitude
 from astropy.wcs import WCS
 from astropy.io import fits as pyfits
 from astroquery.hips2fits import hips2fits
+
+# Matplotlib configuations to use a nicer font for the axes
+matplotlib.rcParams['font.family'] = 'serif'                     # FALLBACK FAMILY
+matplotlib.rcParams['font.serif']  = ['Times New Roman', 'Times', 'DejaVu Serif']  # TRY TNR FIRST
+matplotlib.rcParams['mathtext.fontset'] = 'dejavuserif'          # MATH TEXT LOOKS OK WITH SERIF
+
 
 # STYLE
 # Remove the menu button
@@ -137,9 +144,29 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     # More complex case where user does want the axes
     fig = plt.figure(figsize=(7, 7))
     ax = plt.subplot(111, projection=wcs_obj)
+    ax.tick_params(axis='both', which='major', direction='in', length=9,  width=1.4)
+    ax.tick_params(axis='both', which='minor', direction='in', length=5,  width=1.1)
+
+    # Slightly easier way of dealing with the axes, by name instead of number
+    ra  = ax.coords[0]
+    dec = ax.coords[1]
+
+    ra.set_axislabel('RA',  fontsize=14, minpad=0.8)
+    dec.set_axislabel('Dec', fontsize=14, minpad=0.8)
+
+    # Tick sizes and frequencies
+    ra.set_ticklabel(size=12)
+    dec.set_ticklabel(size=12)
+    ra.set_minor_frequency(5)
+    dec.set_minor_frequency(5)
+
+    # 5) FORMATTING FOR SEXAGESIMAL TICKS
+    ra.set_major_formatter('hh:mm:ss')
+    dec.set_major_formatter('dd:mm:ss')
+
     ax.imshow(img_array, origin="lower")
-    ax.set_xlabel("Right Ascension [J2000]")
-    ax.set_ylabel("Declination [J2000]")
+    #ax.set_xlabel("Right Ascension [J2000]")
+    #ax.set_ylabel("Declination [J2000]")
     st.pyplot(fig, clear_figure=True)                # The preview image itself
     st.session_state["last_preview_png"] = 'matplot'      # Sets that a preview image has now been shown
 
