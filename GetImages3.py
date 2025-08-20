@@ -344,7 +344,7 @@ if fetch == True and safetoproceed == True:
             dec.set_axislabel('Declination [J2000]', fontsize=15, minpad=0.8)
 
             # Tick sizes and frequencies
-            ra.set_ticklabel(size=7)
+            ra.set_ticklabel(size=17)
             dec.set_ticklabel(size=7)
             ra.set_minor_frequency(5)
             dec.set_minor_frequency(5)
