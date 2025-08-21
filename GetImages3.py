@@ -287,7 +287,7 @@ st.markdown("---")
 
 # Check if the coordinates are safe to proceed
 safetoproceed = False
-if parse_ra(coord_ra) != 'Invalid RA' and parse_dec(dec_text) != 'Invalid Dec':
+if parse_ra(st.session_state['coord_ra']) != 'Invalid RA' and parse_dec(st.session_state['coord_dec']) != 'Invalid Dec':
     safetoproceed = True
 
 if fetch == True and safetoproceed == False:
