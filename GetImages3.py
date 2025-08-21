@@ -298,7 +298,7 @@ with format_col:
 # Row 4 : Window dressing
 gamma_col, axes_col, _, _ = st.columns([1, 1, 1, 1])
 with gamma_col:
-    gamma = st.slider("Preview gamma",min_value=0.2, max_value=3.0, value=1.0, step=0.05, help="1.0 is the survey default. Lower values darkern, higher values brighten")
+    gamma = st.slider("Preview gamma",min_value=0.2, max_value=3.0, value=1.0, step=0.05, help="Gamma correction for the PNG images (does not affect FITS downloads). 1.0 is the survey default. Lower values darkern, higher values brighten")
 
 with axes_col:
     st.markdown("<br>", unsafe_allow_html=True)     # Extra space for vertical alignment
