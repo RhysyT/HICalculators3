@@ -202,10 +202,10 @@ with c6:
 with c7:
     name_tag = st.text_input("Name resolver / download file name", "Target", help="Optional, but useful for specifying the name of the file ahead of time for downloads")
 with c8:
-    #st.write("")    # Empty space above the button to ensure vertical alignment with the text boxes
-    #st.write("")
+    # Add an empty line to ensure vertical alignment of the button with the text boxes. We could also do st.write(""), but this doesn't
+    # add exactly the right amount of space
     st.markdown("<br>", unsafe_allow_html=True) 
-    resolve = st.button("Resolve coordinates", help='Attempts to find the coordinates of the named object (equatorial only, J2000)')
+    resolve = st.button("Resolve coordinates", help='Attempts to find the coordinates of the named object (equatorial only, J2000)', use_container_width=True)
 
 # Experimental name resolver
 if resolve == True:
