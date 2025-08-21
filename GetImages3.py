@@ -369,7 +369,7 @@ if fetch == True and safetoproceed == True:
     if mode == "Color composite":
         # Wesult is an RGB image array; flip vertically for non-matplotlib display
         colour_img = numpy.flip(result, axis=0)
-        colour_img_gamma = apply_gamma_rgb_uint8(colour_img, gamma)
+        colour_img_gamma = apply_gamma_rgb_uint8(result, gamma)
         # But also create an unflipped version for use with matplotlib, which flips is anyway for some silly reason
         #colour_img_axgamma = apply_gamma_rgb_uint8(result, gamma)
         
