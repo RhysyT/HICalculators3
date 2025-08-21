@@ -297,8 +297,8 @@ if fetch == True and safetoproceed == False:
 if fetch == True and safetoproceed == True:
     st.write('Attempting image retrieval...')
     # Parse coordinates
-    ra = parse_ra(coord_ra)
-    dec = parse_dec(coord_dec)
+    ra = parse_ra(st.session_state['coord_ra'])
+    dec = parse_dec(st.session_state['coord_dec'])
 
     # Derive sizes
     fov_deg = fov_to_deg(fov_value, fov_unit)
