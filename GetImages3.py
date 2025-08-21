@@ -367,11 +367,11 @@ if fetch == True and safetoproceed == True:
     wcs_for_axes = build_wcs(ra.to_value(u.deg), dec.to_value(u.deg), width, height, fov_deg)
 
     if mode == "Color composite":
-        # Wesult is an RGB image array; flip vertically for non-matplotlib display
+        # Wesult is an RGB image array; flip vertically for non-matplotlib (no axes) display
         colour_img = numpy.flip(result, axis=0)
         colour_img_gamma = apply_gamma_rgb_uint8(result, gamma)
-        # But also create an unflipped version for use with matplotlib, which flips is anyway for some silly reason
-        #colour_img_axgamma = apply_gamma_rgb_uint8(result, gamma)
+        # Also need a flipped version for matplotlib
+        colour_img_gamma_axes = numpy.flip(colour_img_gamma, axis=0)
         
         caption = f"{survey_name}  —  color  —  {width} × {height} px  —  FOV {fov_value} {fov_unit}"
         # Save the caption to the permament array
@@ -412,7 +412,7 @@ if fetch == True and safetoproceed == True:
             ra.set_major_formatter('hh:mm:ss')
             dec.set_major_formatter('dd:mm:ss')
 
-            ax.imshow(colour_img_gamma, origin="lower")
+            ax.imshow(colour_img_gamma_axes, origin="lower")
             
             #ax.set_xlabel("RA"); ax.set_ylabel("Dec")
             buf = io.BytesIO()
