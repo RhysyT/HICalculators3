@@ -222,7 +222,7 @@ with c5:
 with c6:
     pix_unit = st.selectbox("Pixel scale units", ["arcsec / pixel", "arcmin / pixel"], index=0)
 with c7:
-    name_tag = st.text_input("Name resolver / download file name", "Target", help="Optional, but useful for specifying the name of the file ahead of time for downloads")
+    name_tag = st.text_input("Name resolver / download file name", "Target", help="Enter the name of an object and press the adjacent 'Resolve coordinates' button to try and automatically update the RA and Dec. Also sets the prefix in the file name when downloading images")
 with c8:
     # Add an empty line to ensure vertical alignment of the button with the text boxes. We could also do st.write(""), but this doesn't
     # add exactly the right amount of space
