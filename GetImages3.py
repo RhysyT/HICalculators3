@@ -217,7 +217,7 @@ with c8:
     resolve = st.button("Resolve coordinates", help='Attempts to find the coordinates of the named object (equatorial only, J2000)', use_container_width=True)
 
 # Experimental name resolver
-if resolve == True:
+if resolve:
     try:
         coords = SkyCoord.from_name(name_tag)
         #st.write(coords.ra.to_string(unit=u.hour, sep=':'), coords.dec.to_string(unit=u.deg, sep=':'))
