@@ -399,7 +399,8 @@ if fetch == True and safetoproceed == True:
             ax = plt.subplot(111, projection=wcs_for_axes)
 
             # Optionally, show a subtle grid
-            ax.grid(color='0.5', alpha=0.5, linewidth=0.6, linestyle=':')
+            if show_grid == True:
+                ax.grid(color='0.5', alpha=0.5, linewidth=0.6, linestyle=':')
             
             ax.tick_params(axis='both', which='major', direction='out', length=7,  width=1.4)
 
