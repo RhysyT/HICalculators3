@@ -224,7 +224,7 @@ if resolve:
         st.session_state['coord_ra_val']  = coords.ra.to_string(unit=u.hour, sep=':')
         st.session_state['coord_dec_val'] = coords.dec.to_string(unit=u.deg, sep=':')
         # Force GUI update
-        #st.rerun()
+        st.rerun()
     except:
         pass
 
