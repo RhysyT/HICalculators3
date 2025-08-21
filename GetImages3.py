@@ -214,17 +214,17 @@ with c8:
     # Add an empty line to ensure vertical alignment of the button with the text boxes. We could also do st.write(""), but this doesn't
     # add exactly the right amount of space
     st.markdown("<br>", unsafe_allow_html=True) 
-    resolve = st.button("Resolve coordinates", help='Attempts to find the coordinates of the named object (equatorial only, J2000)', use_container_width=True)
+    resolve = st.button("Resolve coordinates", help='Attempts to find the coordinates of the named object (equatorial only, J2000)', use_container_width=True, on_click=update_coords)
 
 # Experimental name resolver
-if resolve:
+def update_coords():
     try:
         coords = SkyCoord.from_name(name_tag)
         #st.write(coords.ra.to_string(unit=u.hour, sep=':'), coords.dec.to_string(unit=u.deg, sep=':'))
         st.session_state.coord_ra_val  = coords.ra.to_string(unit=u.hour, sep=':')
         st.session_state.coord_dec_val = coords.dec.to_string(unit=u.deg, sep=':')
         # Force GUI update
-        st.rerun()
+        #st.rerun()
     except:
         pass
 
