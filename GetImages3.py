@@ -188,9 +188,12 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     ra.set_minor_frequency(5)
     dec.set_minor_frequency(5)
 
-    # 5) FORMATTING FOR SEXAGESIMAL TICKS
+    # Sexigesimal tick formatting
     ra.set_major_formatter('hh:mm:ss')
     dec.set_major_formatter('dd:mm:ss')
+
+    # Show a grid
+    ax.grid(color='0.5', alpha=0.35, linewidth=0.6, linestyle=':')
 
     ax.imshow(img_array, origin="lower")
     #ax.set_xlabel("Right Ascension [J2000]")
