@@ -443,6 +443,7 @@ if fetch == True and safetoproceed == True:
         # Simple display stretch: percentile clip to 1..99
         lo, hi = numpy.nanpercentile(data, [1.0, 99.0])
         stretched = numpy.clip((data - lo) / (hi - lo + 1e-12), 0.0, 1.0)
+        stretched_gamma = apply_gamma_01(stretched, gamma)
 
         # Use grayscale preview with optional WCS axes
         fig = None
@@ -455,7 +456,7 @@ if fetch == True and safetoproceed == True:
             except Exception:
                 wcs_hdr = wcs_for_axes
             ax = plt.subplot(111, projection=wcs_hdr)
-            im = ax.imshow(stretched, origin="lower", cmap="gray")
+            im = ax.imshow(stretched, origin="lower", cmap="gray", norm=PowerNorm(gamma=gamma))
             ax.set_xlabel("RA")
             ax.set_ylabel("Dec")
             # DON'T DRAW THE IMAGE HERE, only at the end !!!
@@ -487,7 +488,7 @@ if fetch == True and safetoproceed == True:
 
         # Optional PNG export for quicklook
         # Convert stretched grayscale to 8-bit
-        png8 = (stretched * 255.0).astype(numpy.uint8)
+        png8 = (stretched_gamma * 255.0).astype(numpy.uint8)
         png_buf = to_png_bytes_from_array(png8)
         st.download_button(
             label="Download PNG",
