@@ -330,7 +330,7 @@ if fetch == True and safetoproceed == False:
 
 # Main button : fetch the image !
 if fetch == True and safetoproceed == True:
-    st.write('Attempting image retrieval...')
+    st.write('Attempting image retrieval... _if I HIPS, I FITS..._')
     # Parse coordinates
     ra = parse_ra(coord_ra)
     dec = parse_dec(coord_dec)
