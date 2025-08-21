@@ -36,7 +36,7 @@ st.write('<style>div.block-container{padding-bottom:0rem;}</style>', unsafe_allo
 # Setting them as a session_state parameter means we can easily update the GUI values from the name resolver
 if 'coord_ra_val' not in st.session_state:
     st.session_state['coord_ra_val'] = "191.1332558422000"
-if 'coord_dec' not in st.session_state:
+if 'coord_dec_val' not in st.session_state:
     st.session_state['coord_dec_val'] = "11:11:25.74"
 
 
