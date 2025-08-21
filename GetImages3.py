@@ -276,7 +276,8 @@ with format_col:
     # For color we’ll fetch JPG/PNG; for single band we default to FITS for science download.
     out_format = st.selectbox("Download format", ["PNG", "FITS"], index=0 if mode == "Color composite" else 1, help="Format for the downloaded image. A preview image will be shown below, regardless of the format selected. FITS downloads only available for single-band images")
 
-# Row 4 : toggle axes
+# Row 4 : Window dressing
+gamma = st.slider("Preview gamma",min_value=0.2, max_value=3.0, value=1.0, step=0.05, help="1.0 is linear. < 1 brightens shadows; > 1 darkens.")
 show_axes = st.checkbox("Show WCS axes", value=False, help="Shows WCS axes in the preview image. As with other buttons, the image needs to be retrieved again to update the display")
 
 # Row 5: Comment
