@@ -194,13 +194,23 @@ with c4:
     fov_unit = st.selectbox("FOV units", ["arcsec", "arcmin", "deg"], index=1)
 
 # Row 2: Pixel scale and target name
-c5, c6, c7 = st.columns([1, 1, 2])
+c5, c6, c7, c8 = st.columns([1, 1, 1, 1])
 with c5:
     pix_value = st.number_input("Pixel scale value", min_value=0.001, value=1.0, step=0.1, format="%.3f", help="Pixel scale in the specified units. May break if too far outside the survey's native resolution")
 with c6:
     pix_unit = st.selectbox("Pixel scale units", ["arcsec / pixel", "arcmin / pixel"], index=0)
 with c7:
     name_tag = st.text_input("Name resolver / download file name", "Target", help="Optional, but useful for specifying the name of the file ahead of time for downloads")
+with c8:
+    resolve = st.button("Resolve coordinates")
+
+# Experimental name resolver
+if resolve == True:
+    try:
+        coords = SkyCoord.from_name(name_tag)
+        st.write(coords)
+    except:
+        pass
 
 # Row 3: Survey and band selection
 # Keep to DESI, SDSS, GALEX as requested — offer color composites or individual bands.
