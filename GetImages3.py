@@ -202,7 +202,8 @@ with c6:
 with c7:
     name_tag = st.text_input("Name resolver / download file name", "Target", help="Optional, but useful for specifying the name of the file ahead of time for downloads")
 with c8:
-    resolve = st.button("Resolve coordinates", "Stuff", help='Attempts to find the coordinates of the named object (equatorial only, J2000)')
+    st.write("")    # Empty space above the button to ensure vertical alignment with the text boxes
+    resolve = st.button("Resolve coordinates", help='Attempts to find the coordinates of the named object (equatorial only, J2000)')
 
 # Experimental name resolver
 if resolve == True:
