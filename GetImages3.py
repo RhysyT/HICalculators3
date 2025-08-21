@@ -368,10 +368,10 @@ if fetch == True and safetoproceed == True:
 
     if mode == "Color composite":
         # Wesult is an RGB image array; flip vertically for non-matplotlib display
-        colour_img_noax = numpy.flip(result, axis=0)
-        colour_img_noaxgamma = apply_gamma_rgb_uint8(colour_img_noax, gamma)
+        colour_img = numpy.flip(result, axis=0)
+        colour_img_gamma = apply_gamma_rgb_uint8(colour_img, gamma)
         # But also create an unflipped version for use with matplotlib, which flips is anyway for some silly reason
-        colour_img_axgamma = apply_gamma_rgb_uint8(result, gamma)
+        #colour_img_axgamma = apply_gamma_rgb_uint8(result, gamma)
         
         caption = f"{survey_name}  —  color  —  {width} × {height} px  —  FOV {fov_value} {fov_unit}"
         # Save the caption to the permament array
@@ -412,7 +412,7 @@ if fetch == True and safetoproceed == True:
             ra.set_major_formatter('hh:mm:ss')
             dec.set_major_formatter('dd:mm:ss')
 
-            ax.imshow(colour_img_axgamma, origin="lower")
+            ax.imshow(colour_img_gamma, origin="lower")
             
             #ax.set_xlabel("RA"); ax.set_ylabel("Dec")
             buf = io.BytesIO()
@@ -421,7 +421,7 @@ if fetch == True and safetoproceed == True:
             png_bytes = buf.getvalue()
             st.session_state["preview_png_bytes"] = png_bytes
         else:
-            png_buf = to_png_bytes_from_array(colour_img_noaxgamma)     # also sets session_state["preview_png_bytes"]
+            png_buf = to_png_bytes_from_array(colour_img_gamma)     # also sets session_state["preview_png_bytes"]
             png_bytes = png_buf.getvalue()
 
         # DOWNLOAD BUTTON (USE THE SAME BYTES WE JUST SAVED)
