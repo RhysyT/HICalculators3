@@ -192,9 +192,6 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     ra.set_major_formatter('hh:mm:ss')
     dec.set_major_formatter('dd:mm:ss')
 
-    # Show a grid
-    ax.grid(color='0.5', alpha=0.35, linewidth=0.6, linestyle=':')
-
     ax.imshow(img_array, origin="lower")
     #ax.set_xlabel("Right Ascension [J2000]")
     #ax.set_ylabel("Declination [J2000]")
@@ -299,13 +296,18 @@ with format_col:
     out_format = st.selectbox("Download format", ["PNG", "FITS"], index=0 if mode == "Color composite" else 1, help="Format for the downloaded image. A preview image will be shown below, regardless of the format selected. FITS downloads only available for single-band images")
 
 # Row 4 : Window dressing
-gamma_col, axes_col, _, _ = st.columns([1, 1, 1, 1])
+gamma_col, axes_col, grid_col = st.columns([1, 1, 1])
 with gamma_col:
     gamma = st.slider("Preview gamma",min_value=0.2, max_value=3.0, value=1.0, step=0.05, help="Gamma correction for the PNG images (does not affect FITS downloads). 1.0 is the survey default. Lower values darkern, higher values brighten")
 
 with axes_col:
     st.markdown("<br>", unsafe_allow_html=True)     # Extra space for vertical alignment
     show_axes = st.checkbox("Show WCS axes", value=False, help="Shows WCS axes in the preview image. As with other buttons, the image needs to be retrieved again to update the display")
+
+with grid_col:
+    st.markdown("<br>", unsafe_allow_html=True)     # Extra space for vertical alignment
+    show_grid = st.checkbox("Show grid", value=False, help="Overlays a subtle grid on the image (only if the axes are also shown)")
+    
 
 # Row 5: Comment
 st.write('After the image is retrieved, scroll to the bottom for download options. Note that the download buttons do not save the images - use the right-click download option instead if you need to preserve the axes.')
@@ -396,7 +398,8 @@ if fetch == True and safetoproceed == True:
             fig = plt.figure(figsize=(7, 7))
             ax = plt.subplot(111, projection=wcs_for_axes)
 
-            ax.grid(color='0.5', alpha=0.35, linewidth=0.6, linestyle=':')
+            # Optionally, show a subtle grid
+            ax.grid(color='0.5', alpha=0.5, linewidth=0.6, linestyle=':')
             
             ax.tick_params(axis='both', which='major', direction='out', length=7,  width=1.4)
 
