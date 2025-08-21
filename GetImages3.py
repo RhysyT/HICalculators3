@@ -282,6 +282,7 @@ with gamma_col:
     gamma = st.slider("Preview gamma",min_value=0.2, max_value=3.0, value=1.0, step=0.05, help="1.0 is the survey default. Lower values darkern, higher values brighten")
 
 with axes_col:
+    st.markdown("<br>", unsafe_allow_html=True)     # Extra space for vertical alignment
     show_axes = st.checkbox("Show WCS axes", value=False, help="Shows WCS axes in the preview image. As with other buttons, the image needs to be retrieved again to update the display")
 
 # Row 5: Comment
