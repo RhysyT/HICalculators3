@@ -395,6 +395,8 @@ if fetch == True and safetoproceed == True:
         if show_axes:
             fig = plt.figure(figsize=(7, 7))
             ax = plt.subplot(111, projection=wcs_for_axes)
+
+            ax.grid(color='0.5', alpha=0.35, linewidth=0.6, linestyle=':')
             
             ax.tick_params(axis='both', which='major', direction='out', length=7,  width=1.4)
 
