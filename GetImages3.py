@@ -20,7 +20,7 @@ matplotlib.rcParams['font.serif']  = ['Times New Roman', 'Times', 'DejaVu Serif'
 matplotlib.rcParams['mathtext.fontset'] = 'dejavuserif'          # MATH TEXT LOOKS OK WITH SERIF
 
 
-# STYLE
+# Streamlit style preferences
 # Remove the menu button
 st.markdown(""" <style>
 #MainMenu {visibility: hidden;}
@@ -30,6 +30,14 @@ footer {visibility: hidden;}
 # Remove vertical whitespace padding
 st.write('<style>div.block-container{padding-top:0rem;}</style>', unsafe_allow_html=True)
 st.write('<style>div.block-container{padding-bottom:0rem;}</style>', unsafe_allow_html=True)
+
+
+# Check if the coordinates are already present in memory, and if not, set them to some defaults (VCC 2000)
+# Setting them as a session_state parameter means we can easily update the GUI values from the name resolver
+if 'coord_ra' not in st.session_state
+    st.session_state['coord_ra'] = "191.1332558422000"
+if 'coord_dec' not in st.session_state
+    st.session_state['coord_dec'] = "11:11:25.74"
 
 
 # Check for a previously retrieved image in the session state. This is used to prevent updates to the GUI from removing the current
@@ -184,10 +192,11 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
 # 2) Set up the GUI
 # Row 1: Input coordinates and FOV
 c1, c2, c3, c4 = st.columns([1, 1, 1, 1])    # ChatGPT preferred 1.2, 1.2 for the first, but this is asymmetrical and weird
+# Coordinate defaults are set to the session_state values
 with c1:
-    ra_text = st.text_input("RA  —  decimal degrees or HH:MM:SS", "191.1332558422000", help="Must be J2000, but fairly liberal. Enter something sensible and astropy will try its best")
+    st.session_state['coord_ra'] = st.text_input("RA  —  decimal degrees or HH:MM:SS", help="Must be J2000, but fairly liberal. Enter something sensible and astropy will try its best")
 with c2:
-    dec_text = st.text_input("Dec  —  decimal degrees or DD:MM:SS", "11:11:25.74", help="Must be J2000, but fairly liberal. Enter something sensible and astropy will try its best")
+    st.session_state['coord_dec'] = st.text_input("Dec  —  decimal degrees or DD:MM:SS", help="Must be J2000, but fairly liberal. Enter something sensible and astropy will try its best")
 with c3:
     fov_value = st.number_input("Field of view value", min_value=0.001, value=3.5, step=0.5, format="%.3f", help="Assumes a simple square field of view")
 with c4:
@@ -211,7 +220,9 @@ with c8:
 if resolve == True:
     try:
         coords = SkyCoord.from_name(name_tag)
-        st.write(coords.ra.to_string(unit=u.hour, sep=':'), coords.dec.to_string(unit=u.deg, sep=':'))
+        #st.write(coords.ra.to_string(unit=u.hour, sep=':'), coords.dec.to_string(unit=u.deg, sep=':'))
+        st.session_state['coord_ra']  = coords.ra.to_string(unit=u.hour, sep=':')
+        st.session_state['coord_dec'] = coords.dec.to_string(unit=u.deg, sep=':')
     except:
         pass
 
@@ -276,7 +287,7 @@ st.markdown("---")
 
 # Check if the coordinates are safe to proceed
 safetoproceed = False
-if parse_ra(ra_text) != 'Invalid RA' and parse_dec(dec_text) != 'Invalid Dec':
+if parse_ra(coord_ra) != 'Invalid RA' and parse_dec(dec_text) != 'Invalid Dec':
     safetoproceed = True
 
 if fetch == True and safetoproceed == False:
@@ -286,8 +297,8 @@ if fetch == True and safetoproceed == False:
 if fetch == True and safetoproceed == True:
     st.write('Attempting image retrieval...')
     # Parse coordinates
-    ra = parse_ra(ra_text)
-    dec = parse_dec(dec_text)
+    ra = parse_ra(coord_ra)
+    dec = parse_dec(coord_dec)
 
     # Derive sizes
     fov_deg = fov_to_deg(fov_value, fov_unit)
