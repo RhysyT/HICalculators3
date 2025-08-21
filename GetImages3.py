@@ -7,6 +7,7 @@ import numpy
 from PIL import Image
 import streamlit as st
 import matplotlib
+from matplotlib.colors import PowerNorm
 import matplotlib.pyplot as plt
 import astropy.units as u
 from astropy.coordinates import SkyCoord, Angle, Longitude, Latitude
@@ -117,6 +118,24 @@ def build_wcs(ra_deg, dec_deg, width, height, fov_deg):
     w.wcs.ctype = ["RA---TAN", "DEC--TAN"]
     
     return w
+
+# Gamma adjustments
+def apply_gamma_01(arr01, gamma):
+    # arr01 in [0,1] float -> apply 1/gamma curve; returns float in [0,1]
+    g = float(gamma)
+    if g <= 0:
+        g = 1.0
+        
+    return numpy.clip(arr01, 0.0, 1.0) ** (1.0 / g)
+
+def apply_gamma_rgb_uint8(rgb_uint8, gamma):
+    # RGB uint8 [0..255] -> gamma corrected uint8
+    arr01 = rgb_uint8.astype(numpy.float32) / 255.0
+    out01 = apply_gamma_01(arr01, gamma)
+    
+    return (out01 * 255.0).round().astype(numpy.uint8)
+
+
 
 # Convert a normal array of bytes into a PNG image 
 def to_png_bytes_from_array(img_array):
@@ -350,6 +369,7 @@ if fetch == True and safetoproceed == True:
     if mode == "Color composite":
         # result is an RGB image array; flip vertically for correct display as in the user's script
         colour_img = numpy.flip(result, axis=0)
+        colour_img_gamma = apply_gamma_rgb_uint8(colour_img, gamma)
         caption = f"{survey_name}  —  color  —  {width} × {height} px  —  FOV {fov_value} {fov_unit}"
         # Save the caption to the permament array
         st.session_state["preview_caption"] = caption
@@ -389,7 +409,7 @@ if fetch == True and safetoproceed == True:
             ra.set_major_formatter('hh:mm:ss')
             dec.set_major_formatter('dd:mm:ss')
 
-            ax.imshow(colour_img, origin="lower")
+            ax.imshow(colour_img_gamma, origin="lower")
             
             #ax.set_xlabel("RA"); ax.set_ylabel("Dec")
             buf = io.BytesIO()
@@ -398,7 +418,7 @@ if fetch == True and safetoproceed == True:
             png_bytes = buf.getvalue()
             st.session_state["preview_png_bytes"] = png_bytes
         else:
-            png_buf = to_png_bytes_from_array(colour_img)     # also sets session_state["preview_png_bytes"]
+            png_buf = to_png_bytes_from_array(colour_img_gamma)     # also sets session_state["preview_png_bytes"]
             png_bytes = png_buf.getvalue()
 
         # DOWNLOAD BUTTON (USE THE SAME BYTES WE JUST SAVED)
