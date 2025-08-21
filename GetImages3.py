@@ -34,9 +34,9 @@ st.write('<style>div.block-container{padding-bottom:0rem;}</style>', unsafe_allo
 
 # Check if the coordinates are already present in memory, and if not, set them to some defaults (VCC 2000)
 # Setting them as a session_state parameter means we can easily update the GUI values from the name resolver
-if 'coord_ra' not in st.session_state
+if 'coord_ra' not in st.session_state:
     st.session_state['coord_ra'] = "191.1332558422000"
-if 'coord_dec' not in st.session_state
+if 'coord_dec' not in st.session_state:
     st.session_state['coord_dec'] = "11:11:25.74"
 
 
