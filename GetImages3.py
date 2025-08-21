@@ -189,6 +189,19 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     return fig
 
 
+# Experimental name resolver
+def update_coords():
+    try:
+        coords = SkyCoord.from_name(name_tag)
+        #st.write(coords.ra.to_string(unit=u.hour, sep=':'), coords.dec.to_string(unit=u.deg, sep=':'))
+        st.session_state.coord_ra_val  = coords.ra.to_string(unit=u.hour, sep=':')
+        st.session_state.coord_dec_val = coords.dec.to_string(unit=u.deg, sep=':')
+        # Force GUI update
+        #st.rerun()
+    except:
+        pass
+        
+
 # 2) Set up the GUI
 # Row 1: Input coordinates and FOV
 c1, c2, c3, c4 = st.columns([1, 1, 1, 1])    # ChatGPT preferred 1.2, 1.2 for the first, but this is asymmetrical and weird
@@ -216,17 +229,7 @@ with c8:
     st.markdown("<br>", unsafe_allow_html=True) 
     resolve = st.button("Resolve coordinates", help='Attempts to find the coordinates of the named object (equatorial only, J2000)', use_container_width=True, on_click=update_coords)
 
-# Experimental name resolver
-def update_coords():
-    try:
-        coords = SkyCoord.from_name(name_tag)
-        #st.write(coords.ra.to_string(unit=u.hour, sep=':'), coords.dec.to_string(unit=u.deg, sep=':'))
-        st.session_state.coord_ra_val  = coords.ra.to_string(unit=u.hour, sep=':')
-        st.session_state.coord_dec_val = coords.dec.to_string(unit=u.deg, sep=':')
-        # Force GUI update
-        #st.rerun()
-    except:
-        pass
+
 
 # Row 3: Survey and band selection
 # Keep to DESI, SDSS, GALEX as requested — offer color composites or individual bands.
