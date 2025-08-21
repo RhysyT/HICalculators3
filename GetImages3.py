@@ -194,9 +194,9 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
 c1, c2, c3, c4 = st.columns([1, 1, 1, 1])    # ChatGPT preferred 1.2, 1.2 for the first, but this is asymmetrical and weird
 # Coordinate defaults are set to the session_state values
 with c1:
-    coord_ra = st.text_input("RA  —  decimal degrees or HH:MM:SS", key='coord_ra_val', help="Must be J2000, but fairly liberal. Enter something sensible and astropy will try its best")
+    coord_ra = st.text_input("RA  —  decimal degrees or HH:MM:SS", key=st.session_state['coord_ra_val'], help="Must be J2000, but fairly liberal. Enter something sensible and astropy will try its best")
 with c2:
-    coord_dec = st.text_input("Dec  —  decimal degrees or DD:MM:SS", key='coord_dec_val', help="Must be J2000, but fairly liberal. Enter something sensible and astropy will try its best")
+    coord_dec = st.text_input("Dec  —  decimal degrees or DD:MM:SS", key=st.session_state['coord_dec_val'], help="Must be J2000, but fairly liberal. Enter something sensible and astropy will try its best")
 with c3:
     fov_value = st.number_input("Field of view value", min_value=0.001, value=3.5, step=0.5, format="%.3f", help="Assumes a simple square field of view")
 with c4:
