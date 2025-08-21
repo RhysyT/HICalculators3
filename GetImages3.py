@@ -211,7 +211,7 @@ with c8:
 if resolve == True:
     try:
         coords = SkyCoord.from_name(name_tag)
-        st.write(coords.ra.to_string(unit=u.hour, sep=':'), coord.dec.to_string(unit=u.deg, sep=':'))
+        st.write(coords.ra.to_string(unit=u.hour, sep=':'), coords.dec.to_string(unit=u.deg, sep=':'))
     except:
         pass
 
