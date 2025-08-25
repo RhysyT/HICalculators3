@@ -338,13 +338,51 @@ with format_col:
 
 
 # Row 4 - print the selected data resolution
-# Simpler survey name dictionary
+# Easiest to use a for loop here rather than a dictionary, this way it's band-independent. Also sets a fallback value in case
+# the HIPS2FITS cannot retrieve the pixel scale
+if 'DESI' in survey_name:
+    hips_id = 'CDS/P/PanSTARRS/DR1/g
+    fallback = 0.262
+if 'SDSS' in survey_name:
+    hips_id = 'CDS/P/SDSS9/g'
+    fallback = 0.396
+if 'GALEX' in survey_name:
+    hips_id = 'CDS/P/GALEXGR6/AIS/NUV'
+    fallback = 1.5
+if 'SDSS' in survey_name:
+    hips_id = 'CDS/P/2MASS/J'
+    fallback = 1.0
+if 'PanSTARS' in survey_name:
+    hips_id = 'CDS/P/PanSTARRS/DR1/g'
+    fallback = 0.257
+if 'HI4PI' in survey_name:
+    hips_id = 'CDS/P/HI4PI/P_HI4PI_NHI'
+    fallback = 972.0
+
+# Get the pixelscale using HIPSFITS. Returns None if not found, in which case use the default
+used_default = False
+pixelscale = hips_scale_arcsec_per_pix(hips_id)
+if pixelscale is None:
+    pixescale = fallback
+    used_default = True
+
+# Print the resolution and its source to the screen
+if 'HI4PI' not in survey_name:
+    if used_default == False:
+        st.write('Native pixel scale :', pixelscale, 'arcsec/pixel according to the data')
+    if used_default == True:
+        st.write('Native pixel scale :', pixelscale, 'arcsec/pixel (default value)')
+if 'HI4PI' in survey_name:
+    if used_default == False:
+        st.write('Native resolution :', pixelscale, 'arcsec/pixel according to the data')
+    if used_default == True:
+        st.write('Native resolution :', pixelscale, 'arcsec/pixel (default value)')
+    
+    
+    
 st.write(survey_name)
-#st.write("SDSS g:", hips_scale_arcsec_per_pix(hips_id), "arcsec/pixel")
-#st.write("GALEX NUV:", hips_scale_arcsec_per_pix("CDS/P/GALEXGR6/AIS/NUV"), "arcsec/pixel")
-#st.write("2MASS J:", hips_scale_arcsec_per_pix("CDS/P/2MASS/J"), "arcsec/pixel")
+#
 #st.write("Pan-STARRS g:", hips_scale_arcsec_per_pix("CDS/P/PanSTARRS/DR1/g"), "arcsec/pixel")
-#st.write("DESI LS DR9 g:", hips_scale_arcsec_per_pix("CDS/P/DESI-Legacy-Surveys/DR9/g"), "arcsec/pixel")
 #st.write("HI4PI NHI:", hips_scale_arcsec_per_pix("CDS/P/HI4PI/P_HI4PI_NHI"), "arcsec/pixel")
 
 
