@@ -340,7 +340,7 @@ with format_col:
 # Row 4 - print the selected data resolution
 # Simpler survey name dictionary
 st.write(SURVEYS[survey_name])
-st.write("SDSS g:", hips_scale_arcsec_per_pix(hips_id), "arcsec/pixel")
+#st.write("SDSS g:", hips_scale_arcsec_per_pix(hips_id), "arcsec/pixel")
 st.write("GALEX NUV:", hips_scale_arcsec_per_pix("CDS/P/GALEXGR6/AIS/NUV"), "arcsec/pixel")
 st.write("2MASS J:", hips_scale_arcsec_per_pix("CDS/P/2MASS/J"), "arcsec/pixel")
 st.write("Pan-STARRS g:", hips_scale_arcsec_per_pix("CDS/P/PanSTARRS/DR1/g"), "arcsec/pixel")
