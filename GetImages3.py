@@ -14,6 +14,7 @@ from astropy.coordinates import SkyCoord, Angle, Longitude, Latitude
 from astropy.wcs import WCS
 from astropy.io import fits as pyfits
 from astroquery.hips2fits import hips2fits
+from astroquery.mocserver import MOCServer
 
 # Matplotlib configuations to use a nicer font for the axes
 matplotlib.rcParams['font.family'] = 'serif'                     # FALLBACK FAMILY
@@ -135,8 +136,6 @@ def apply_gamma_rgb_uint8(rgb_uint8, gamma):
     
     return (out01 * 255.0).round().astype(numpy.uint8)
 
-
-
 # Convert a normal array of bytes into a PNG image 
 def to_png_bytes_from_array(img_array):
     # Expect uint8 RGB array; if float, normalize
@@ -207,8 +206,7 @@ def render_with_optional_wcs_axes(img_array, wcs_obj, show_axes, caption):
     
     return fig
 
-
-# Experimental name resolver
+# Name resolver
 def update_coords():
     try:
         coords = SkyCoord.from_name(name_tag)
@@ -219,7 +217,18 @@ def update_coords():
         #st.rerun()
     except:
         pass
-        
+
+# Retrieve the native data resolution
+def hips_scale_arcsec_per_pix(hips_id):
+    # Ask the MOCServer for this HiPS record and return hips_pixel_scale
+    tbl = MOCServer.query_hips(criteria="ID=%s" % hips_id,
+                               fields=["ID", "hips_pixel_scale"])
+    if len(tbl) == 0 or "hips_pixel_scale" not in tbl.colnames:
+        return None
+    scale_deg = float(tbl["hips_pixel_scale"][0])           # degrees / pixel
+    
+    return (scale_deg * u.deg).to(u.arcsec).value           # arcsec / pixel
+
 
 # 2) Set up the GUI
 # Row 1: Input coordinates and FOV
@@ -327,7 +336,18 @@ with format_col:
     # For color we’ll fetch JPG/PNG; for single band we default to FITS for science download.
     out_format = st.selectbox("Download format", ["PNG", "FITS"], index=0 if mode == "Colour composite" else 1, help="Format for the downloaded image. A preview image will be shown below, regardless of the format selected. FITS downloads only available for single-band images")
 
-# Row 4 : Window dressing
+
+# Row 4 - print the selected data resolution
+#SURVEYS[survey_name]
+st.write("SDSS g:", hips_scale_arcsec_per_pix("CDS/P/SDSS9/g"), "arcsec/pixel")
+st.write("GALEX NUV:", hips_scale_arcsec_per_pix("CDS/P/GALEXGR6/AIS/NUV"), "arcsec/pixel")
+st.write("2MASS J:", hips_scale_arcsec_per_pix("CDS/P/2MASS/J"), "arcsec/pixel")
+st.write("Pan-STARRS g:", hips_scale_arcsec_per_pix("CDS/P/PanSTARRS/DR1/g"), "arcsec/pixel")
+st.write("DESI LS DR9 g:", hips_scale_arcsec_per_pix("CDS/P/DESI-Legacy-Surveys/DR9/g"), "arcsec/pixel")
+st.write("HI4PI NHI:", hips_scale_arcsec_per_pix("CDS/P/HI4PI/P_HI4PI_NHI"), "arcsec/pixel")
+
+
+# Row 5 : Window dressing
 gamma_col, axes_col, grid_col = st.columns([1, 1, 1])
 with gamma_col:
     gamma = st.slider("Preview gamma",min_value=0.2, max_value=3.0, value=1.0, step=0.05, help="Gamma correction for the PNG images (does not affect FITS downloads). 1.0 is the survey default. Lower values darkern, higher values brighten")
@@ -341,10 +361,10 @@ with grid_col:
     show_grid = st.checkbox("Show grid", value=False, help="Overlays a subtle grid on the image (only if the axes are also shown)")
     
 
-# Row 5: Comment
+# Row 6: Comment
 st.write('After the image is retrieved, scroll to the bottom for download options. Note that the download buttons do not save the images - use the right-click download option instead if you need to preserve the axes.')
 
-# Row 5 : Run the script !
+# Row 7 : Run the script !
 final_col, _, _, _ = st.columns([1, 1, 1, 1])
 with final_col:
     fetch = st.button("Retrieve image")
