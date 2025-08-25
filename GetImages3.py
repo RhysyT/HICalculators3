@@ -360,13 +360,13 @@ if 'HI4PI' in survey_name:
     fallback = 972.0
 if 'DSS2' in survey_name:
     hips_id = 'CDS/P/DSS2/blue'
-    fallback = 1.0    # ?
+    fallback = 0.8    # ?
 
 
 # Get the pixelscale using HIPSFITS. Returns None if not found, in which case use the default
 used_default = False
 pixelscale = hips_scale_arcsec_per_pix(hips_id)
-if pixelscale is None:
+if pixelscale == 'None':
     pixescale = fallback
     used_default = True
 
