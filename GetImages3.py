@@ -370,7 +370,7 @@ if pixelscale == 'None':
     used_default = True
 
 # Finally, round to 3 d.p.
-pixelscale = round(pixelscale, 3)
+pixelscale = str(round(float(pixelscale), 3))
 
 # Print the resolution and its source to the screen
 if 'HI4PI' not in survey_name:
