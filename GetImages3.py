@@ -362,10 +362,9 @@ if 'DSS2' in survey_name:
     hips_id = 'CDS/P/DSS2/blue'
     fallback = 0.8    # ?
 
-
 # Get the pixelscale using HIPSFITS. Returns None if not found, in which case use the default
 used_default = False
-pixelscale = hips_scale_arcsec_per_pix(hips_id)
+pixelscale = str(hips_scale_arcsec_per_pix(hips_id))
 if pixelscale == 'None':
     pixescale = fallback
     used_default = True
