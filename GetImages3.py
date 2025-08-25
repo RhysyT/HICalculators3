@@ -287,6 +287,14 @@ SURVEYS = {
             "Blue": "CDS/P/DSS2/blue",
             "Red": "CDS/P/DSS2/red",
         },
+    }, 
+    "2MASS": {
+        "color": "CDS/P/2MASS/color",
+        "bands": {
+            "H": "CDS/P/2MASS/H",
+            "J": "CDS/P/2MASS/J",
+            "K": "CDS/P/2MASS/K",
+        },
     },    
 }
 
@@ -294,7 +302,7 @@ with survey_col:
     survey_name = st.selectbox("Survey", list(SURVEYS.keys()), index=0, help="Specify which survey to use. Not necessarily a full list of every survey supported by HIP2FITS !")
 
 with band_col:
-    mode = st.selectbox("Mode", ["Color composite", "Single band"], index=0, help="Choose whether to have a multi-colour image (e.g. RGB, where available) or a single waveband - the latter can be in FITS format")
+    mode = st.selectbox("Mode", ["Colour composite", "Single band"], index=0, help="Choose whether to have a multi-colour image (e.g. RGB, where available) or a single waveband - the latter can be in FITS format")
     band_choice = None
     if mode == "Single band":
         band_choice = st.selectbox("Band", list(SURVEYS[survey_name]["bands"].keys()), help="If a single waveband was requested, here you can specify it. Survey-dependent.")
