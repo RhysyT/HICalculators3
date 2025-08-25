@@ -101,8 +101,8 @@ def fov_to_deg(value, unit_label):
 
 # As above but for the pixel scale
 def pixscale_to_deg(value, unit_label):
-    if unit_label == "arcsec / pixel":
-        return (value * u.arcsec).to(u.deg).value
+    if unit_label == " / pixel":
+        return (value * u.).to(u.deg).value
         
     return (value * u.arcmin).to(u.deg).value
 
@@ -338,8 +338,8 @@ with format_col:
 
 
 # Row 4 - print the selected data resolution
-#SURVEYS[survey_name]
-st.write("SDSS g:", hips_scale_arcsec_per_pix("CDS/P/SDSS9/g"), "arcsec/pixel")
+hips_id = SURVEYS[survey_name]
+st.write("SDSS g:", hips_scale_arcsec_per_pix(hips_id), "arcsec/pixel")
 st.write("GALEX NUV:", hips_scale_arcsec_per_pix("CDS/P/GALEXGR6/AIS/NUV"), "arcsec/pixel")
 st.write("2MASS J:", hips_scale_arcsec_per_pix("CDS/P/2MASS/J"), "arcsec/pixel")
 st.write("Pan-STARRS g:", hips_scale_arcsec_per_pix("CDS/P/PanSTARRS/DR1/g"), "arcsec/pixel")
