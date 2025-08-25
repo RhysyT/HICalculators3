@@ -366,8 +366,11 @@ if 'DSS2' in survey_name:
 used_default = False
 pixelscale = str(hips_scale_arcsec_per_pix(hips_id))
 if pixelscale == 'None':
-    pixelscale = fallback
+    pixelscale = str(fallback)
     used_default = True
+
+# Finally, round to 3 d.p.
+pixelscale = round(pixelscale, 3)
 
 # Print the resolution and its source to the screen
 if 'HI4PI' not in survey_name:
