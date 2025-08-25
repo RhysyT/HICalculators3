@@ -339,13 +339,13 @@ with format_col:
 
 # Row 4 - print the selected data resolution
 # Simpler survey name dictionary
-st.write(SURVEYS[survey_name])
+#st.write(SURVEYS[survey_name])
 #st.write("SDSS g:", hips_scale_arcsec_per_pix(hips_id), "arcsec/pixel")
-st.write("GALEX NUV:", hips_scale_arcsec_per_pix("CDS/P/GALEXGR6/AIS/NUV"), "arcsec/pixel")
-st.write("2MASS J:", hips_scale_arcsec_per_pix("CDS/P/2MASS/J"), "arcsec/pixel")
-st.write("Pan-STARRS g:", hips_scale_arcsec_per_pix("CDS/P/PanSTARRS/DR1/g"), "arcsec/pixel")
-st.write("DESI LS DR9 g:", hips_scale_arcsec_per_pix("CDS/P/DESI-Legacy-Surveys/DR9/g"), "arcsec/pixel")
-st.write("HI4PI NHI:", hips_scale_arcsec_per_pix("CDS/P/HI4PI/P_HI4PI_NHI"), "arcsec/pixel")
+#st.write("GALEX NUV:", hips_scale_arcsec_per_pix("CDS/P/GALEXGR6/AIS/NUV"), "arcsec/pixel")
+#st.write("2MASS J:", hips_scale_arcsec_per_pix("CDS/P/2MASS/J"), "arcsec/pixel")
+#st.write("Pan-STARRS g:", hips_scale_arcsec_per_pix("CDS/P/PanSTARRS/DR1/g"), "arcsec/pixel")
+#st.write("DESI LS DR9 g:", hips_scale_arcsec_per_pix("CDS/P/DESI-Legacy-Surveys/DR9/g"), "arcsec/pixel")
+#st.write("HI4PI NHI:", hips_scale_arcsec_per_pix("CDS/P/HI4PI/P_HI4PI_NHI"), "arcsec/pixel")
 
 
 # Row 5 : Window dressing
