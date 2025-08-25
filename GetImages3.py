@@ -251,7 +251,7 @@ with c8:
 
 
 # Row 3: Survey and band selection
-# Keep to DESI, SDSS, GALEX as requested — offer color composites or individual bands.
+# Keep to DESI, SDSS, GALEX as requested — offer colour composites or individual bands.
 survey_col, band_col, format_col = st.columns([1, 1, 1])    # ChatGPT preferred some weird asymmetrical four-column format for some reason !
 
 SURVEYS = {
@@ -309,7 +309,7 @@ with band_col:
 
 with format_col:
     # For color we’ll fetch JPG/PNG; for single band we default to FITS for science download.
-    out_format = st.selectbox("Download format", ["PNG", "FITS"], index=0 if mode == "Color composite" else 1, help="Format for the downloaded image. A preview image will be shown below, regardless of the format selected. FITS downloads only available for single-band images")
+    out_format = st.selectbox("Download format", ["PNG", "FITS"], index=0 if mode == "Colour composite" else 1, help="Format for the downloaded image. A preview image will be shown below, regardless of the format selected. FITS downloads only available for single-band images")
 
 # Row 4 : Window dressing
 gamma_col, axes_col, grid_col = st.columns([1, 1, 1])
@@ -358,7 +358,7 @@ if fetch == True and safetoproceed == True:
     height = width  # square output per the guide
 
     # Select HIPS identifier
-    if mode == "Color composite":
+    if mode == "Colour composite":
         hips_id = SURVEYS[survey_name]["color"]
         request_format = "jpg"
     else:
@@ -387,7 +387,7 @@ if fetch == True and safetoproceed == True:
     # Prepare WCS (used for optional axes overlay; for FITS we could also read header WCS)
     wcs_for_axes = build_wcs(ra.to_value(u.deg), dec.to_value(u.deg), width, height, fov_deg)
 
-    if mode == "Color composite":
+    if mode == "Colour composite":
         # Wesult is an RGB image array; flip vertically for non-matplotlib (no axes) display
         colour_img = numpy.flip(result, axis=0)
         colour_img_gamma = apply_gamma_rgb_uint8(result, gamma)
@@ -538,7 +538,7 @@ if (st.session_state["preview_png_bytes"] is not None):
 #    if st.session_state["last_preview_png"] == 'image':
 #        # 1,2) Colour composite with and without axes. Both cases handled by the render_ subroutine. All input parameters
 #        # have been set above in "fetch".
-#        if mode == "Color composite":
+#        if mode == "Colour composite":
 #            render_with_optional_wcs_axes(colour_img, wcs_for_axes, show_axes, caption=caption)
 #
 #    # Next the cases of a greyscale preview of a FITS file.
