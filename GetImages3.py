@@ -101,7 +101,7 @@ def fov_to_deg(value, unit_label):
 
 # As above but for the pixel scale
 def pixscale_to_deg(value, unit_label):
-    if unit_label == " / pixel":
+    if unit_label == "arcsec / pixel":
         return (value * u.).to(u.deg).value
         
     return (value * u.arcmin).to(u.deg).value
