@@ -297,7 +297,9 @@ SURVEYS = {
         },
     },  
     "HI4PI": {
-        "NHI": "CDS/P/HI4PI/NHI",
+        "color": "CDS/P/HI4PI/NHI",
+        "bands": {
+            "NHI": "CDS/P/HI4PI/NHI",
     },    
 }
 
