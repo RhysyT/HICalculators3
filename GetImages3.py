@@ -341,7 +341,7 @@ with format_col:
 # Easiest to use a for loop here rather than a dictionary, this way it's band-independent. Also sets a fallback value in case
 # the HIPS2FITS cannot retrieve the pixel scale
 if 'DESI' in survey_name:
-    hips_id = 'CDS/P/PanSTARRS/DR1/g
+    hips_id = 'CDS/P/PanSTARRS/DR1/g'
     fallback = 0.262
 if 'SDSS' in survey_name:
     hips_id = 'CDS/P/SDSS9/g'
