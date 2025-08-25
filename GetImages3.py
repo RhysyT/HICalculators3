@@ -366,7 +366,7 @@ if 'DSS2' in survey_name:
 used_default = False
 pixelscale = str(hips_scale_arcsec_per_pix(hips_id))
 if pixelscale == 'None':
-    pixescale = fallback
+    pixelscale = fallback
     used_default = True
 
 # Print the resolution and its source to the screen
@@ -381,13 +381,6 @@ if 'HI4PI' in survey_name:
     if used_default == True:
         st.write('Native resolution :', pixelscale, 'arcsec/pixel (default value)')
     
-    
-    
-st.write(survey_name)
-#
-#st.write("Pan-STARRS g:", hips_scale_arcsec_per_pix("CDS/P/PanSTARRS/DR1/g"), "arcsec/pixel")
-#st.write("HI4PI NHI:", hips_scale_arcsec_per_pix("CDS/P/HI4PI/P_HI4PI_NHI"), "arcsec/pixel")
-
 
 # Row 5 : Window dressing
 gamma_col, axes_col, grid_col = st.columns([1, 1, 1])
