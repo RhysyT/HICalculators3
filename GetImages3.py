@@ -301,7 +301,17 @@ SURVEYS = {
         "bands": {
             "NHI": "CDS/P/HI4PI/NHI",
         },
-    },    
+    },   
+    "PanSTARS DR1": {
+        "color": "CDS/P/PanSTARRS/DR1/color-i-r-g",
+        "bands": {
+            "g": "CDS/P/PanSTARRS/DR1/g",
+            "i": "CDS/P/PanSTARRS/DR1/i",
+            "r": "CDS/P/PanSTARRS/DR1/r",
+            "y": "CDS/P/PanSTARRS/DR1/y",
+            "z": "CDS/P/PanSTARRS/DR1/z",
+        },
+    }, 
 }
 
 with survey_col:
