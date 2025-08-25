@@ -280,7 +280,7 @@ SURVEYS = {
             "NUV": "CDS/P/GALEXGR6/AIS/NUV",
         },
     },
-    "DSS2: {
+    "DSS2": {
         "color": "CDS/P/DSS2/color",
         "bands": {
             "NIR": "CDS/P/DSS2/NIR",
