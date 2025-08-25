@@ -341,15 +341,15 @@ with format_col:
 # Easiest to use a for loop here rather than a dictionary, this way it's band-independent. Also sets a fallback value in case
 # the HIPS2FITS cannot retrieve the pixel scale
 if 'DESI' in survey_name:
-    hips_id = 'CDS/P/PanSTARRS/DR1/g'
+    hips_id = 'CDS/P/DESI-Legacy-Surveys/DR10/g'
     fallback = 0.262
-if 'SDSS' in survey_name:
+if 'SDSS DR9' in survey_name:
     hips_id = 'CDS/P/SDSS9/g'
     fallback = 0.396
 if 'GALEX' in survey_name:
     hips_id = 'CDS/P/GALEXGR6/AIS/NUV'
     fallback = 1.5
-if 'SDSS' in survey_name:
+if '2MASS' in survey_name:
     hips_id = 'CDS/P/2MASS/J'
     fallback = 1.0
 if 'PanSTARS' in survey_name:
@@ -358,6 +358,10 @@ if 'PanSTARS' in survey_name:
 if 'HI4PI' in survey_name:
     hips_id = 'CDS/P/HI4PI/P_HI4PI_NHI'
     fallback = 972.0
+if 'DSS2' in survey_name:
+    hips_id = 'CDS/P/DSS2/blue'
+    fallback = 1.0    # ?
+
 
 # Get the pixelscale using HIPSFITS. Returns None if not found, in which case use the default
 used_default = False
