@@ -295,6 +295,9 @@ SURVEYS = {
             "J": "CDS/P/2MASS/J",
             "K": "CDS/P/2MASS/K",
         },
+    },  
+    "HI4PI": {
+        "NHI": "CDS/P/HI4PI/NHI",
     },    
 }
 
