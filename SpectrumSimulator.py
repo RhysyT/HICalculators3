@@ -1,5 +1,5 @@
-# Streamlit HI Spectrum Sandbox (tidied version)
-# Implements requested refinements for UI layout, ranges, smoothing, styling.
+# Streamlit HI Spectrum Sandbox (compact, S/N fix)
+# Implements compact UI rows, capped RMS, ALFALFA-style integrated S/N, and fixes duplicate S/N axis.
 
 import math
 import numpy
@@ -43,27 +43,14 @@ def make_polynomial(v, order, amp_jy):
 
 
 def hanning_smooth(y, width):
+    """Symmetric Hanning of integer half-width; total window = 2*width+1.
+    width = 0 leaves the array unchanged.
+    """
     if width <= 0:
         return y
     window = numpy.hanning(width * 2 + 1)
     window /= window.sum()
     return numpy.convolve(y, window, mode="same")
-
-
-def publication_axes(ax, ylabel_left, ylabel_right, title):
-    ax.set_xlabel("Velocity  [km s$^{-1}$]")
-    ax.set_ylabel(ylabel_left)
-    ax.set_title(title)
-    ax2 = ax.twinx()
-    ax2.set_ylabel(ylabel_right)
-    return ax2
-
-
-def sn_axis_match(ax_left, ax_right, rms_jy):
-    yl = ax_left.get_ylim()
-    if rms_jy <= 0:
-        rms_jy = 1.0
-    ax_right.set_ylim(yl[0] / rms_jy, yl[1] / rms_jy)
 
 
 def set_serif():
@@ -83,6 +70,17 @@ def set_serif():
         "savefig.dpi": 300,
     })
 
+
+def alfalpha_sn(s_int_jykms, width_kms, rms_mjy, dv_kms):
+    """ALFALFA-style integrated S/N (idealised):
+    S/N = (1000 * (S_int / W)) / rms_mJy * sqrt(W / (2 * dv)).
+    """
+    if width_kms <= 0 or dv_kms <= 0 or rms_mjy <= 0:
+        return 0.0
+    term1 = 1000.0 * (s_int_jykms / width_kms) / rms_mjy
+    term2 = math.sqrt(width_kms / (2.0 * dv_kms))
+    return float(term1 * term2)
+
 # -------------------------------
 # UI
 # -------------------------------
@@ -90,14 +88,14 @@ set_serif()
 st.set_page_config(page_title="HI Spectrum Sandbox", layout="wide")
 st.title("HI Spectrum Sandbox — top‑hat + toys")
 
-# Source parameters row
-col1, col2, col3, col4 = st.columns(4)
+# Row 1: Source parameters (compact)
+col1, col2, col3, col4, col5 = st.columns([1.1, 1, 1, 1.2, 1.2])
 with col1:
     mode = st.radio("Specify by", ["Peak flux", "Integrated flux", "HI mass"], index=0)
 with col2:
     width = st.slider("Line width [km s⁻¹]", min_value=10, max_value=1000, value=200, step=5)
 with col3:
-    v0 = st.slider("Line centre velocity v₀ [km s⁻¹]", min_value=-2000, max_value=2000, value=0, step=10)
+    v0 = st.slider("Line centre v₀ [km s⁻¹]", min_value=-2000, max_value=2000, value=0, step=10)
 with col4:
     if mode == "Peak flux":
         peak_mjy = st.slider("Peak flux [mJy]", min_value=0, max_value=500, value=50, step=1)
@@ -113,28 +111,36 @@ with col4:
         sint = mass_to_sint(mhi, float(dist))
         s_peak_jy = sint / float(width) if width > 0 else 0.0
         s_int = sint
-
-# Velocity window row
-col5, col6, col7 = st.columns(3)
 with col5:
-    v_span = st.slider("Velocity span [km s⁻¹]", min_value=100, max_value=5000, value=1500, step=50)
-with col6:
-    v_res = st.slider("Resolution [km s⁻¹ per channel]", min_value=1, max_value=100, value=10, step=1)
-with col7:
-    hann = st.slider("Hanning smoothing width", min_value=0, max_value=15, value=0, step=1)
+    st.markdown("\n")  # spacer for alignment
+    st.markdown("**Peak**: {:.3f} Jy  \
+**S_int**: {:.3f} Jy km s⁻¹".format(s_peak_jy, s_int))
 
-# Noise and baseline row
-col8, col9, col10 = st.columns(3)
-with col8:
-    rms_mjy = st.slider("RMS [mJy]", min_value=0.001, max_value=100.0, value=5.0, step=0.1)
-    seed = st.slider("Random seed", min_value=0, max_value=1000, value=42, step=1)
-with col9:
-    ripple_amp_mjy = st.slider("Ripple amplitude [mJy]", min_value=0, max_value=200, value=0, step=1)
+# Row 2: Velocity + noise in one line
+c1, c2, c3, c4, c5 = st.columns(5)
+with c1:
+    v_span = st.slider("Span [km s⁻¹]", min_value=100, max_value=5000, value=1500, step=50)
+with c2:
+    v_res = st.slider("Resolution [km s⁻¹]", min_value=1, max_value=100, value=10, step=1)
+with c3:
+    hann = st.slider("Hanning width", min_value=0, max_value=15, value=0, step=1)
+with c4:
+    rms_mjy = st.slider("RMS [mJy]", min_value=0.001, max_value=50.0, value=5.0, step=0.1)
+with c5:
+    seed = st.slider("Seed (0 = random)", min_value=0, max_value=1000, value=42, step=1)
+
+# Row 3: Baseline toys in one line
+b1, b2, b3, b4, b5 = st.columns(5)
+with b1:
+    ripple_amp_mjy = st.slider("Ripple amp [mJy]", min_value=0, max_value=200, value=0, step=1)
+with b2:
     ripple_period = st.slider("Ripple period [km s⁻¹]", min_value=10, max_value=2000, value=400, step=10)
-    ripple_phase = st.slider("Ripple phase [rad]", min_value=0.0, max_value=2.0 * math.pi, value=0.0, step=0.05)
-with col10:
-    poly_order = st.slider("Polynomial order", min_value=0, max_value=6, value=1, step=1)
-    poly_amp_mjy = st.slider("Polynomial amplitude [mJy]", min_value=0, max_value=500, value=0, step=5)
+with b3:
+    ripple_phase = st.slider("Phase [rad]", min_value=0.0, max_value=2.0 * math.pi, value=0.0, step=0.05)
+with b4:
+    poly_order = st.slider("Poly order", min_value=0, max_value=6, value=1, step=1)
+with b5:
+    poly_amp_mjy = st.slider("Poly amp [mJy]", min_value=0, max_value=500, value=0, step=5)
 
 # -------------------------------
 # Build the spectrum
@@ -159,33 +165,34 @@ y_total = hanning_smooth(y_total, hann)
 # -------------------------------
 # Plot
 # -------------------------------
-fig, ax = plt.subplots(figsize=(8.6, 4.6))
+fig, ax = plt.subplots(figsize=(8.6, 4.4))
 ax.plot(v, y_total, lw=0.9, label="Observed")
 ax.plot(v, (y_sig + ripple + poly), lw=0.8, alpha=0.9, label="Source and baseline")
 ax.plot(v, y_sig, lw=0.8, alpha=0.9, label="Source profile")
 
-publication_axes(ax, ylabel_left="Flux density [Jy]", ylabel_right="S/N per channel", title="Synthetic HI spectrum")
+# Publication style
+ax.set_xlabel("Velocity  [km s$^{-1}$]")
+ax.set_ylabel("Flux density [Jy]")
+ax.set_title("Synthetic HI spectrum")
 ax.legend(loc="upper right", frameon=False, fontsize=9)
-
 ax.xaxis.set_minor_locator(AutoMinorLocator())
 ax.yaxis.set_minor_locator(AutoMinorLocator())
 
+# Single twin y axis: map to S/N once (fixes duplication)
 ax2 = ax.twinx()
-sn_axis_match(ax, ax2, rms_jy=max(rms_mjy / 1000.0, 1e-12))
+yl = ax.get_ylim()
+ax2.set_ylim(yl[0] / max(rms_mjy / 1000.0, 1e-12), yl[1] / max(rms_mjy / 1000.0, 1e-12))
 ax2.set_ylabel("S/N per channel")
 
 st.pyplot(fig, clear_figure=True)
 
 # -------------------------------
-# Summary
+# Numerical summary (always visible)
 # -------------------------------
-with st.expander("Numerical summary"):
-    st.write({
-        "Channels": nbin,
-        "Resolution_km_s": float(v_res),
-        "Velocity_span_km_s": float(v_span),
-        "Width_km_s": float(width),
-        "Peak_flux_Jy": float(s_peak_jy),
-        "Integrated_flux_Jy_km_s": float(s_int),
-        "RMS_Jy": float(rms_mjy) / 1000.0,
-    })
+int_sn = alfalpha_sn(s_int, float(width), float(rms_mjy), float(v_res))
+st.markdown(
+    "**Channels**: {}  |  **Resolution**: {:.1f} km s⁻¹  |  **Span**: {:.0f} km s⁻¹  |  **Width**: {:.0f} km s⁻¹  |  "
+    "**Peak**: {:.3f} Jy  |  **S_int**: {:.3f} Jy km s⁻¹  |  **RMS**: {:.3f} mJy  |  **Integrated S/N (ALFALFA)**: {:.2f}".format(
+        nbin, float(v_res), float(v_span), float(width), float(s_peak_jy), float(s_int), float(rms_mjy), float(int_sn)
+    )
+)
