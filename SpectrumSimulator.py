@@ -96,7 +96,7 @@ with col1:
 with col2:
     width = st.slider("Line width [km s⁻¹]", min_value=10, max_value=1000, value=200, step=5, help='Observed line width of the source')
 with col3:
-    v0 = st.slider("Line centre v₀ [km s⁻¹]", min_value=-2000, max_value=2000, value=0, step=10, help='Shift the line centre relative to the centre of the spectrum)
+    v0 = st.slider("Line centre v₀ [km s⁻¹]", min_value=-2000, max_value=2000, value=0, step=10, help='Shift the line centre relative to the centre of the spectrum')
 with col4:
     if mode == "Peak flux":
         peak_mjy = st.slider("Peak flux [mJy]", min_value=0, max_value=500, value=50, step=1, help='Peak flux of the source')
