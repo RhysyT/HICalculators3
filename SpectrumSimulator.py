@@ -201,7 +201,7 @@ st.write('Numerical summary of the inputs - these do NOT account for the noise i
 int_sn = alfalpha_sn(s_int, float(width), float(rms_mjy), float(v_res))
 st.markdown(
     "**Channels**: {}  |  **Resolution**: {:.1f} km s⁻¹  |  **Span**: {:.0f} km s⁻¹  |  **Width**: {:.0f} km s⁻¹  |  "
-    "**Peak**: {:.3f} Jy  |  **S_int**: {:.3f} Jy km s⁻¹  |  **RMS**: {:.3f} mJy  |  **Integrated S/N**: {:.2f}".format(
+    "**Peak flux**: {:.3f} Jy  |  **Total flux**: {:.3f} Jy km s⁻¹  |  **RMS**: {:.3f} mJy  |  **Integrated S/N**: {:.2f}".format(
         nbin, float(v_res), float(v_span), float(width), float(s_peak_jy), float(s_int), float(rms_mjy), float(int_sn)
     )
 )
