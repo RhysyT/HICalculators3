@@ -167,9 +167,9 @@ y_total = hanning_smooth(y_total, hann)
 # Plot
 # -------------------------------
 fig, ax = plt.subplots(figsize=(8.6, 4.4))
-ax.plot(v, y_sig, lw=0.5, alpha=0.9, label="Source profile")
-ax.plot(v, (y_sig + ripple + poly), lw=0.5, alpha=0.9, label="Source and baseline")
-ax.plot(v, y_total, lw=0.5, label="Observed")
+ax.plot(v, y_sig, lw=0.5, alpha=1.0, label="Source profile", colour='green')
+ax.plot(v, (y_sig + ripple + poly), lw=0.5, alpha=0.9, label="Source and baseline", color='orange')
+ax.plot(v, y_total, lw=0.5, label="Observed", color='blue')
 
 
 
@@ -190,7 +190,7 @@ ax2.set_ylabel("S/N per channel")
 st.pyplot(fig, clear_figure=True)
 
 st.write('The spectrum shows what would be observed (blue), the raw source profile (green), and also the combination of source plus the baseline without the random noise (orange).')
-st.write('Numerical summary of the inputs')
+st.write('Numerical summary of the inputs - these do NOT account for the noise in measuring the source. The integrated S/N is defined in Saintonge 2007; values above 6.5 tend to be reliable detections.')
 
 # -------------------------------
 # Numerical summary (always visible)
