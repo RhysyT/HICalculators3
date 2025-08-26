@@ -86,7 +86,7 @@ set_serif()
 st.set_page_config(page_title="HI Spectrum Sandbox", layout="wide")
 st.title("Spectrum Simulator")
 st.write('### Generate example HI spectra based on simple parameters for the source and noise properties')
-st.write('Demonstrates the typical appearance of an HI spectrum of specified properties. You can adjust the source width, flux, change the properties of the noise and apply different smoothing levels. Sources always have top-hat profiles. You can enter their parameters either as physical (HI mass with distance) or observationally (peak or total flux). Changing their parameters shows how source detectability can vary.')
+st.write('Demonstrates the typical appearance of an HI spectrum of specified properties. You can adjust the source width, flux, change the properties of the noise, and apply different smoothing levels. Sources always have top-hat profiles. You can enter their parameters either as physical (HI mass with distance) or observationally (peak or total flux). Changing their parameters shows how source detectability can vary.')
 st.write('Note that by default the noise is purely random-Gaussian. Set the "seed" value to be above zero to keep the noise fixed, otherwise it will be rengenerated every time you update any input parameters. You can also make the baseline more realistic by adding a sinusoid and/or a polynomial.')
 
 # Row 1: Source parameters (compact)
@@ -115,7 +115,7 @@ with col4:
 with col5:
     st.markdown("\n")  # spacer for alignment
     st.markdown("**Peak**: {:.3f} Jy  \
-**S_int**: {:.3f} Jy km s⁻¹".format(s_peak_jy, s_int))
+**Total**: {:.3f} Jy km s⁻¹".format(s_peak_jy, s_int))
 
 # Row 2: Velocity + noise in one line
 c1, c2, c3, c4, c5 = st.columns(5)
@@ -167,9 +167,11 @@ y_total = hanning_smooth(y_total, hann)
 # Plot
 # -------------------------------
 fig, ax = plt.subplots(figsize=(8.6, 4.4))
-ax.plot(v, y_total, lw=0.9, label="Observed")
-ax.plot(v, (y_sig + ripple + poly), lw=0.8, alpha=0.9, label="Source and baseline")
-ax.plot(v, y_sig, lw=0.8, alpha=0.9, label="Source profile")
+ax.plot(v, y_sig, lw=0.5, alpha=0.9, label="Source profile")
+ax.plot(v, (y_sig + ripple + poly), lw=0.5, alpha=0.9, label="Source and baseline")
+ax.plot(v, y_total, lw=0.5, label="Observed")
+
+
 
 # Publication style
 ax.set_xlabel("Velocity  [km s$^{-1}$]")
@@ -187,13 +189,16 @@ ax2.set_ylabel("S/N per channel")
 
 st.pyplot(fig, clear_figure=True)
 
+st.write('The spectrum shows what would be observed (blue), the raw source profile (green), and also the combination of source plus the baseline without the random noise (orange).')
+st.write('Numerical summary of the inputs')
+
 # -------------------------------
 # Numerical summary (always visible)
 # -------------------------------
 int_sn = alfalpha_sn(s_int, float(width), float(rms_mjy), float(v_res))
 st.markdown(
     "**Channels**: {}  |  **Resolution**: {:.1f} km s⁻¹  |  **Span**: {:.0f} km s⁻¹  |  **Width**: {:.0f} km s⁻¹  |  "
-    "**Peak**: {:.3f} Jy  |  **S_int**: {:.3f} Jy km s⁻¹  |  **RMS**: {:.3f} mJy  |  **Integrated S/N (ALFALFA)**: {:.2f}".format(
+    "**Peak**: {:.3f} Jy  |  **S_int**: {:.3f} Jy km s⁻¹  |  **RMS**: {:.3f} mJy  |  **Integrated S/N**: {:.2f}".format(
         nbin, float(v_res), float(v_span), float(width), float(s_peak_jy), float(s_int), float(rms_mjy), float(int_sn)
     )
 )
