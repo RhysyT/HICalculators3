@@ -77,6 +77,9 @@ def alfalpha_sn(s_int_jykms, width_kms, rms_mjy, dv_kms):
         return 0.0
     term1 = 1000.0 * (s_int_jykms / width_kms) / rms_mjy
     term2 = math.sqrt(width_kms / (2.0 * dv_kms))
+    if width_kms > 400.0:
+        term1 = 1000.0 * (s_int_jykms / width_kms) / rms_mjy
+        term2 = math.sqrt(400.0 / (2.0 * dv_kms))
     return float(term1 * term2)
 
 
