@@ -7,9 +7,7 @@ import streamlit as st
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 
-# -------------------------------
-# Helpers
-# -------------------------------
+# GENERATE THE SPECTRA
 
 def top_hat(v, v0, width, height):
     half = 0.5 * width
@@ -81,33 +79,36 @@ def alfalpha_sn(s_int_jykms, width_kms, rms_mjy, dv_kms):
     term2 = math.sqrt(width_kms / (2.0 * dv_kms))
     return float(term1 * term2)
 
-# -------------------------------
-# UI
-# -------------------------------
+
+#GUI
+
 set_serif()
 st.set_page_config(page_title="HI Spectrum Sandbox", layout="wide")
-st.title("HI Spectrum Sandbox — top‑hat + toys")
+st.title("Spectrum Simulator")
+st.write('### Generate example HI spectra based on simple parameters for the source and noise properties')
+st.write('Demonstrates the typical appearance of an HI spectrum of specified properties. You can adjust the source width, flux, change the properties of the noise and apply different smoothing levels. Sources always have top-hat profiles. You can enter their parameters either as physical (HI mass with distance) or observationally (peak or total flux).' Changing their parameters shows how source detectability can vary.')
+st.write('Note that by default the noise is purely random-Gaussian. Set the "seed" value to be above zero to keep the noise fixed, otherwise it will be rengenerated every time you update any input parameters. You can also make the baseline more realistic by adding a sinusoid and/or a polynomial.')
 
 # Row 1: Source parameters (compact)
 col1, col2, col3, col4, col5 = st.columns([1.1, 1, 1, 1.2, 1.2])
 with col1:
     mode = st.radio("Specify by", ["Peak flux", "Integrated flux", "HI mass"], index=0)
 with col2:
-    width = st.slider("Line width [km s⁻¹]", min_value=10, max_value=1000, value=200, step=5)
+    width = st.slider("Line width [km s⁻¹]", min_value=10, max_value=1000, value=200, step=5, help='Observed line width of the source')
 with col3:
-    v0 = st.slider("Line centre v₀ [km s⁻¹]", min_value=-2000, max_value=2000, value=0, step=10)
+    v0 = st.slider("Line centre v₀ [km s⁻¹]", min_value=-2000, max_value=2000, value=0, step=10, help='Shift the line centre relative to the centre of the spectrum)
 with col4:
     if mode == "Peak flux":
-        peak_mjy = st.slider("Peak flux [mJy]", min_value=0, max_value=500, value=50, step=1)
+        peak_mjy = st.slider("Peak flux [mJy]", min_value=0, max_value=500, value=50, step=1, help='Peak flux of the source')
         s_peak_jy = peak_mjy / 1000.0
         s_int = s_peak_jy * float(width)
     elif mode == "Integrated flux":
-        sint = st.slider("Integrated flux [Jy km s⁻¹]", min_value=0.0, max_value=500.0, value=10.0, step=0.1)
+        sint = st.slider("Integrated flux [Jy km s⁻¹]", min_value=0.0, max_value=500.0, value=10.0, step=0.1, help='Total flux in the source')
         s_peak_jy = sint / float(width) if width > 0 else 0.0
         s_int = sint
     else:
-        mhi = st.number_input("HI mass [M☉]", min_value=0.0, max_value=1e11, value=5e9, step=1e9, format="%.3e")
-        dist = st.slider("Distance [Mpc]", min_value=1, max_value=300, value=50, step=1)
+        mhi = st.number_input("HI mass [M☉]", min_value=0.0, max_value=1e11, value=5e9, step=1e7, format="%.3e", help='Total HI mass of the source. Be sure to set the distance value as well !')
+        dist = st.slider("Distance [Mpc]", min_value=1, max_value=300, value=50, step=1, help='Set the distance to the source, if entering the mass')
         sint = mass_to_sint(mhi, float(dist))
         s_peak_jy = sint / float(width) if width > 0 else 0.0
         s_int = sint
@@ -119,28 +120,28 @@ with col5:
 # Row 2: Velocity + noise in one line
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
-    v_span = st.slider("Span [km s⁻¹]", min_value=100, max_value=5000, value=1500, step=50)
+    v_span = st.slider("Total baseline [km s⁻¹]", min_value=100, max_value=5000, value=1500, step=50, help='Change the length of the baseline shown')
 with c2:
-    v_res = st.slider("Resolution [km s⁻¹]", min_value=1, max_value=100, value=10, step=1)
+    v_res = st.slider("Resolution [km s⁻¹]", min_value=1, max_value=100, value=10, step=1, help='Set the spectral resolution')
 with c3:
-    hann = st.slider("Hanning width", min_value=0, max_value=15, value=0, step=1)
+    hann = st.slider("Hanning width", min_value=0, max_value=15, value=0, step=1, help='Set the level of Hanning smoothing (0 to disable)')
 with c4:
-    rms_mjy = st.slider("RMS [mJy]", min_value=0.001, max_value=50.0, value=5.0, step=0.1)
+    rms_mjy = st.slider("RMS [mJy]", min_value=0.001, max_value=50.0, value=5.0, step=0.1, help='Set the base noise level. Note that this does NOT include the effects of the (optional) ripple and/or polynomial')
 with c5:
-    seed = st.slider("Seed (0 = random)", min_value=0, max_value=1000, value=42, step=1)
+    seed = st.slider("Seed (0 = random)", min_value=0, max_value=1000, value=0, step=1, help='Set the random seed for generating the Gaussian noise. If zero, the noise will be regenerated whenever any parameters are updated')
 
 # Row 3: Baseline toys in one line
 b1, b2, b3, b4, b5 = st.columns(5)
 with b1:
-    ripple_amp_mjy = st.slider("Ripple amp [mJy]", min_value=0, max_value=200, value=0, step=1)
+    ripple_amp_mjy = st.slider("Ripple amplitude [mJy]", min_value=0, max_value=200, value=0, step=1, help='Strength of the optional baseline ripple, calculated a sinusoid')
 with b2:
-    ripple_period = st.slider("Ripple period [km s⁻¹]", min_value=10, max_value=2000, value=400, step=10)
+    ripple_period = st.slider("Ripple period [km s⁻¹]", min_value=10, max_value=2000, value=400, step=10, help='Period of the optional baseline sinusoidal ripple')
 with b3:
-    ripple_phase = st.slider("Phase [rad]", min_value=0.0, max_value=2.0 * math.pi, value=0.0, step=0.05)
+    ripple_phase = st.slider("Phase [radians]", min_value=0.0, max_value=2.0 * math.pi, value=0.0, step=0.05, help='Phase offset of the ripple at the central velocity')
 with b4:
-    poly_order = st.slider("Poly order", min_value=0, max_value=6, value=1, step=1)
+    poly_order = st.slider("Polynomial order", min_value=0, max_value=6, value=1, step=1, help='Order of the polynomial offset applied to the baseline')
 with b5:
-    poly_amp_mjy = st.slider("Poly amp [mJy]", min_value=0, max_value=500, value=0, step=5)
+    poly_amp_mjy = st.slider("Polynomial amplitude [mJy]", min_value=0, max_value=500, value=0, step=5, help='Strength of the polynomial offset')
 
 # -------------------------------
 # Build the spectrum
