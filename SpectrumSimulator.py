@@ -167,7 +167,7 @@ y_total = hanning_smooth(y_total, hann)
 # Plot
 # -------------------------------
 fig, ax = plt.subplots(figsize=(8.6, 4.4))
-ax.plot(v, y_sig, lw=0.5, alpha=1.0, label="Source profile", colour='green')
+ax.plot(v, y_sig, lw=0.5, alpha=1.0, label="Source profile", color='green')
 ax.plot(v, (y_sig + ripple + poly), lw=0.5, alpha=0.9, label="Source and baseline", color='orange')
 ax.plot(v, y_total, lw=0.5, label="Observed", color='blue')
 
