@@ -10,7 +10,8 @@ st.title("Minimal number_input test — sidebar vs main")
 #    a = st.number_input("Sidebar number", value=0.0, step=1.0, format="%.3f", key="sidebar_num")
 
 st.header("Main area")
-b = st.number_input("Main number", value=0.0, step=1.0, format="%.3f", key="main_num")
+b = st.number_input("Main number", value=0.0, step=0.01, format="%.3f", key="main_num")
 
 st.write("You typed:", b)
+
 
