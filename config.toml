@@ -1,5 +1,0 @@
-[runner]
-fastReruns = false
-[client]
-toolbarMode = "viewer"
-showErrorDetails = "full"
