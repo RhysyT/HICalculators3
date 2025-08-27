@@ -199,7 +199,7 @@ st.title("🌀 Ram-Pressure Stripping (RPS) Calculator — Virgo-ready")
 
 st.markdown(
     """
-This app estimates (1) the **required** ram pressure to reach the current H I deficiency, and
+This app estimates (1) the **required** ram pressure to reach the current HI deficiency, and
 (2) the **local** ram pressure from an ICM β–model and a chosen galaxy speed (fixed or NFW escape).
 It then classifies the galaxy as **active** (if required ≲ local) or **past** (if required ≫ local).
 """
@@ -207,7 +207,7 @@ It then classifies the galaxy as **active** (if required ≲ local) or **past** 
 
 with st.sidebar:
     st.header("🎰 Galaxy inputs")
-    M_HI = st.number_input("Current H I mass M_HI [Msun]", value=2.1e7, min_value=0.0, step=None, format="%.3e")
+    M_HI = st.number_input("Current HI mass M_HI [Msun]", value=2.1e7, min_value=0.0, step=None)
     deficiency = st.number_input("H I deficiency (def)", value=0.7, min_value=0.0, max_value=2.0, step=0.05, format="%.2f")
     Ropt = st.number_input("Optical radius R_opt [kpc] (half the diameter)", value=1.175, min_value=0.01, step=0.05, format="%.3f")
     vrot = st.number_input("Flat rotation speed v_rot [km/s]", value=15.0, min_value=1.0, step=1.0, format="%.1f")
