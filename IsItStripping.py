@@ -12,6 +12,10 @@
 import math
 import streamlit as st
 
+if 'initialized' not in st.session_state:
+    st.session_state['initialized'] = True
+    submitted = True  # compute once on first load
+
 # ---------- Physical constants ----------
 G = 4.300917270e-6  # gravitational constant in (kpc * (km/s)^2) / Msun
 mp_g = 1.67262192369e-24  # proton mass [g]
@@ -240,6 +244,8 @@ with st.sidebar:
             if R200_kpc <= 0:
                 R200_kpc = None
             vgal = None
+
+        submitted = st.form_submit_button("Recalculate")
 
 # ---------- Calculations ----------
 # Required pressure from deficiency:
