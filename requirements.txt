@@ -6,3 +6,4 @@ timezonefinder
 astroquery
 matplotlib
 pillow
+streamlit==1.48.1
