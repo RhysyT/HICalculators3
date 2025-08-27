@@ -9,9 +9,9 @@ import importlib as imp
 # EXTERNAL SCRIPTS IMPORTED AS FUNCTIONS
 # "nicenumber" function returns human-readable versions of numbers, e.g, comma-separated or scientific notation depending
 # on size
-#import NiceNumber
-#imp.reload(NiceNumber)
-#from NiceNumber import nicenumber
+import NiceNumber
+imp.reload(NiceNumber)
+from NiceNumber import nicenumber
 
 
 # STYLE
@@ -88,7 +88,7 @@ if st.checkbox('Calculate travel time'):
 		myrtime_ft = sitime_ft / myr
 	
 	
-		st.write("#### Time taken = ", str(myrtime_ft),' in Myr, or ', str(sitime_ft),' in seconds.') 
+		st.write("#### Time taken = ", nicenumber(myrtime_ft),' in Myr, or ', nicenumber(sitime_ft),' in seconds.') 
 		#st.write('Exact values are '+str(myrtime_ft)+' in Myr and '+str(sitime_ft)+' in seconds.')
 
 
@@ -135,7 +135,7 @@ if st.checkbox('Calculate distance travelled'):
 	sidist_fd = velocity_fd * sitime_fd	
 	stnddist_fd = sidist_fd / (1000.0*pc)
 			
-	st.write("#### Distance travelled = ", str(stnddist_fd),' in kpc, or ', str(sidist_fd),' in metres.') 
+	st.write("#### Distance travelled = ", nicenumber(stnddist_fd),' in kpc, or ', nicenumber(sidist_fd),' in metres.') 
 	#st.write('Exact values are '+str(stnddist_fd)+' in kpc and '+str(sidist_fd)+' in metres.')
 
 
@@ -188,5 +188,6 @@ if st.checkbox('Calculate average speed'):
 		# And also in kpc / Myr
 		stnspeed = (distance_fs/ (1000.0*pc)) / (sitime_fs / myr)
 		
-		st.write("#### Average speed = ", str(sispeed),' in km/s, or ', str(stnspeed),' kpc/Myr.') 	
+		st.write("#### Average speed = ", nicenumber(sispeed),' in km/s, or ', nicenumber(stnspeed),' kpc/Myr.') 	
 		#st.write('Exact values are '+str(sispeed)+' in km/s and '+str(stnspeed)+' in kpc/Myr.')
+
