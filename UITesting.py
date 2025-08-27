@@ -3,7 +3,16 @@ import streamlit as st
 
 st.set_page_config(page_title="Minimal number_input test", layout="wide")
 
-st.title("Minimal number_input test — sidebar vs main")
+# Streamlit style preferences
+# Remove the menu button
+st.markdown(""" <style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+</style> """, unsafe_allow_html=True)
+
+# Remove vertical whitespace padding
+st.write('<style>div.block-container{padding-top:0rem;}</style>', unsafe_allow_html=True)
+st.write('<style>div.block-container{padding-bottom:0rem;}</style>', unsafe_allow_html=True)
 
 #with st.sidebar:
 #    st.header("Sidebar")
@@ -13,5 +22,6 @@ st.header("Main area")
 b = st.number_input("Main number", value=0.0, step=0.01, format="%.3f", key="main_num")
 
 st.write("You typed:", b)
+
 
 
