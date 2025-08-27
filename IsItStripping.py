@@ -206,8 +206,8 @@ It then classifies the galaxy as **active** (if required ≲ local) or **past** 
 )
 
 with st.sidebar:
-    st.header("📦 Galaxy inputs")
-    M_HI = st.number_input("Current H I mass M_HI [Msun]", value=2.1e7, min_value=0.0, step=1e6, format="%.3e")
+    st.header("🎰 Galaxy inputs")
+    M_HI = st.number_input("Current H I mass M_HI [Msun]", value=2.1e7, min_value=0.0, step=None, format="%.3e")
     deficiency = st.number_input("H I deficiency (def)", value=0.7, min_value=0.0, max_value=2.0, step=0.05, format="%.2f")
     Ropt = st.number_input("Optical radius R_opt [kpc] (half the diameter)", value=1.175, min_value=0.01, step=0.05, format="%.3f")
     vrot = st.number_input("Flat rotation speed v_rot [km/s]", value=15.0, min_value=1.0, step=1.0, format="%.1f")
@@ -215,12 +215,12 @@ with st.sidebar:
     g_geom = st.number_input("Geometrical factor g", value=2.0, min_value=1.0, step=0.1, format="%.2f")
     a_mol = st.number_input("Molecular boost 'a'", value=15.0, min_value=0.0, step=1.0, format="%.1f")
 
-    st.header("🏔️ Cluster model (Virgo defaults)")
+    st.header("💫 Cluster model (Virgo defaults)")
     n0 = st.number_input("n0 [cm^-3]", value=0.04, min_value=1e-4, step=0.01, format="%.4f")
     Rc = st.number_input("Core radius Rc [kpc]", value=13.4, min_value=1.0, step=0.5, format="%.1f")
     beta = st.number_input("β", value=0.47, min_value=0.1, max_value=1.5, step=0.01, format="%.2f")
 
-    st.header("📍 Geometry & speed")
+    st.header("📐 Geometry & speed")
     Rproj_mpc = st.number_input("Projected distance from center [Mpc]", value=1.03, min_value=0.01, step=0.05, format="%.2f")
     los_offset = st.number_input("Line-of-sight offset z [Mpc] (0 = projected)", value=0.0, min_value=0.0, step=0.25, format="%.2f")
 
