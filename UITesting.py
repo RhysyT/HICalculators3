@@ -19,9 +19,12 @@ st.set_page_config(page_title="Minimal number_input test", layout="wide")
 #    a = st.number_input("Sidebar number", value=0.0, step=1.0, format="%.3f", key="sidebar_num")
 
 st.header("Main area")
-b = st.number_input("Main number", value=0.0)
+col1, col2 = st.columns([1, 1])
+with col1:
+  b = st.number_input("Main number", value=0.0)
 
 st.write("You typed:", b)
+
 
 
 
