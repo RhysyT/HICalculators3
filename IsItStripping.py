@@ -206,39 +206,40 @@ It then classifies the galaxy as **active** (if required ≲ local) or **past** 
 )
 
 with st.sidebar:
-    st.header("🎰 Galaxy inputs")
-    M_HI = st.number_input("Current HI mass M_HI [Msun]", value=2.1e7, min_value=0.0, step=1.0E7, key="M_HI", format="%.3f")
-    deficiency = st.number_input("H I deficiency (def)", value=0.7, min_value=0.0, max_value=2.0, step=0.05, format="%.2f")
-    Ropt = st.number_input("Optical radius R_opt [kpc] (half the diameter)", value=1.175, min_value=0.01, step=0.05, format="%.3f")
-    vrot = st.number_input("Flat rotation speed v_rot [km/s]", value=15.0, min_value=1.0, step=1.0, format="%.1f")
-    rmax_over_R = st.slider("Initial HI extent r_max / R", min_value=1.2, max_value=3.0, value=1.5, step=0.1)
-    g_geom = st.number_input("Geometrical factor g", value=2.0, min_value=1.0, step=0.1, format="%.2f")
-    a_mol = st.number_input("Molecular boost 'a'", value=15.0, min_value=0.0, step=1.0, format="%.1f")
+    with st.form("params"):
+        st.header("🎰 Galaxy inputs")
+        M_HI = st.number_input("Current HI mass M_HI [Msun]", value=2.1e7, min_value=0.0, step=1.0E7, key="M_HI", format="%.3f")
+        deficiency = st.number_input("H I deficiency (def)", value=0.7, min_value=0.0, max_value=2.0, step=0.05, format="%.2f")
+        Ropt = st.number_input("Optical radius R_opt [kpc] (half the diameter)", value=1.175, min_value=0.01, step=0.05, format="%.3f")
+        vrot = st.number_input("Flat rotation speed v_rot [km/s]", value=15.0, min_value=1.0, step=1.0, format="%.1f")
+        rmax_over_R = st.slider("Initial HI extent r_max / R", min_value=1.2, max_value=3.0, value=1.5, step=0.1)
+        g_geom = st.number_input("Geometrical factor g", value=2.0, min_value=1.0, step=0.1, format="%.2f")
+        a_mol = st.number_input("Molecular boost 'a'", value=15.0, min_value=0.0, step=1.0, format="%.1f")
 
-    st.header("💫 Cluster model (Virgo defaults)")
-    n0 = st.number_input("n0 [cm^-3]", value=0.04, min_value=1e-4, step=0.01, format="%.4f")
-    Rc = st.number_input("Core radius Rc [kpc]", value=13.4, min_value=1.0, step=0.5, format="%.1f")
-    beta = st.number_input("β", value=0.47, min_value=0.1, max_value=1.5, step=0.01, format="%.2f")
+        st.header("💫 Cluster model (Virgo defaults)")
+        n0 = st.number_input("n0 [cm^-3]", value=0.04, min_value=1e-4, step=0.01, format="%.4f")
+        Rc = st.number_input("Core radius Rc [kpc]", value=13.4, min_value=1.0, step=0.5, format="%.1f")
+        beta = st.number_input("β", value=0.47, min_value=0.1, max_value=1.5, step=0.01, format="%.2f")
 
-    st.header("📐 Geometry & speed")
-    Rproj_mpc = st.number_input("Projected distance from center [Mpc]", value=1.03, min_value=0.01, step=0.05, format="%.2f")
-    los_offset = st.number_input("Line-of-sight offset z [Mpc] (0 = projected)", value=0.0, min_value=0.0, step=0.25, format="%.2f")
+        st.header("📐 Geometry & speed")
+        Rproj_mpc = st.number_input("Projected distance from center [Mpc]", value=1.03, min_value=0.01, step=0.05, format="%.2f")
+        los_offset = st.number_input("Line-of-sight offset z [Mpc] (0 = projected)", value=0.0, min_value=0.0, step=0.25, format="%.2f")
 
-    speed_mode = st.radio("Galaxy speed for p_loc", ["Fixed speed", "Escape speed (NFW)"], index=0)
-    if speed_mode == "Fixed speed":
-        vgal = st.number_input("Galaxy speed v [km/s]", value=1300.0, min_value=100.0, step=50.0, format="%.0f")
-        M200 = None
-        c_conc = None
-        R200_kpc = None
-    else:
-        st.subheader("NFW halo for escape speed")
-        M200 = st.number_input("M200 [Msun]", value=4.0e14, min_value=1e12, step=1e13, format="%.3e")
-        c_conc = st.number_input("Concentration c", value=5.0, min_value=2.0, max_value=10.0, step=0.5, format="%.1f")
-        # Optional explicit R200 if you prefer to override the scaling:
-        R200_kpc = st.number_input("R200 [kpc] (optional; 0 = auto)", value=0.0, min_value=0.0, step=10.0, format="%.1f")
-        if R200_kpc <= 0:
+        speed_mode = st.radio("Galaxy speed for p_loc", ["Fixed speed", "Escape speed (NFW)"], index=0)
+        if speed_mode == "Fixed speed":
+            vgal = st.number_input("Galaxy speed v [km/s]", value=1300.0, min_value=100.0, step=50.0, format="%.0f")
+            M200 = None
+            c_conc = None
             R200_kpc = None
-        vgal = None
+        else:
+            st.subheader("NFW halo for escape speed")
+            M200 = st.number_input("M200 [Msun]", value=4.0e14, min_value=1e12, step=1e13, format="%.3e")
+            c_conc = st.number_input("Concentration c", value=5.0, min_value=2.0, max_value=10.0, step=0.5, format="%.1f")
+            # Optional explicit R200 if you prefer to override the scaling:
+            R200_kpc = st.number_input("R200 [kpc] (optional; 0 = auto)", value=0.0, min_value=0.0, step=10.0, format="%.1f")
+            if R200_kpc <= 0:
+                R200_kpc = None
+            vgal = None
 
 # ---------- Calculations ----------
 # Required pressure from deficiency:
