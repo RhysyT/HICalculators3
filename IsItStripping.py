@@ -223,7 +223,7 @@ with st.sidebar:
     
     st.header("📐 Geometry")
     Rproj_mpc = st.number_input("Projected distance [Mpc]", value=1.03, min_value=0.01, step=0.05, format="%.2f", help='Current projected distance from the galaxy to the cluster centre')
-    los_offset = st.number_input("Line-of-sight offset [Mpc] (0 = projected)", value=0.0, min_value=0.0, step=0.25, format="%.2f", help='If known, here you can get the line of sight offset distance of the galaxy from the cluster centre, so giving the true 3D position for greater accuracy in the pressure calculation')
+    los_offset = st.number_input("Line-of-sight offset [Mpc]", value=0.0, min_value=0.0, step=0.25, format="%.2f", help='If known, here you can set the line-of-sight offset distance of the galaxy from the cluster centre, so giving the true 3D position for greater accuracy in the pressure calculation. Leave as zero to use only the projected distance')
     
     speed_mode = st.radio("Galaxy velocity", ["Fixed velocity", "Escape velocity (NFW)"], index=0, help='Choose whether to set a simple velocity for the galaxy or whether to calculate this given its current position, assuming an NFW model for the cluster potential')
     if speed_mode == "Fixed velocity":
