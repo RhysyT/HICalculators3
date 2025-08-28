@@ -146,6 +146,14 @@ with b4:
 with b5:
     poly_amp_mjy = st.slider("Polynomial amplitude [mJy]", min_value=0, max_value=500, value=0, step=5, help='Strength of the polynomial offset')
 
+
+# Row 4 : toggle plotting the different spectral components
+f1, f2, f3, f4, f5 = st.columns(5)
+
+with f1:
+    show_components = st.toggle('Plot components', value=False, help='If enabled, also shows the individual model components of the baseline and signal')
+
+
 # -------------------------------
 # Build the spectrum
 # -------------------------------
@@ -170,8 +178,9 @@ y_total = hanning_smooth(y_total, hann)
 # Plot
 # -------------------------------
 fig, ax = plt.subplots(figsize=(8.6, 4.4))
-ax.plot(v, y_sig, lw=0.5, alpha=1.0, label="Source profile", color='green')
-ax.plot(v, (y_sig + ripple + poly), lw=0.5, alpha=0.9, label="Source and baseline", color='orange')
+if show_components == True:
+    ax.plot(v, y_sig, lw=0.5, alpha=1.0, label="Source profile", color='green')
+    ax.plot(v, (y_sig + ripple + poly), lw=0.5, alpha=0.9, label="Source and baseline", color='orange')
 ax.plot(v, y_total, lw=0.5, label="Observed", color='blue')
 
 
