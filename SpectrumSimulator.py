@@ -7,8 +7,9 @@ import streamlit as st
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 
-# GENERATE THE SPECTRA
+# 1) SUBROUTINES TO GENERATE THE SPECTRA
 
+# Top-hat profile for the source itself
 def top_hat(v, v0, width, height):
     half = 0.5 * width
     y = numpy.zeros_like(v)
@@ -16,19 +17,19 @@ def top_hat(v, v0, width, height):
     y[mask] = height
     return y
 
-
+# Convert HI mass to total flux
 def mass_to_sint(m_hi, distance_mpc):
     if distance_mpc <= 0:
         return 0.0
     return float(m_hi) / (2.356e5 * (distance_mpc ** 2))
 
-
+# Sinusoidal ripple in the baseline
 def make_ripple(v, amp_jy, period_kms, phase_rad):
     if period_kms <= 0:
         return numpy.zeros_like(v)
     return amp_jy * numpy.sin(2.0 * math.pi * v / period_kms + phase_rad)
 
-
+# Polynomial component of the baseline
 def make_polynomial(v, order, amp_jy):
     if order < 0:
         order = 0
@@ -39,18 +40,17 @@ def make_polynomial(v, order, amp_jy):
         baseline = baseline - baseline.mean()
     return baseline
 
-
+# Apply Hanning smoothing to an input spectrum
 def hanning_smooth(y, width):
-    """Symmetric Hanning of integer half-width; total window = 2*width+1.
-    width = 0 leaves the array unchanged.
-    """
+    # Symmetric Hanning of integer half-width; total window = 2*width+1.
+    # Width 0 disables
     if width <= 0:
         return y
     window = numpy.hanning(width * 2 + 1)
     window /= window.sum()
     return numpy.convolve(y, window, mode="same")
 
-
+# Use a serif font (why is this done here and not just at the start ?) and set the axes font and size
 def set_serif():
     plt.rcParams.update({
         "font.family": "serif",
@@ -68,7 +68,7 @@ def set_serif():
         "savefig.dpi": 300,
     })
 
-
+# Claculate the integrated S/N
 def alfalpha_sn(s_int_jykms, width_kms, rms_mjy, dv_kms):
     """ALFALFA-style integrated S/N (idealised):
     S/N = (1000 * (S_int / W)) / rms_mJy * sqrt(W / (2 * dv)).
@@ -83,8 +83,9 @@ def alfalpha_sn(s_int_jykms, width_kms, rms_mjy, dv_kms):
     return float(term1 * term2)
 
 
-#GUI
+# 2)GUI
 
+# Apply serif fonts, display the title and basic description
 set_serif()
 st.set_page_config(page_title="HI Spectrum Sandbox", layout="wide")
 st.title("Spectrum Simulator")
@@ -92,7 +93,7 @@ st.write('### Generate example HI spectra based on simple parameters for the sou
 st.write('Demonstrates the typical appearance of an HI spectrum of specified properties. You can adjust the source width, flux, change the properties of the noise, and apply different smoothing levels. Sources always have top-hat profiles. You can enter their parameters either as physical (HI mass with distance) or observationally (peak or total flux). Changing their parameters shows how source detectability can vary.')
 st.write('Note that by default the noise is purely random-Gaussian. Set the "seed" value to be above zero to keep the noise fixed, otherwise it will be rengenerated every time you update any input parameters. You can also make the baseline more realistic by adding a sinusoid and/or a polynomial.')
 
-# Row 1: Source parameters (compact)
+# Row 1: Input the source parameters 
 col1, col2, col3, col4, col5 = st.columns([1.1, 1, 1, 1.2, 1.2])
 with col1:
     mode = st.radio("Specify by", ["Peak flux", "Integrated flux", "HI mass"], index=0)
@@ -120,7 +121,7 @@ with col5:
     st.markdown("**Peak**: {:.3f} Jy  \
 **Total**: {:.3f} Jy km s⁻¹".format(s_peak_jy, s_int))
 
-# Row 2: Velocity + noise in one line
+# Row 2: Input baseline and Gaussian noise components
 c1, c2, c3, c4, c5 = st.columns(5)
 with c1:
     v_span = st.slider("Total baseline [km s⁻¹]", min_value=100, max_value=5000, value=1500, step=50, help='Change the length of the baseline shown')
@@ -133,7 +134,7 @@ with c4:
 with c5:
     seed = st.slider("Seed (0 = random)", min_value=0, max_value=1000, value=0, step=1, help='Set the random seed for generating the Gaussian noise. If zero, the noise will be regenerated whenever any parameters are updated')
 
-# Row 3: Baseline toys in one line
+# Row 3: Input parameters for additional noise as a sinusoid and polynomial
 b1, b2, b3, b4, b5 = st.columns(5)
 with b1:
     ripple_amp_mjy = st.slider("Ripple amplitude [mJy]", min_value=0, max_value=200, value=0, step=1, help='Strength of the optional baseline ripple, calculated a sinusoid')
@@ -146,17 +147,13 @@ with b4:
 with b5:
     poly_amp_mjy = st.slider("Polynomial amplitude [mJy]", min_value=0, max_value=500, value=0, step=5, help='Strength of the polynomial offset')
 
-
 # Row 4 : toggle plotting the different spectral components
 f1, f2, f3, f4, f5 = st.columns(5)
-
 with f1:
     show_components = st.toggle('Plot components', value=False, help='If enabled, also shows the individual model components of the baseline and signal')
 
 
-# -------------------------------
-# Build the spectrum
-# -------------------------------
+# Now we can actually generate the spectrum
 half = 0.5 * float(v_span)
 nbin = int(max(2, round(v_span / float(v_res))))
 v = numpy.linspace(-half, half, nbin)
@@ -174,18 +171,14 @@ noise = numpy.random.normal(loc=0.0, scale=rms_mjy / 1000.0, size=v.shape)
 y_total = y_sig + ripple + poly + noise
 y_total = hanning_smooth(y_total, hann)
 
-# -------------------------------
-# Plot
-# -------------------------------
+# Plot the results !
 fig, ax = plt.subplots(figsize=(8.6, 4.4))
 if show_components == True:
     ax.plot(v, y_sig, lw=0.5, alpha=1.0, label="Source profile", color='green')
     ax.plot(v, (y_sig + ripple + poly), lw=0.5, alpha=0.9, label="Source and baseline", color='orange')
 ax.plot(v, y_total, lw=0.5, label="Observed", color='blue')
 
-
-
-# Publication style
+# Publication-style labels and ticks
 ax.set_xlabel("Velocity  [km s$^{-1}$]")
 ax.set_ylabel("Flux density [Jy]")
 ax.set_title("Synthetic HI spectrum")
@@ -193,7 +186,7 @@ ax.legend(loc="upper right", frameon=False, fontsize=9)
 ax.xaxis.set_minor_locator(AutoMinorLocator())
 ax.yaxis.set_minor_locator(AutoMinorLocator())
 
-# Single twin y axis: map to S/N once (fixes duplication)
+# Second (right hand) axis for equivalent S/N
 ax2 = ax.twinx()
 yl = ax.get_ylim()
 ax2.set_ylim(yl[0] / max(rms_mjy / 1000.0, 1e-12), yl[1] / max(rms_mjy / 1000.0, 1e-12))
@@ -204,9 +197,7 @@ st.pyplot(fig, clear_figure=True)
 st.write('The spectrum shows what would be observed (blue), the raw source profile (green), and also the combination of source plus the baseline without the random noise (orange).')
 st.write('Numerical summary of the inputs - these do NOT account for the noise in measuring the source. The integrated S/N is defined in Saintonge 2007; values above 6.5 tend to be reliable detections.')
 
-# -------------------------------
-# Numerical summary (always visible)
-# -------------------------------
+# Finally, print a simple numerical summary of the inputs
 int_sn = alfalpha_sn(s_int, float(width), float(rms_mjy), float(v_res))
 st.markdown(
     "**Channels**: {}  |  **Resolution**: {:.1f} km s⁻¹  |  **Span**: {:.0f} km s⁻¹  |  **Width**: {:.0f} km s⁻¹  |  "
