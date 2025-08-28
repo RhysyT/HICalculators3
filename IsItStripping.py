@@ -215,38 +215,41 @@ an NFW-profile to use the locale escape velocity. By default, both use parameter
 
 with st.sidebar:
     st.header("🎰 Galaxy inputs")
-    M_HI = st.number_input("Current HI mass  [M$_{☉}$]", value=2.1e7, min_value=0.0, step=1.0E7, key="M_HI", format="%.3f")
+    M_HI = st.number_input("[Optional] Current HI mass  [M$_{☉}$]", value=2.1e7, min_value=0.0, step=1.0E7, key="M_HI", format="%.3e", help='Not actually used in the ram pressure calculation - provided for convenience only, to show the original gas content and how much has been lost')
     deficiency = st.number_input("HI deficiency", value=0.7, min_value=0.0, max_value=2.0, step=0.05, format="%.2f", help='Logarithmic measure of the current compared to orginal gas content. 1.0 means the galaxy has 10% of its original content remaining, 2.0 means it has only 1%, etc.')
-    Ropt = st.number_input("Optical radius R$_{opt}$ [kpc]", value=1.175, min_value=0.01, step=0.05, format="%.3f", help='HI detections are usually unresolved, so the optical radius can be used to estimate the original HI extent in these cases')
-    vrot = st.number_input("Rotation speed v$_{rot}$ [km/s]", value=15.0, min_value=1.0, step=1.0, format="%.1f", help='Rotation speed after correcting the measurements for inclination and whatnot')
-    rmax_over_R = st.slider("Initial HI extent r_max / R", min_value=1.2, max_value=3.0, value=1.5, step=0.1)
-    g_geom = st.number_input("Geometrical factor g", value=2.0, min_value=1.0, step=0.1, format="%.2f")
-    a_mol = st.number_input("Molecular boost 'a'", value=15.0, min_value=0.0, step=1.0, format="%.1f")
-
-    st.header("💫 Cluster model (Virgo defaults)")
-    n0 = st.number_input("n0 [cm^-3]", value=0.04, min_value=1e-4, step=0.01, format="%.4f")
-    Rc = st.number_input("Core radius Rc [kpc]", value=13.4, min_value=1.0, step=0.5, format="%.1f")
-    beta = st.number_input("β", value=0.47, min_value=0.1, max_value=1.5, step=0.01, format="%.2f")
-
-    st.header("📐 Geometry & speed")
-    Rproj_mpc = st.number_input("Projected distance from center [Mpc]", value=1.03, min_value=0.01, step=0.05, format="%.2f")
-    los_offset = st.number_input("Line-of-sight offset z [Mpc] (0 = projected)", value=0.0, min_value=0.0, step=0.25, format="%.2f")
-
-    speed_mode = st.radio("Galaxy speed for p_loc", ["Fixed speed", "Escape speed (NFW)"], index=0)
-    if speed_mode == "Fixed speed":
-        vgal = st.number_input("Galaxy speed v [km/s]", value=1300.0, min_value=100.0, step=50.0, format="%.0f")
+    Ropt = st.number_input("Optical radius R$_{\text{opt}}$ [kpc]", value=1.175, min_value=0.01, step=0.05, format="%.3f", help='HI detections are usually unresolved, so the optical radius can be used to estimate the original HI extent in these cases')
+    vrot = st.number_input("Rotation speed v$_{\text{rot}}$ [km/s]", value=15.0, min_value=1.0, step=1.0, format="%.1f", help='Rotation speed after correcting the measurements for inclination and whatnot')
+    rmax_over_R = st.slider("Initial HI extent compared to optical", min_value=1.2, max_value=3.0, value=1.5, step=0.1, help='Multiplies the optical radius to get the estimated initial HI extent, typically reckoned to be ~1.5-1.7x the optical')
+    
+    st.header("📐 Geometry")
+    Rproj_mpc = st.number_input("Projected distance [Mpc]", value=1.03, min_value=0.01, step=0.05, format="%.2f", help='Current projected distance from the galaxy to the cluster centre')
+    los_offset = st.number_input("Line-of-sight offset z [Mpc] (0 = projected)", value=0.0, min_value=0.0, step=0.25, format="%.2f", help='If known, here you can get the line of sight offset distance of the galaxy from the cluster centre, so giving the true 3D position for greater accuracy in the pressure calculation')
+    
+    speed_mode = st.radio("Galaxy velocity", ["Fixed velocity", "Escape velocity (NFW)"], index=0, help='Choose whether to set a simple velocity for the galaxy or whether to calculate this given its current position, assuming an NFW model for the cluster potential')
+    if speed_mode == "Fixed velocity":
+        vgal = st.number_input("Galaxy velocity [km/s]", value=1300.0, min_value=100.0, step=50.0, format="%.0f")
         M200 = None
         c_conc = None
         R200_kpc = None
     else:
-        st.subheader("NFW halo for escape speed")
-        M200 = st.number_input("M200 [Msun]", value=4.0e14, min_value=1e12, step=1e13, format="%.3e")
-        c_conc = st.number_input("Concentration c", value=5.0, min_value=2.0, max_value=10.0, step=0.5, format="%.1f")
+        st.subheader("NFW halo parameters")
+        M200 = st.number_input("M$_{200}$ [M$_{☉}$]", value=4.0e14, min_value=1e12, step=1e13, format="%.3e")
+        c_conc = st.number_input("Concentration", value=5.0, min_value=2.0, max_value=10.0, step=0.5, format="%.1f")
         # Optional explicit R200 if you prefer to override the scaling:
-        R200_kpc = st.number_input("R200 [kpc] (optional; 0 = auto)", value=0.0, min_value=0.0, step=10.0, format="%.1f")
+        R200_kpc = st.number_input("R$_{200}$ [kpc] (optional; 0 = auto)", value=0.0, min_value=0.0, step=10.0, format="%.1f")
         if R200_kpc <= 0:
             R200_kpc = None
         vgal = None
+    
+    st.header("💫 Cluster model")
+    n0 = st.number_input("n$_{0}$ [cm^-3]", value=0.04, min_value=1e-4, step=0.01, format="%.4f", help='Central ICM density')
+    Rc = st.number_input("Core radius [kpc]", value=13.4, min_value=1.0, step=0.5, format="%.1f", help='Core radius of the ICM, used in the beta-profile model of the density')
+    beta = st.number_input("β", value=0.47, min_value=0.1, max_value=1.5, step=0.01, format="%.2f", help='Beta factor used in the density profile; effectively this sets how steeply the density declines')
+
+    st.header("💫 Other (optional)")
+    g_geom = st.number_input("Molecular correction g", value=2.0, min_value=1.0, step=0.1, format="%.2f", help='Corrects for the molecular gas when calculating the vertical restoring force. The default factor 2 should be reasonable')
+    a_mol = st.number_input("Molecular boost 'a'", value=15.0, min_value=0.0, step=1.0, format="%.1f", help='Molecular scale length. The default value of 15 gives a significant contribution in the inner regions for the restoring force, but negligible in the outskirts')
+
 
 # ---------- Calculations ----------
 # Required pressure from deficiency:
