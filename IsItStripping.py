@@ -267,7 +267,7 @@ pdef, dbg = p_def_cm3_kms2(
 Rproj_kpc = Rproj_mpc * 1000.0
 los_kpc = los_offset * 1000.0
 
-if speed_mode == "Fixed speed":
+if speed_mode == "Fixed velocity":
     p_loc, R3D = p_loc_cm3_kms2(
         Rproj_kpc=Rproj_kpc,
         los_offset_kpc=los_kpc,
