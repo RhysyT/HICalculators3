@@ -198,16 +198,20 @@ def p_loc_cm3_kms2(
     return n * (v_kms**2), R3D_kpc
 
 # ---------- Streamlit UI ----------
-st.set_page_config(page_title="Ram-Pressure Stripping Calculator", page_icon="🌀", layout="wide")
-st.title("🌀 Ram-Pressure Stripping (RPS) Calculator — Virgo-ready")
+st.set_page_config(page_title="Ram Pressure Stripping Calculator", page_icon="🌀", layout="wide")
+st.title("🌀 Is It Stripping ?")
 
 st.markdown(
-    """
-This app estimates (1) the **required** ram pressure to reach the current HI deficiency, and
-(2) the **local** ram pressure from an ICM β–model and a chosen galaxy speed (fixed or NFW escape).
-It then classifies the galaxy as **active** (if required ≲ local) or **past** (if required ≫ local).
-"""
-)
+    """Uses the prescription of [Köppen+2018](https://ui.adsabs.harvard.edu/abs/2018MNRAS.479.4367K/abstract) to estimate 
+whether a cluster galaxy is likely to be currently losing gas (or not yet lost much at all) or has done so in the past. This
+works by estimating (1) the ram pressure needed to reach the current HI deficiency and (2) the probable current local pressure
+a galaxy is actually experiencing, given a model of the cluster's mass profile and ICM density.""")
+st.markdown("""A galaxy is deemed to likely be a current, active stripper if the **required pressure** is comparable or less
+than the **local pressure**; i.e. it hasn't lost as much gas yet as the current pressure should be able to remove, therefore
+it's still losing gas. Conversely, if the pressure required to reach the current deficiency is much greater than the current
+estimated value, the galaxy is likely to be past stripper.""")
+st.markdown("""Users can alter the parameters of a β–model for the ICM, and either set a fixed speed for the galaxy or use
+an NFW-profile to use the locale escape velocity. By default, both use parameters based on the Virgo cluster.""")
 
 with st.sidebar:
     st.header("🎰 Galaxy inputs")
