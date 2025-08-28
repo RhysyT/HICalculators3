@@ -310,7 +310,7 @@ with col1:
 
 with col2:
     st.subheader("Local ram pressure (β–model × speed)")
-    if speed_mode == "Fixed speed":
+    if speed_mode == "Fixed velocity":
         st.write(f"Speed v = **{vgal:.0f}** km/s (user fixed)")
     else:
         st.write(f"Escape speed v_esc(NFW) = **{v_escape_nfw(R3D, M200, c_conc, R200_kpc):.0f}** km/s")
