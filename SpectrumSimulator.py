@@ -92,6 +92,7 @@ st.title("Spectrum Simulator")
 st.write('### Generate example HI spectra based on simple parameters for the source and noise properties')
 st.write('Demonstrates the typical appearance of an HI spectrum of specified properties. You can adjust the source width, flux, change the properties of the noise, and apply different smoothing levels. Sources always have top-hat profiles. You can enter their parameters either as physical (HI mass with distance) or observationally (peak or total flux). Changing their parameters shows how source detectability can vary.')
 st.write('Note that by default the noise is purely random-Gaussian. Set the "seed" value to be above zero to keep the noise fixed, otherwise it will be rengenerated every time you update any input parameters. You can also make the baseline more realistic by adding a sinusoid and/or a polynomial.')
+st.write('Currently the source profile is a simple top-hat function - about 25% of galaxies show such profiles. Other profiles will be added eventually, maybe.')
 
 # Row 1: Input the source parameters 
 col1, col2, col3, col4, col5 = st.columns([1.1, 1, 1, 1.2, 1.2])
