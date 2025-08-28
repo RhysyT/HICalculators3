@@ -233,16 +233,16 @@ with st.sidebar:
         R200_kpc = None
     else:
         st.subheader("NFW halo parameters")
-        M200 = st.number_input("M$_{200}$ [M$_{☉}$]", value=4.0e14, min_value=1e12, step=1e13, format="%.3e")
-        c_conc = st.number_input("Concentration", value=5.0, min_value=2.0, max_value=10.0, step=0.5, format="%.1f")
+        M200 = st.number_input("M$_{200}$ [M$_{☉}$]", value=4.0e14, min_value=1e12, step=1e13, format="%.3e", help='Total virial mass of the halo')
+        c_conc = st.number_input("Concentration", value=5.0, min_value=2.0, max_value=10.0, step=0.5, format="%.1f", help='Halo concentration, estimated as 10-15 for the Milky Way, typically reckoned as 3-6 for Virgo-mass clusters')
         # Optional explicit R200 if you prefer to override the scaling:
-        R200_kpc = st.number_input("R$_{200}$ [kpc] (optional; 0 = auto)", value=0.0, min_value=0.0, step=10.0, format="%.1f")
+        R200_kpc = st.number_input("R$_{200}$ [kpc] (optional; 0 = auto)", value=0.0, min_value=0.0, step=10.0, format="%.1f", help='Virial radius of the cluster')
         if R200_kpc <= 0:
             R200_kpc = None
         vgal = None
     
     st.header("💫 Cluster model")
-    n0 = st.number_input("n$_{0}$ [cm^-3]", value=0.04, min_value=1e-4, step=0.01, format="%.4f", help='Central ICM density')
+    n0 = st.number_input("n$_{0}$ [cm$^{-3]}$", value=0.04, min_value=1e-4, step=0.01, format="%.4f", help='Central ICM density')
     Rc = st.number_input("Core radius [kpc]", value=13.4, min_value=1.0, step=0.5, format="%.1f", help='Core radius of the ICM, used in the beta-profile model of the density')
     beta = st.number_input("β", value=0.47, min_value=0.1, max_value=1.5, step=0.01, format="%.2f", help='Beta factor used in the density profile; effectively this sets how steeply the density declines')
 
