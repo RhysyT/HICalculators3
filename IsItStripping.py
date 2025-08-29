@@ -123,7 +123,7 @@ def p_def_cm3_kms2(
     M0_msun = M_HI_msun * (10.0 ** deficiency)
 
     # Central surface density
-    sigma0 = sigma0_msun_per_kpc2(M0_msun, R_kpc, rmax_kpc)
+    sigma0 = 8.0    #sigma0_msun_per_kpc2(M0_msun, R_kpc, rmax_kpc)
 
     # Stripping radius from deficiency (eq. 28 inverted)
     r_strip_kpc = r_strip_from_def(deficiency, R_kpc, rmax_kpc)
