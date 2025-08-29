@@ -126,13 +126,13 @@ def p_def_cm3_kms2(
     M0_msun = M_HI_msun * (10.0 ** deficiency)
 
     # Central surface density
-    sigma0 = sigma0_msun_per_kpc2(M0_msun, R_kpc, rmax_kpc)    # Not sure if should use a constant value, if so, 7-8E6 instead
+    sigma0 = sigma0_msun_per_kpc2(M0_msun, R_kpc, rmax_kpc, Rscale)    # Not sure if should use a constant value, if so, 7-8E6 instead
 
     # Stripping radius from deficiency (eq. 28 inverted)
-    r_strip_kpc = r_strip_from_def(deficiency, R_kpc, rmax_kpc)
+    r_strip_kpc = r_strip_from_def(deficiency, R_kpc, rmax_kpc, Rscale)
 
     # Sigma at r_strip (Msun/pc^2)
-    sigma_r = sigma_at_r_msun_per_pc2(sigma0, r_strip_kpc, R_kpc)
+    sigma_r = sigma_at_r_msun_per_pc2(sigma0, r_strip_kpc, R_kpc, Rscale)
 
     # Molecular enhancement term: R0 = 2 kpc * (R_opt / 15 kpc)
     R0_kpc = 2.0 * (R_kpc / 15.0)
@@ -166,7 +166,7 @@ def p_def_from_rstrip_cm3_kms2(
     """
     R_kpc = R_opt_kpc
     rmax_kpc = rmax_over_R * R_kpc
-    sigma0 = sigma0_msun_per_kpc2(M0_msun, R_kpc, rmax_kpc)
+    sigma0 = sigma0_msun_per_kpc2(M0_msun, R_kpc, rmax_kpc, Rscale)
     sigma_r = sigma_at_r_msun_per_pc2(sigma0, r_strip_kpc, R_kpc)
     R0_kpc = 2.0 * (R_kpc / 15.0)
     mol_boost = 1.0 + a_mol * math.exp(-r_strip_kpc / R0_kpc)
