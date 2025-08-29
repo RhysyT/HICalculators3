@@ -73,34 +73,37 @@ def v_escape_nfw(r_kpc: float, M200: float, c: float, R200_kpc: float | None = N
     return math.sqrt(val)
 
 # Koppen+2018 formulae
-def r_strip_from_def(deficiency: float, R_kpc: float, rmax_kpc: float) -> float:
+def r_strip_from_def(deficiency: float, R_kpc: float, rmax_kpc: float, Rscale: float) -> float:
     """
     Inverse of eq. (28):
     10^{-def} = [1 - (1 + (r/R)^2)^(-1/2)] / [1 - (1 + (rmax/R)^2)^(-1/2)]
     Solve analytically for r.
     """
-    denom = 1.0 - (1.0 + (rmax_kpc / R_kpc) ** 2) ** -0.5
+    r_mod = R_kpc * Rscale
+    denom = 1.0 - (1.0 + (rmax_kpc / r_mod) ** 2) ** -0.5
     X = 1.0 - (10.0 ** (-deficiency)) * denom
     # Safety clamp
     X = min(max(X, 1e-12), 0.999999999999)
     r_over_R = math.sqrt(X ** -2 - 1.0)
-    return R_kpc * r_over_R
+    return r_mod * r_over_R
 
-def sigma0_msun_per_kpc2(M0_msun: float, R_kpc: float, rmax_kpc: float) -> float:
+def sigma0_msun_per_kpc2(M0_msun: float, R_kpc: float, rmax_kpc: float, Rscale: float) -> float:
     """
     Central surface density for Miyamoto–Nagai-like 2D profile used in the paper:
     Sigma_0 = M0 / [ 2π R^2 * (1 - (1 + (rmax/R)^2)^(-1/2)) ]   (with radii in kpc)
     Returns Msun/kpc^2.
     """
-    denom = 2.0 * math.pi * (R_kpc ** 2) * (1.0 - (1.0 + (rmax_kpc / R_kpc) ** 2) ** -0.5)
+    rmod = R_kpc * Rscale
+    denom = 2.0 * math.pi * (rmod ** 2) * (1.0 - (1.0 + (rmax_kpc / rmod) ** 2) ** -0.5)
     return M0_msun / denom
 
-def sigma_at_r_msun_per_pc2(sigma0_msun_per_kpc2: float, r_kpc: float, R_kpc: float) -> float:
+def sigma_at_r_msun_per_pc2(sigma0_msun_per_kpc2: float, r_kpc: float, R_kpc: float, Rscale: float) -> float:
     """
     Sigma(r) = Sigma0 / (1 + (r/R)^2)^{3/2}.
     Convert Msun/kpc^2 -> Msun/pc^2 at the end (1 kpc^2 = 1e6 pc^2).
     """
-    factor = (1.0 + (r_kpc / R_kpc) ** 2) ** 1.5
+    rmod = R_kpc * Rscale
+    factor = (1.0 + (r_kpc / rmod) ** 2) ** 1.5
     sigma_r_msun_per_kpc2 = sigma0_msun_per_kpc2 / factor
     return sigma_r_msun_per_kpc2 / 1.0e6  # to Msun/pc^2
 
@@ -218,6 +221,7 @@ with st.sidebar:
     M_HI = st.number_input("[Optional] Current HI mass  [M$_{☉}$]", value=2.1e7, min_value=0.0, step=1.0E7, key="M_HI", format="%.3e", help='Not actually used in the ram pressure calculation - provided for convenience only, to show the original gas content and how much has been lost')
     deficiency = st.number_input("HI deficiency", value=0.7, min_value=0.0, max_value=2.0, step=0.05, format="%.2f", help='Logarithmic measure of the current compared to orginal gas content. 1.0 means the galaxy has 10% of its original content remaining, 2.0 means it has only 1%, etc.')
     Ropt = st.number_input("Optical radius R$_{opt}$ [kpc]", value=1.175, min_value=0.01, step=0.05, format="%.3f", help='HI detections are usually unresolved, so the optical radius can be used to estimate the original HI extent in these cases')
+    Rscale = st.number_input('HI scale multiplier', value=1.0)
     vrot = st.number_input("Rotation speed v$_{rot}$ [km/s]", value=15.0, min_value=1.0, step=1.0, format="%.1f", help='Rotation speed after correcting the measurements for inclination and whatnot')
     rmax_over_R = st.slider("Initial HI extent compared to optical", min_value=1.2, max_value=3.0, value=1.5, step=0.1, help='Multiplies the optical radius to get the estimated initial HI extent, typically reckoned to be ~1.5-1.7x the optical')
     
