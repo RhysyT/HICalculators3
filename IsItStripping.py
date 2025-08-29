@@ -233,7 +233,7 @@ with st.sidebar:
         R200_kpc = None
     else:
         st.subheader("⚖️ NFW cluster halo parameters")
-        M200 = st.number_input("M$_{200}$ [M$_{☉}$]", value=4.0e14, min_value=1e12, step=1e13, format="%.3e", help='Total virial mass of the halo')
+        M200 = st.number_input("M$_{200}$ [M$_{☉}$]", value=1.4e14, min_value=1e12, step=1e13, format="%.3e", help='Total virial mass of the halo')
         c_conc = st.number_input("Concentration", value=5.0, min_value=2.0, max_value=10.0, step=0.5, format="%.1f", help='Halo concentration, estimated as 10-15 for the Milky Way, typically reckoned as 3-6 for Virgo-mass clusters')
         # Optional explicit R200 if you prefer to override the scaling:
         R200_kpc = st.number_input("R$_{200}$ [kpc] (optional; 0 = auto)", value=0.0, min_value=0.0, step=10.0, format="%.1f", help='Virial radius of the cluster. Leave as zero to calculate this directly from the mass using the standard relation')
