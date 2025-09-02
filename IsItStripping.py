@@ -73,13 +73,13 @@ def v_escape_nfw(r_kpc: float, M200: float, c: float, R200_kpc: float | None = N
     return math.sqrt(val)
 
 # Koppen+2018 formulae
-def r_strip_from_def(deficiency: float, R_kpc: float, rmax_kpc: float, Rscale: float) -> float:
+def r_strip_from_def(deficiency: float, R_kpc: float, rmax_kpc: float) -> float:
     """
     Inverse of eq. (28):
     10^{-def} = [1 - (1 + (r/R)^2)^(-1/2)] / [1 - (1 + (rmax/R)^2)^(-1/2)]
     Solve analytically for r.
     """
-    r_mod = R_kpc * Rscale
+    r_mod = R_kpc
     denom = 1.0 - (1.0 + (rmax_kpc / r_mod) ** 2) ** -0.5
     X = 1.0 - (10.0 ** (-deficiency)) * denom
     # Safety clamp
@@ -87,22 +87,22 @@ def r_strip_from_def(deficiency: float, R_kpc: float, rmax_kpc: float, Rscale: f
     r_over_R = math.sqrt(X ** -2 - 1.0)
     return r_mod * r_over_R
 
-def sigma0_msun_per_kpc2(M0_msun: float, R_kpc: float, rmax_kpc: float, Rscale: float) -> float:
+def sigma0_msun_per_kpc2(M0_msun: float, R_kpc: float, rmax_kpc: float) -> float:
     """
     Central surface density for Miyamoto–Nagai-like 2D profile used in the paper:
     Sigma_0 = M0 / [ 2π R^2 * (1 - (1 + (rmax/R)^2)^(-1/2)) ]   (with radii in kpc)
     Returns Msun/kpc^2.
     """
-    rmod = R_kpc * Rscale
+    rmod = R_kpc
     denom = 2.0 * math.pi * (rmod ** 2) * (1.0 - (1.0 + (rmax_kpc / rmod) ** 2) ** -0.5)
     return M0_msun / denom
 
-def sigma_at_r_msun_per_pc2(sigma0_msun_per_kpc2: float, r_kpc: float, R_kpc: float, Rscale: float) -> float:
+def sigma_at_r_msun_per_pc2(sigma0_msun_per_kpc2: float, r_kpc: float, R_kpc: float) -> float:
     """
     Sigma(r) = Sigma0 / (1 + (r/R)^2)^{3/2}.
     Convert Msun/kpc^2 -> Msun/pc^2 at the end (1 kpc^2 = 1e6 pc^2).
     """
-    rmod = R_kpc * Rscale
+    rmod = R_kpc
     factor = (1.0 + (r_kpc / rmod) ** 2) ** 1.5
     sigma_r_msun_per_kpc2 = sigma0_msun_per_kpc2 / factor
     return sigma_r_msun_per_kpc2 / 1.0e6  # to Msun/pc^2
@@ -126,13 +126,13 @@ def p_def_cm3_kms2(
     M0_msun = M_HI_msun * (10.0 ** deficiency)
 
     # Central surface density
-    sigma0 = sigma0_msun_per_kpc2(M0_msun, R_kpc, rmax_kpc, Rscale)    # Not sure if should use a constant value, if so, 7-8E6 instead
+    sigma0 = sigma0_msun_per_kpc2(M0_msun, R_kpc, rmax_kpc)    # Not sure if should use a constant value, if so, 7-8E6 instead
 
     # Stripping radius from deficiency (eq. 28 inverted)
-    r_strip_kpc = r_strip_from_def(deficiency, R_kpc, rmax_kpc, Rscale)
+    r_strip_kpc = r_strip_from_def(deficiency, R_kpc, rmax_kpc)
 
     # Sigma at r_strip (Msun/pc^2)
-    sigma_r = sigma_at_r_msun_per_pc2(sigma0, r_strip_kpc, R_kpc, Rscale)
+    sigma_r = sigma_at_r_msun_per_pc2(sigma0, r_strip_kpc, R_kpc)
 
     # Molecular enhancement term: R0 = 2 kpc * (R_opt / 15 kpc)
     R0_kpc = 2.0 * (R_kpc / 15.0)
@@ -166,7 +166,7 @@ def p_def_from_rstrip_cm3_kms2(
     """
     R_kpc = R_opt_kpc
     rmax_kpc = rmax_over_R * R_kpc
-    sigma0 = sigma0_msun_per_kpc2(M0_msun, R_kpc, rmax_kpc, Rscale)
+    sigma0 = sigma0_msun_per_kpc2(M0_msun, R_kpc, rmax_kpc)
     sigma_r = sigma_at_r_msun_per_pc2(sigma0, r_strip_kpc, R_kpc)
     R0_kpc = 2.0 * (R_kpc / 15.0)
     mol_boost = 1.0 + a_mol * math.exp(-r_strip_kpc / R0_kpc)
