@@ -191,10 +191,5 @@ def render_results(title, res):
 render_results("CO(1–0)", res10)
 render_results("CO(2–1)", res21)
 
-st.caption(
-    "Notes: Results are **per synthesized beam** and **per velocity channel ΔV**. "
-    "If your source uniformly fills many beams, total mass sensitivity scales roughly with the number of beams covering the source; "
-    "for clumpy emission, detectability is governed by peak surface brightness per synthesized beam. "
-    "Defaults used here: α_CO(1–0)=4.35, α_CO(2–1)=6.70 (assuming R21≈0.65), F_eff(115 GHz)=0.94, B_eff(115 GHz)=0.78; "
-    "F_eff(230 GHz)=0.92, B_eff(230 GHz)=0.59."
-)
+st.caption("The beam size is dependent on the source frequency. To calculate the exact value use [this online tool](https://whosespectrallineisitanyway.streamlit.app/). Enter this in the (IRAM Exposure Time Calculator)[https://oms.iram.fr/tse/] : the spatial resolution is included in the 'Results' box on the left. Enter the calculated antenna values in the same ETC to calculate how much observing time is required. Official IRAM beam efficiencies are available [here](https://publicwiki.iram.es/Iram30mEfficiencies).")
+st.caption("Note that for an interferometer, it can be difficult and potentially meaningless to calculate a sensitivity value for a specified mass. For this you would assume the CO fills the synthesised beam (angular resolution)")
