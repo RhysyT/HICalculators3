@@ -116,6 +116,7 @@ with colC:
     st.markdown("### CO(2–1)")
     b21_val = st.number_input("Beam FWHM", min_value=0.0, value=11.0, step=0.1, format="%.6g", key="b21_val")
 with colD:
+    st.markdown("### ", unsafe_allow_html=True)
     b21_unit = st.selectbox("Beam unit", options=["arcsec", "arcmin"], index=0, key="b21_unit")
 
 colE, colF, colG, colH, colI, colJ = st.columns(6)
