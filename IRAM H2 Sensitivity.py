@@ -123,14 +123,14 @@ with colD:
 colE, colF, colG, colH, colI, colJ = st.columns(6)
 
 with colE:
-    a10 = st.number_input("α$_{\\rm CO}$ [M$_{☉}$ pc⁻² [K km s⁻¹]⁻¹]", min_value=0.0, value=4.35, step=0.05, format="%.6g", key="a10", help='Essentially a conversion factor relating the CO to H₂ intensity. Depends on the nature of the system; default 4.35 is typical for CO(1-0) in the Milky Way')
+    a10 = st.number_input("α$_{\\rm CO}$", min_value=0.0, value=4.35, step=0.05, format="%.6g", key="a10", help='Essentially a conversion factor relating the CO to H₂ intensity. Depends on the nature of the system; default 4.35 is typical for CO(1-0) in the Milky Way. Units are [M☉ pc⁻² (K km s⁻¹)⁻¹]')
 with colF:
     fe10 = st.number_input("F$_{eff}$", min_value=0.0, max_value=1.0, value=0.94, step=0.01, format="%.3f", key="fe10", help='Forward efficiency at this frequency, used for converting main beam temperature to antenna temperature. Default is for IRAM 30 m at CO(1-0) frequencies')
 with colG:
     be10 = st.number_input("B$_{eff}$", min_value=0.0, max_value=1.0, value=0.78, step=0.01, format="%.3f", key="be10", help='Main beam efficiency at this frequency, used for converting main beam temperature to antenna temperature. Default is for IRAM 30 m at CO(1-0) frequencies')
 
 with colH:
-    a21 = st.number_input("α$_{\\rm CO}$ [M☉ pc⁻² (K km s⁻¹)⁻¹]", min_value=0.0, value=6.70, step=0.05, format="%.6g", key="a21", help='Essentially a conversion factor relating the CO to H₂ intensity. Depends on the nature of the system; default 6.70 is typical for CO(2-1) in the Milky Way')
+    a21 = st.number_input("α$_{\\rm CO}$", min_value=0.0, value=6.70, step=0.05, format="%.6g", key="a21", help='Essentially a conversion factor relating the CO to H₂ intensity. Depends on the nature of the system; default 6.70 is typical for CO(2-1) in the Milky Way. Units are [M☉ pc⁻² (K km s⁻¹)⁻¹]')
 with colI:
     fe21 = st.number_input("F$_{eff}$", min_value=0.0, max_value=1.0, value=0.92, step=0.01, format="%.3f", key="fe21", help='Forward efficiency at this frequency, used for converting main beam temperature to antenna temperature. Default is for IRAM 30 m at CO(2-0) frequencies')
 with colJ:
