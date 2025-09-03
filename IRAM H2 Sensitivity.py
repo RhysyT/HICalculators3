@@ -184,9 +184,9 @@ def render_results(title, res):
         st.write(f"Surface-density sensitivity (1σ, per spectral resolution element): **{nice_float(res['sigma_1sigma'], 4)} M<sub>☉</sub> pc⁻²**", unsafe_allow_html=True)
         st.write(f"Main-beam temperature $rms$: **{nice_float(res['tmb_rms_K'], 4)} K**  ({nice_float(tmb_rms_mK, 4)}&nbsp;mK)")
     with c3:
-        st.markdown(f"**Enter into IRAM ETC (T_A* RMS, per channel):**")
+        st.markdown(f"**IRAM 30m antenna temperatures for the ETC :**")
         st.markdown(f"### **{nice_float(ta_rms_mK, 4)} mK**")
-        st.caption(f"(= {nice_float(res['ta_rms_K'], 4)} K)")
+        st.caption(f"{nice_float(res['ta_rms_K'], 4} K)")
 
 render_results("CO(1–0)", res10)
 render_results("CO(2–1)", res21)
