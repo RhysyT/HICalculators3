@@ -64,10 +64,7 @@ def nice_float(x, digits=3):
 st.set_page_config(page_title="CO Sensitivity Calculator", layout="wide")
 st.title("Mass-Based CO Sensitivity Calculator")
 st.write('### Fed up with calculating antenna temperatures ? This CO sensitivty calculator lets you work in physical units instead !')
-st.write('CO sensitivity estimates often work in surface brightness and temperature, which makes working out how much H₂ mass you can 
-calculate extremely tiresome. This tool is an attempt to get around that. Provide the total mass, the line width enclosing the mass (this
-could be the velocity resolution of the observations or the line width of the source, depending on what you want to detect'), and the area
-of the beam, and it will do the hard work for you.')
+st.write('CO sensitivity estimates often work in surface brightness and temperature, which makes working out how much H₂ mass you can calculate extremely tiresome. This tool is an attempt to get around that. Provide the total mass, the line width enclosing the mass (this could be the velocity resolution of the observations or the line width of the source, depending on what you want to detect), and the area of the beam, and it will do the hard work for you.')
 
 
 st.info(
