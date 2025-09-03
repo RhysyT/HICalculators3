@@ -68,9 +68,7 @@ st.write('CO sensitivity estimates often work in surface brightness and temperat
 st.write("This calculator outputs various parameters you can use in any telescope to calculate how much observing time you'll need. It also outputs the antenna temperature for the IRAM 30m single-dish, which you can enter directly into the [IRAM Exposure Time Calculator](https://oms.iram.fr/tse/). Works for two lines at once -- by default these are CO(1-0) and CO(2-1), but you can adjust their parameters manually.")
 
 st.info(
-    "This tool follows the workflow from your cheat sheet. It assumes the **H₂ mass you enter is the mass per spatial beam** "
-    "to be detected **per velocity channel** of width ΔV at an Nσ level. The calculator returns 1σ per-channel RMS values.\n\n"
-    "Key relations:\n"
+    "**Reference notes**\n"
     "- $\\Sigma_{\\rm mol} = \\alpha_{\\rm CO}\\,I_{\\rm CO}$  with $I_{\\rm CO} = \\int T_{\\rm mb}\\,dv$ (K km s⁻¹)\n"
     "- Required $T_{\\rm mb,\\,rms}$ (1σ, per channel):  $T_{\\rm mb} = \\dfrac{M_{\\rm H_2}}{\\alpha_{\\rm CO}\\,\\Delta V\\,A_{\\rm beam}\\,N_\\sigma}$\n"
     "- $T_A^* = T_{\\rm mb}\\,(B_{\\rm eff}/F_{\\rm eff})$ (value to enter in the IRAM 30m ETC)\n\n"
