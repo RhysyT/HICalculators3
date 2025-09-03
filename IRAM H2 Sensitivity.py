@@ -86,7 +86,7 @@ with st.container():
     with c1:
         mh2 = st.number_input("Target H₂ mass [M$_{☉}$]", min_value=0.0, value=1e6, step=1e5, format="%.6g", help='Total H₂ within the beam in the specified velocity width')
     with c2:
-        dv = st.number_input("Velocity width ΔV (km s⁻¹)", min_value=0.001, value=5.0, step=0.5, format="%.6g", help='This can be the velocity resolution of the instrument (if you need the line resolved, i.e. detected in every channel), or a smoothed width e.g. the total width of the line (if you just need sheer sensitivity for a detection)')
+        dv = st.number_input("Velocity width ΔV [km s⁻¹]", min_value=0.001, value=5.0, step=0.5, format="%.6g", help='This can be the velocity resolution of the instrument (if you need the line resolved, i.e. detected in every channel), or a smoothed width e.g. the total width of the line (if you just need sheer sensitivity for a detection)')
     with c3:
         nsig = st.number_input("Peak S/N", min_value=0.1, value=5.0, step=0.5, format="%.3g", help='Nσ in the above equation. Sets the statistical significance of the detection')
     with c4:
@@ -107,14 +107,14 @@ colA, colB, colC, colD = st.columns(4)
 
 with colA:
     st.markdown("### CO(1–0)")
-    b10_val = st.number_input("Beam FWHM", min_value=0.0, value=22.0, step=0.1, format="%.6g", key="b10_val")
+    b10_val = st.number_input("Beam FWHM", min_value=0.0, value=22.4, step=0.1, format="%.6g", key="b10_val", help='Default is the IRAM 30m resolution in arcseconds at z=0')
 with colB:
     st.markdown("### ", unsafe_allow_html=True)
     b10_unit = st.selectbox("Beam unit", options=["arcsec", "arcmin"], index=0, key="b10_unit")
 
 with colC:
     st.markdown("### CO(2–1)")
-    b21_val = st.number_input("Beam FWHM", min_value=0.0, value=11.0, step=0.1, format="%.6g", key="b21_val")
+    b21_val = st.number_input("Beam FWHM", min_value=0.0, value=10.7, step=0.1, format="%.6g", key="b21_val",  help='Default is the IRAM 30m resolution in arcseconds at z=0')
 with colD:
     st.markdown("### ", unsafe_allow_html=True)
     b21_unit = st.selectbox("Beam unit", options=["arcsec", "arcmin"], index=0, key="b21_unit")
@@ -122,7 +122,7 @@ with colD:
 colE, colF, colG, colH, colI, colJ = st.columns(6)
 
 with colE:
-    a10 = st.number_input("α_CO [M☉ pc⁻² (K km s⁻¹)⁻¹]", min_value=0.0, value=4.35, step=0.05, format="%.6g", key="a10")
+    a10 = st.number_input("α$_{CO}$ [M$_{☉}$ pc⁻² [K km s⁻¹]⁻¹]", min_value=0.0, value=4.35, step=0.05, format="%.6g", key="a10")
 with colF:
     fe10 = st.number_input("F_eff", min_value=0.0, max_value=1.0, value=0.94, step=0.01, format="%.3f", key="fe10")
 with colG:
