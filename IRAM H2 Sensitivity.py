@@ -196,4 +196,4 @@ st.caption("Note that for an interferometer, it can be difficult and potentially
 st.caption("Reference integration times at the IRAM 30m :")
 st.caption("CO(1-0) at 10, 5, 1 mK = 35 minutes, 2.3 hours, 58 hours (5 km/s resolution)")
 st.caption("CO(2-1) at 10, 5, 1 mK = 5 minutes, 20 minutes, 8 hours (5 km/s resolution)")
-           
+st.caption("Remember that velocity resolution **does** matter for how long it takes to reach a given antenna temperature !")     
