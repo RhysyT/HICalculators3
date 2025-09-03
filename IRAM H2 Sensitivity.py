@@ -81,16 +81,17 @@ st.info(
 # Inputs
 # ------------------------------
 with st.container():
-    st.subheader("Global inputs")
-    c1, c2, c3, c4 = st.columns(4)
+    st.subheader("Source properties")
+    c1, c2, c3, c4, c5 = st.columns(5)
     with c1:
-        mh2 = st.number_input("Target H₂ mass **per beam, per channel** (M☉)", min_value=0.0, value=1e6, step=1e5, format="%.6g")
+        mh2 = st.number_input("Target H₂ mass [M$_{☉}$])", min_value=0.0, value=1e6, step=1e5, format="%.6g", help='Total H₂ within the beam in the specified velocity width')
     with c2:
-        dv = st.number_input("Velocity resolution ΔV (km s⁻¹)", min_value=0.001, value=5.0, step=0.5, format="%.6g")
+        dv = st.number_input("Velocity width ΔV (km s⁻¹)", min_value=0.001, value=5.0, step=0.5, format="%.6g", help='This can be the velocity resolution of the instrument (if you need the line resolved, i.e. detected in every channel), or a smoothed width e.g. the total width of the line (if you just need sheer sensitivity for a detection)')
     with c3:
-        nsig = st.number_input("Detection level Nσ", min_value=0.1, value=5.0, step=0.5, format="%.3g")
+        nsig = st.number_input("Peak S/N", min_value=0.1, value=5.0, step=0.5, format="%.3g", help='Nσ in the above equation. Sets the statistical significance of the detection')
     with c4:
-        dist_val = st.number_input("Source distance value", min_value=0.0, value=17.0, step=1.0, format="%.6g")
+        dist_val = st.number_input("Source distance", min_value=0.0, value=17.0, step=1.0, format="%.6g", help='Distance to the souce, used in calculating the physical area of the beam')
+    with c5:
         dist_unit = st.selectbox("Distance unit", options=["pc", "kpc", "Mpc"], index=2)
 
     distance_pc = distance_to_pc(dist_val, dist_unit)
