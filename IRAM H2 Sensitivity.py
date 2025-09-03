@@ -186,7 +186,7 @@ def render_results(title, res):
     with c3:
         st.markdown(f"**IRAM 30m antenna temperatures for the ETC :**")
         st.markdown(f"### **{nice_float(ta_rms_mK, 4)} mK**")
-        st.caption(f"{nice_float(res['ta_rms_K'], 4} K)")
+        st.caption(f"({nice_float(res['ta_rms_K'], 4} K)")
 
 render_results("CO(1–0)", res10)
 render_results("CO(2–1)", res21)
