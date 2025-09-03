@@ -63,9 +63,9 @@ def nice_float(x, digits=3):
 # GUI
 st.set_page_config(page_title="CO Sensitivity Calculator", layout="wide")
 st.title("Mass-Based CO Sensitivity Calculator")
-st.write('### Fed up with calculating antenna temperatures ? This CO sensitivty calculator lets you work in physical units instead !')
+st.write('### Calculate H₂ sensitivity levels using physical parameters')
 st.write('CO sensitivity estimates often work in surface brightness and temperature, which makes working out how much H₂ mass you can calculate extremely tiresome. This tool is an attempt to get around that. Provide the total mass, the line width enclosing the mass (this could be the velocity resolution of the observations or the line width of the source, depending on what you want to detect), and the area of the beam, and it will do the hard work for you.')
-
+st.write("This calculator outputs various parameters you can use in any telescope to calculate how much observing time you'll need. It also outputs the antenna temperature for the IRAM 30m single-dish, which you can enter directly into the [IRAM Exposure Time Calculator](https://oms.iram.fr/tse/).")
 
 st.info(
     "This tool follows the workflow from your cheat sheet. It assumes the **H₂ mass you enter is the mass per spatial beam** "
