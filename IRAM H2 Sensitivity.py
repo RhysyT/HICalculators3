@@ -69,9 +69,12 @@ st.write("This calculator outputs various parameters you can use in any telescop
 
 st.info(
     "**Reference notes**\n"
-    "- $\\Sigma_{\\rm H₂} = \\alpha_{\\rm CO}\\,I_{\\rm CO}$  with $I_{\\rm CO} = \\int T_{\\rm mb}\\,dv$ (K km s⁻¹) \n In essence, the intensity _I_ value is just the temperature multipled by the line width)\n"
-    "- $T_{\\rm mb} = \\dfrac{M_{\\rm H_2}}{\\alpha_{\\rm CO}\\,\\Delta V\\,A_{\\rm beam}\\,N_\\sigma}$ \n Where the temperature is that for the sensitivty to detect the CO per the above equation, and N$\sigma$ is the requested peak S/N for a detection.\n"
-    "- $T_A^* = T_{\\rm mb}\\,(B_{\\rm eff}/F_{\\rm eff})$ \n This converts the above main-beam temperature to the actual observed antenna temperature needed for sensitivity calculations.\n\n"
+    "- $\\Sigma_{\\rm H₂} = \\alpha_{\\rm CO}\\,I_{\\rm CO}$  with $I_{\\rm CO} = \\int T_{\\rm mb}\\,dv$ (K km s⁻¹)\n" 
+    "In essence, the intensity _I_ value is just the temperature multipled by the line width)\n"
+    "- $T_{\\rm mb} = \\dfrac{M_{\\rm H_2}}{\\alpha_{\\rm CO}\\,\\Delta V\\,A_{\\rm beam}\\,N_\\sigma}$\n"
+    "Where the temperature is that for the sensitivty to detect the CO per the above equation, and N$\sigma$ is the requested peak S/N for a detection.\n"
+    "- $T_A^* = T_{\\rm mb}\\,(B_{\\rm eff}/F_{\\rm eff})$ \n"
+    "This converts the above main-beam temperature to the actual observed antenna temperature needed for sensitivity calculations. The $alpha$ factors convert between CO and H₂ and are metallicity dependent; note also that the relative strength of the CO lines depends on the physical properties of the gas."
 )
 
 # ------------------------------
