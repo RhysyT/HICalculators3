@@ -109,7 +109,7 @@ with colA:
     st.markdown("### CO(1–0)")
     b10_val = st.number_input("Beam FWHM", min_value=0.0, value=22.0, step=0.1, format="%.6g", key="b10_val")
 with colB:
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("### <br>", unsafe_allow_html=True)
     b10_unit = st.selectbox("Beam unit", options=["arcsec", "arcmin"], index=0, key="b10_unit")
 
 with colC:
