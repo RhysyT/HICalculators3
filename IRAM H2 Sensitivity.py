@@ -124,16 +124,16 @@ colE, colF, colG, colH, colI, colJ = st.columns(6)
 with colE:
     a10 = st.number_input("α$_{\\rm CO}$ [M$_{☉}$ pc⁻² [K km s⁻¹]⁻¹]", min_value=0.0, value=4.35, step=0.05, format="%.6g", key="a10")
 with colF:
-    fe10 = st.number_input("F_eff", min_value=0.0, max_value=1.0, value=0.94, step=0.01, format="%.3f", key="fe10")
+    fe10 = st.number_input("F$_{eff}$", min_value=0.0, max_value=1.0, value=0.94, step=0.01, format="%.3f", key="fe10")
 with colG:
-    be10 = st.number_input("B_eff", min_value=0.0, max_value=1.0, value=0.78, step=0.01, format="%.3f", key="be10")
+    be10 = st.number_input("B$_{eff}$", min_value=0.0, max_value=1.0, value=0.78, step=0.01, format="%.3f", key="be10")
 
 with colH:
-    a21 = st.number_input("α_CO [M☉ pc⁻² (K km s⁻¹)⁻¹]", min_value=0.0, value=6.70, step=0.05, format="%.6g", key="a21")
+    a21 = st.number_input("α$_{\\rm CO}$ [M☉ pc⁻² (K km s⁻¹)⁻¹]", min_value=0.0, value=6.70, step=0.05, format="%.6g", key="a21")
 with colI:
-    fe21 = st.number_input("F_eff", min_value=0.0, max_value=1.0, value=0.92, step=0.01, format="%.3f", key="fe21")
+    fe21 = st.number_input("F$_{eff}$", min_value=0.0, max_value=1.0, value=0.92, step=0.01, format="%.3f", key="fe21")
 with colJ:
-    be21 = st.number_input("B_eff", min_value=0.0, max_value=1.0, value=0.59, step=0.01, format="%.3f", key="be21")     
+    be21 = st.number_input("B$_{eff}$", min_value=0.0, max_value=1.0, value=0.59, step=0.01, format="%.3f", key="be21")     
 
 st.markdown("---")
 
