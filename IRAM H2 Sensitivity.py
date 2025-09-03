@@ -122,7 +122,7 @@ with colD:
 colE, colF, colG, colH, colI, colJ = st.columns(6)
 
 with colE:
-    a10 = st.number_input("α$_{\rm CO}$ [M$_{☉}$ pc⁻² [K km s⁻¹]⁻¹]", min_value=0.0, value=4.35, step=0.05, format="%.6g", key="a10")
+    a10 = st.number_input("α$_{\\rm CO}$ [M$_{☉}$ pc⁻² [K km s⁻¹]⁻¹]", min_value=0.0, value=4.35, step=0.05, format="%.6g", key="a10")
 with colF:
     fe10 = st.number_input("F_eff", min_value=0.0, max_value=1.0, value=0.94, step=0.01, format="%.3f", key="fe10")
 with colG:
