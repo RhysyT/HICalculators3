@@ -178,11 +178,11 @@ def render_results(title, res):
     c1, c2, c3 = st.columns(3)
     with c1:
         st.markdown(f"**{title}**")
-        st.write(f"Beam FWHM (physical): **{nice_float(res['fwhm_pc'], 4)} pc**")
-        st.write(f"Beam area (Gaussian): **{nice_float(res['area_pc2'], 4)} pc²**")
+        st.write(f"Beam FWHM : **{nice_float(res['fwhm_pc'], 4)} pc**")
+        st.write(f"Beam area : **{nice_float(res['area_pc2'], 4)} pc²**")
     with c2:
-        st.write(f"Surface-density sensitivity (1σ, per channel): **{nice_float(res['sigma_1sigma'], 4)} M☉ pc⁻²**")
-        st.write(f"Main-beam temperature RMS (1σ): **{nice_float(res['tmb_rms_K'], 4)} K**  ({nice_float(tmb_rms_mK, 4)} mK)")
+        st.write(f"Surface-density sensitivity (1σ, per spectral resolution element): **{nice_float(res['sigma_1sigma'], 4)} M$_{☉}$ pc⁻²**")
+        st.write(f"Main-beam temperature $rms$: **{nice_float(res['tmb_rms_K'], 4)} K**  ({nice_float(tmb_rms_mK, 4)} mK)")
     with c3:
         st.markdown(f"**Enter into IRAM ETC (T_A* RMS, per channel):**")
         st.markdown(f"### **{nice_float(ta_rms_mK, 4)} mK**")
