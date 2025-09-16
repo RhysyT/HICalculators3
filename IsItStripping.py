@@ -297,7 +297,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("Required pressure from H I deficiency (eq. 27)")
-    st.markdown(f"p$_{def}$ [1000 cm⁻³ (km/s)²] :")
+    st.markdown(f"p_def [1000 cm⁻³ (km/s)²] :")
     #st.markdown(f"## {pdef:,.3f}")
     #st.caption(f"= {pdef/1000.0:.3f}  × 1000 cm⁻³ (km/s)²") 
     st.markdown(f"## {pdef/1000.0:.3f} ")
