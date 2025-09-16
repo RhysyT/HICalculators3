@@ -306,11 +306,11 @@ with col1:
         st.write(f"M<sub>HI</sub>= **{M_HI:.3e}** M<sub>☉</sub>,  def = **{deficiency:.3f}**,  v<sub>rot</sub> = **{vrot:.1f}** km/s", unsafe_allow_html=True)
         st.write(f"g = **{g_geom:.2f}**,  a (molecular) = **{a_mol:.1f}**")
         st.write("---")
-        st.write(f"M0 (pre-stripping HI mass) = **{dbg['M0_msun']:.3e}** M<sub>☉</sub>", unsafe_allow_html=True)
-        st.write(f"Sigma0 (pre-stripping central gas surface density) = **{dbg['Sigma0_Msun_kpc2']:.3e}** M<sub>☉</sub>/kpc²", unsafe_allow_html=True)
+        st.write(f"M<sub>HI,0</sub> (pre-stripping HI mass) = **{dbg['M0_msun']:.3e}** M<sub>☉</sub>", unsafe_allow_html=True)
+        st.write(f"Σ<sub>0</sub> (pre-stripping central gas surface density) = **{dbg['Sigma0_Msun_kpc2']:.3e}** M<sub>☉</sub>/kpc²", unsafe_allow_html=True)
         st.write(f"Stripping radius (current HI radius) = **{dbg['r_strip_kpc']:.3f}** kpc")
-        st.write(f"Sigma(r_strip) = **{dbg['Sigma_r_Msun_pc2']:.4f}** M<sub>☉</sub>/pc²", unsafe_allow_html=True)
-        st.write(f"R0 (mol scale) = **{dbg['R0_kpc']:.4f}** kpc → boost = **{dbg['mol_boost']:.4f}**")
+        st.write(f"Σ(r<sub>strip</sub>) = **{dbg['Sigma_r_Msun_pc2']:.4f}** M<sub>☉</sub>/pc²", unsafe_allow_html=True)
+        st.write(f"R<sub>0</sub> (mol scale) = **{dbg['R0_kpc']:.4f}** kpc → boost = **{dbg['mol_boost']:.4f}**", unsafe_allow_html=True)
 
 with col2:
     st.subheader("Local ram pressure")
