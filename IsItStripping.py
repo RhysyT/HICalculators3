@@ -297,8 +297,8 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("Required pressure from H I deficiency (eq. 27)")
-    st.metric(f"= {pdef/1000.0:.3f}  × 1000 cm⁻³ (km/s)²")
-    st.caption("p_def  [cm⁻³ (km/s)²]", f"{pdef:,.3f}")
+    st.metric("p_def  [cm⁻³ (km/s)²]", f"{pdef:,.3f}")
+    st.caption(f"= {pdef/1000.0:.3f}  × 1000 cm⁻³ (km/s)²")
     
     with st.expander("Inputs & intermediate values"):
         st.write(f"R_opt = **{Ropt:.3f}** kpc,  r_max = **{rmax_over_R:.2f} × R** = **{rmax_over_R*Ropt:.3f}** kpc")
