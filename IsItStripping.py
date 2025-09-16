@@ -302,8 +302,8 @@ with col1:
     st.caption(f" = {pdef:,.3f} [cm⁻³ (km/s)²]")
     
     with st.expander("Inputs & intermediate values"):
-        st.write(f"R_opt = **{Ropt:.3f}** kpc,  r_max = **{rmax_over_R:.2f} × R** = **{rmax_over_R*Ropt:.3f}** kpc")
-        st.write(f"M_HI = **{M_HI:.3e}** Msun,  def = **{deficiency:.3f}**,  v_rot = **{vrot:.1f}** km/s")
+        st.write(f"R<sub>opt</sub> = **{Ropt:.3f}** kpc,  r<sub>max</sub> = **{rmax_over_R:.2f} × R** = **{rmax_over_R*Ropt:.3f}** kpc", unsafe_allow_html=True)
+        st.write(f"M<sub>HI</sub>= **{M_HI:.3e}** Msun,  def = **{deficiency:.3f}**,  v<sub>rot</sub> = **{vrot:.1f}** km/s", unsafe_allow_html=True)
         st.write(f"g = **{g_geom:.2f}**,  a (molecular) = **{a_mol:.1f}**")
         st.write("---")
         st.write(f"M0 (pre-stripping HI mass) = **{dbg['M0_msun']:.3e}** Msun")
