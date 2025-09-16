@@ -300,8 +300,8 @@ with col1:
     st.markdown(f"p_def [x1000 cm⁻³ (km/s)²] :")
     #st.markdown(f"## {pdef:,.3f}")
     #st.caption(f"= {pdef/1000.0:.3f}  × 1000 cm⁻³ (km/s)²") 
-    st.markdown(f"##= {pdef/1000.0:.3f}  × 1000 cm⁻³ (km/s)²")
-    st.caption(f" {pdef:,.3f}")
+    st.markdown(f"## {pdef/1000.0:.3f}  × 1000 cm⁻³ (km/s)²")
+    st.caption(f" = {pdef:,.3f}")
 
     
     
