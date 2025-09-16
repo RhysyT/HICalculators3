@@ -313,8 +313,8 @@ with col1:
 
 with col2:
     st.subheader("Local ram pressure (β–model × speed)")
-    st.metric(f"= {p_loc/1000.0:.3f}  × 1000 cm⁻³ (km/s)²")
-    st.caption("p_loc  [cm⁻³ (km/s)²]", f"{p_loc:,.3f}")
+    st.metric("p_loc  [cm⁻³ (km/s)²]", f"{p_loc:,.3f}")
+    st.caption(f"= {p_loc/1000.0:.3f}  × 1000 cm⁻³ (km/s)²")
 
     with st.expander("Inputs & intermediate values"):
         st.write(f"3D radius R = **{R3D:.0f}** kpc (from R_proj = {Rproj_kpc:.0f} kpc, z = {los_kpc:.0f} kpc)")
