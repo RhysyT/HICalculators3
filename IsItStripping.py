@@ -296,11 +296,8 @@ else:
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("Required pressure from H I deficiency (eq. 27)")
-    #st.markdown(f"p_def [1000 cm⁻³ (km/s)²] :")
+    st.subheader("Required pressure")
     st.markdown("p<sub>def</sub> [1000 cm⁻³ (km/s)²] :", unsafe_allow_html=True)
-    #st.markdown(f"## {pdef:,.3f}")
-    #st.caption(f"= {pdef/1000.0:.3f}  × 1000 cm⁻³ (km/s)²") 
     st.markdown(f"## {pdef/1000.0:.3f} ")
     st.caption(f" = {pdef:,.3f} [cm⁻³ (km/s)²]")
 
@@ -318,9 +315,18 @@ with col1:
         st.write(f"R0 (mol scale) = **{dbg['R0_kpc']:.4f}** kpc → boost = **{dbg['mol_boost']:.4f}**")
 
 with col2:
-    st.subheader("Local ram pressure (β–model × speed)")
-    st.metric("p_loc  [cm⁻³ (km/s)²]", f"{p_loc:,.3f}")
-    st.caption(f"= {p_loc/1000.0:.3f}  × 1000 cm⁻³ (km/s)²")
+    st.subheader("Local ram pressure")
+    #st.markdown("p<sub>def</sub> [1000 cm⁻³ (km/s)²] :", unsafe_allow_html=True)
+    #st.markdown(f"## {pdef/1000.0:.3f} ")
+    #st.caption(f" = {pdef:,.3f} [cm⁻³ (km/s)²]")
+
+    st.markdown("p<sub>loc</sub>  [1000 cm⁻³ (km/s)²] :, unsafe_allow_html=True")
+    st.markdown(f"## {p_loc/1000.0:.3f}")
+    st.caption("p_loc  [cm⁻³ (km/s)²]", f"{p_loc:,.3f}")
+
+    # ORIGINALS
+    #st.metric("p_loc  [cm⁻³ (km/s)²]", f"{p_loc:,.3f}")
+    #st.caption(f"= {p_loc/1000.0:.3f}  × 1000 cm⁻³ (km/s)²")
 
     with st.expander("Inputs & intermediate values"):
         st.write(f"3D radius R = **{R3D:.0f}** kpc (from R_proj = {Rproj_kpc:.0f} kpc, z = {los_kpc:.0f} kpc)")
