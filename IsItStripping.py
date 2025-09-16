@@ -327,12 +327,12 @@ with col2:
     #st.caption(f"= {p_loc/1000.0:.3f}  × 1000 cm⁻³ (km/s)²")
 
     with st.expander("Inputs & intermediate values"):
-        st.write(f"3D radius R = **{R3D:.0f}** kpc (from R_proj = {Rproj_kpc:.0f} kpc, z = {los_kpc:.0f} kpc)")
+        st.write(f"R<sub>3D</sub> = **{R3D:.0f}** kpc (from R<sub>proj</sub> = {Rproj_kpc:.0f} kpc, offset = {los_kpc:.0f} kpc)", unsafe_allow_html=True)
         if speed_mode == "Fixed velocity":
             st.write(f"Speed v = **{vgal:.0f}** km/s (user fixed)")
         else:
-            st.write(f"Escape speed v_esc(NFW) = **{v_escape_nfw(R3D, M200, c_conc, R200_kpc):.0f}** km/s")
-            st.write(f"NFW: M200 = **{M200:.3e}** Msun,  c = **{c_conc:.1f}**,  R200 = **{(R200_kpc if R200_kpc else 206.0*(M200/1e12)**(1/3)):.1f}** kpc")
+            st.write(f"v<sub>esc</sub>(NFW) = **{v_escape_nfw(R3D, M200, c_conc, R200_kpc):.0f}** km/s", unsafe_allow_html=True)
+            st.write(f"NFW: M<sub>200</sub> = **{M200:.3e}** Msun,  c = **{c_conc:.1f}**,  R<sub>200</sub> = **{(R200_kpc if R200_kpc else 206.0*(M200/1e12)**(1/3)):.1f}** kpc", unsafe_allow_html=True)
     
         
 # Classification
