@@ -357,5 +357,4 @@ st.info(
 
 st.caption("Key references from Köppen+2018 : Equation 27 gives the required pressure based on the current deficiency level. Stripping radius is derived from equation 28. Equations 25 and 26 give the HI surface density profile and central surface density. Corrections for the molecular gas are described in section 7.1.")
 
-#st.caption("Built from the paper’s equations: r_strip(def), Σ0 and Σ(r) for the HI disc, "
-#           "p_def (eq. 27) with g≈2 and molecular boost 1+15 e^{-r/R0}, and p_loc = n_ICM v^2 from a β–model.")
+st.caption("Many, many more online tools available on [Joachim Köppen's home page](https://portia.astrophysik.uni-kiel.de/~koeppen/) – see in particular the [Galaxies section](https://portia.astrophysik.uni-kiel.de/~koeppen/jsindex.html#GALAXY).")
