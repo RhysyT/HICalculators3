@@ -347,7 +347,7 @@ else:
     verdict = "Past (required >> local)"
 
 st.subheader("Classification")
-st.write(f"Ratio p_def / p_loc = **{ratio:.3f}** → **{verdict}**")
+st.write(f"Ratio p<sub>def</sub> / p<sub>loc</sub> = **{ratio:.3f}** → **{verdict}**", unsafe_allow_html=True)
 
 st.info(
     "Notes: (i) p_loc uses the β–model density at *3D* radius and your chosen speed; "
