@@ -300,8 +300,6 @@ with col1:
     st.markdown("p<sub>def</sub> [1000 cm⁻³ (km/s)²] :", unsafe_allow_html=True)
     st.markdown(f"## {pdef/1000.0:.3f} ")
     st.caption(f" = {pdef:,.3f} [cm⁻³ (km/s)²]")
-
-    
     
     with st.expander("Inputs & intermediate values"):
         st.write(f"R_opt = **{Ropt:.3f}** kpc,  r_max = **{rmax_over_R:.2f} × R** = **{rmax_over_R*Ropt:.3f}** kpc")
@@ -322,7 +320,7 @@ with col2:
 
     st.markdown("p<sub>loc</sub>  [1000 cm⁻³ (km/s)²] :", unsafe_allow_html=True)
     st.markdown(f"## {p_loc/1000.0:.3f}")
-    st.caption("p_loc  [cm⁻³ (km/s)²]", f"{p_loc:,.3f}")
+    st.caption(f"p_loc  [cm⁻³ (km/s)²]", f"{p_loc:,.3f}")
 
     # ORIGINALS
     #st.metric("p_loc  [cm⁻³ (km/s)²]", f"{p_loc:,.3f}")
