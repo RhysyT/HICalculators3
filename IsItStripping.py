@@ -340,20 +340,22 @@ with col2:
 st.markdown("---")
 ratio = pdef / p_loc if p_loc > 0 else math.inf
 if ratio <= 3.0 and ratio >= 1/3:
-    verdict = "Active (pressures comparable)"
+    verdict = "Actively stripping (pressures comparable)."
 elif ratio < 1/3:
-    verdict = "Active (local >> required)"
+    verdict = "Actively stripping (local >> required)."
 else:
-    verdict = "Past (required >> local)"
+    verdict = "Past stripper (required >> local)."
 
 st.subheader("Classification")
 st.write(f"Ratio p<sub>def</sub> / p<sub>loc</sub> = **{ratio:.3f}** → **{verdict}**", unsafe_allow_html=True)
 
 st.info(
-    "Notes: (i) p_loc uses the β–model density at *3D* radius and your chosen speed; "
-    "(ii) using escape speed gives an upper-limit flavor (as in the paper); "
-    "(iii) substructure (e.g., M49 region) can raise the true local density by factors of a few."
+    "Essential notes: (i) p<sub>loc</sub> uses the β–model density at the inferred *3D* radius and chosen speed; "
+    "(ii) using the escape speed is likely an upper limit; "
+    "(iii) local ICM substructure can raise the true local density by factors of a few."
 )
 
-st.caption("Built from the paper’s equations: r_strip(def), Σ0 and Σ(r) for the HI disc, "
+st.caption("Key references from Köppen+2018 : Equation 27 gives the required pressure based on the current deficiency level. Stripping radius is derived from equation 28. Equations 25 and 26 give the HI surface density profile and central surface density. Corrections for the molecular gas are described in section 7.1.")
+
+#st.caption("Built from the paper’s equations: r_strip(def), Σ0 and Σ(r) for the HI disc, "
            "p_def (eq. 27) with g≈2 and molecular boost 1+15 e^{-r/R0}, and p_loc = n_ICM v^2 from a β–model.")
