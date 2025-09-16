@@ -334,7 +334,7 @@ with col2:
             st.write(f"v<sub>esc</sub>(NFW) = **{v_escape_nfw(R3D, M200, c_conc, R200_kpc):.0f}** km/s", unsafe_allow_html=True)
             st.write(f"NFW: M<sub>200</sub> = **{M200:.3e}** M<sub>☉</sub>,  c = **{c_conc:.1f}**,  R<sub>200</sub> = **{(R200_kpc if R200_kpc else 206.0*(M200/1e12)**(1/3)):.1f}** kpc", unsafe_allow_html=True)
             
-        st.write(f'Local density n = **{n_loc:,.3e}**')  
+        st.write(f'Local density n = **{n_loc:,.3e}** cm⁻³')  
         
 # Classification
 st.markdown("---")
