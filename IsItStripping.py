@@ -219,9 +219,9 @@ an NFW-profile to use the locale escape velocity. By default, both use parameter
 with st.sidebar:
     st.header("🎰 Galaxy inputs")
     M_HI = st.number_input("Current HI mass  [M$_{☉}$]", value=2.1e7, min_value=0.0, step=1.0E7, key="M_HI", format="%.3e", help='In combination with the HI deficiency, this is used to estimate the initial surface density of the gas')
-    deficiency = st.number_input("HI deficiency", value=0.7, min_value=0.0, max_value=2.0, step=0.05, format="%.2f", help='Logarithmic measure of the current compared to orginal gas content. 1.0 means the galaxy has 10% of its original content remaining, 2.0 means it has only 1%, etc.')
-    Ropt = st.number_input("Optical radius R$_{opt}$ [kpc]", value=1.175, min_value=0.01, step=0.05, format="%.3f", help='HI detections are usually unresolved, so the optical radius can be used to estimate the original HI extent in these cases')
-    vrot = st.number_input("Rotation speed v$_{rot}$ [km/s]", value=15.0, min_value=1.0, step=1.0, format="%.1f", help='Rotation speed after correcting the measurements for inclination and whatnot')
+    deficiency = st.number_input("HI deficiency", value=0.7, min_value=0.0, max_value=2.0, step=0.05, format="%.2f", help='Logarithmic measure of the current compared to orginal gas content. 1.0 means the galaxy has 10% of its original content remaining, 2.0 means it has only 1%, etc.', unsafe_allow_html=True)
+    Ropt = st.number_input("Optical radius R<sub>opt</sub>} [kpc]", value=1.175, min_value=0.01, step=0.05, format="%.3f", help='HI detections are usually unresolved, so the optical radius can be used to estimate the original HI extent in these cases', unsafe_allow_html=True)
+    vrot = st.number_input("Rotation speed v<sub>rot</sub> [km/s]", value=15.0, min_value=1.0, step=1.0, format="%.1f", help='Rotation speed after correcting the measurements for inclination and whatnot')
     rmax_over_R = st.slider("Initial HI extent compared to optical", min_value=1.2, max_value=3.0, value=1.5, step=0.1, help='Multiplies the optical radius to get the estimated initial HI extent, typically reckoned to be ~1.5-1.7x the optical')
     
     st.header("📐 Geometry")
