@@ -198,7 +198,7 @@ def p_loc_cm3_kms2(
     """
     R3D_kpc = math.sqrt(max(0.0, Rproj_kpc**2 + los_offset_kpc**2))
     n = n_icm_beta_cm3(R3D_kpc, n0_cm3, Rc_kpc, beta)
-    return n * (v_kms**2), R3D_kpc
+    return n * (v_kms**2), R3D_kpc, n
 
 # ---------- Streamlit UI ----------
 st.set_page_config(page_title="Ram Pressure Stripping Calculator", page_icon="🌀", layout="wide")
@@ -271,7 +271,7 @@ Rproj_kpc = Rproj_mpc * 1000.0
 los_kpc = los_offset * 1000.0
 
 if speed_mode == "Fixed velocity":
-    p_loc, R3D = p_loc_cm3_kms2(
+    p_loc, R3D, n_loc = p_loc_cm3_kms2(
         Rproj_kpc=Rproj_kpc,
         los_offset_kpc=los_kpc,
         v_kms=vgal,
@@ -283,7 +283,7 @@ else:
     # Use NFW escape speed at R3D
     R3D = math.sqrt(Rproj_kpc**2 + los_kpc**2)
     vesc = v_escape_nfw(R3D, M200, c_conc, R200_kpc=R200_kpc)
-    p_loc, _ = p_loc_cm3_kms2(
+    p_loc, _, n_loc = p_loc_cm3_kms2(
         Rproj_kpc=Rproj_kpc,
         los_offset_kpc=los_kpc,
         v_kms=vesc,
@@ -333,7 +333,7 @@ with col2:
         else:
             st.write(f"v<sub>esc</sub>(NFW) = **{v_escape_nfw(R3D, M200, c_conc, R200_kpc):.0f}** km/s", unsafe_allow_html=True)
             st.write(f"NFW: M<sub>200</sub> = **{M200:.3e}** M<sub>☉</sub>,  c = **{c_conc:.1f}**,  R<sub>200</sub> = **{(R200_kpc if R200_kpc else 206.0*(M200/1e12)**(1/3)):.1f}** kpc", unsafe_allow_html=True)
-    
+         st.write('Local density n =', n_loc)  
         
 # Classification
 st.markdown("---")
