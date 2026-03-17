@@ -492,7 +492,7 @@ if fetch == True and safetoproceed == True:
             if show_grid == True:
                 ax.grid(color='0.5', alpha=0.5, linewidth=0.6, linestyle=':')
             
-            ax.tick_params(axis='both', which='major', direction='out', length=7,  width=1.4)
+            ax.tick_params(axis='both', which='major', direction='out', length=10,  width=1.4)
 
             # Slightly easier way of dealing with the axes, by name instead of number
             ra  = ax.coords[0]
@@ -502,8 +502,8 @@ if fetch == True and safetoproceed == True:
             dec.set_axislabel('Declination [J2000]', fontsize=15, minpad=0.8)
 
             # Tick sizes and frequencies
-            ra.set_ticklabel(size=10)
-            dec.set_ticklabel(size=10)
+            ra.set_ticklabel(size=15)
+            dec.set_ticklabel(size=15)
             ra.set_minor_frequency(5)
             dec.set_minor_frequency(5)
 
