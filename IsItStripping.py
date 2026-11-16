@@ -353,7 +353,7 @@ elif ratio > 3.0:
     verdict = "Actively stripping (local >> required)."
 elif ratio >= 0.3 and ratio < 0.5:
     verdict = "Probably a past stripper (pressures comparable)."
-else < 0.3:
+else:
     verdict = "Past stripper (local << required)."
 
 st.subheader("Classification")
