@@ -347,9 +347,9 @@ with col2:
 # Classification
 st.markdown("---")
 ratio = pdef / p_loc if p_loc > 0 else math.inf
-if ratio <= 3.0 and ratio >= 1/3:
+if ratio <= 3.0 and ratio >= 0.5:
     verdict = "Actively stripping (pressures comparable)."
-elif ratio < 1/3:
+elif ratio < 0.5:
     verdict = "Actively stripping (local >> required)."
 else:
     verdict = "Past stripper (required >> local)."
