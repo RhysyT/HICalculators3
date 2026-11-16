@@ -346,16 +346,16 @@ with col2:
         
 # Classification
 st.markdown("---")
-ratio = pdef / p_loc if p_loc > 0 else math.inf
-if ratio <= 3.0 and ratio >= 0.5:
+ratio = p_loc / pdef if p_loc > 0 else math.inf
+if ratio <= 3.0 and ratio >= 2.0:    # CHECK THIS
     verdict = "Actively stripping (pressures comparable)."
-elif ratio < 0.5:
+elif ratio < 2.0:
     verdict = "Actively stripping (local >> required)."
 else:
     verdict = "Past stripper (required >> local)."
 
 st.subheader("Classification")
-st.write(f"Ratio p<sub>def</sub> / p<sub>loc</sub> = **{ratio:.3f}** → **{verdict}**", unsafe_allow_html=True)
+st.write(f"Ratio p<sub>loc</sub> / p<sub>def</sub> = **{ratio:.3f}** → **{verdict}**", unsafe_allow_html=True)
 
 #st.info("Essential notes: (i) p<sub>loc</sub> uses the β–model density at the inferred *3D* radius and chosen speed; (ii) using the escape speed is likely an upper limit; (iii) local ICM substructure can raise the true local density by factors of a few.", unsafe_allow_html=True)
 
