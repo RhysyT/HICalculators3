@@ -350,9 +350,9 @@ ratio = p_loc / pdef if p_loc > 0 else math.inf
 if ratio <= 3.0 and ratio >= 2.0:    # CHECK THIS
     verdict = "Actively stripping (pressures comparable)."
 elif ratio < 2.0:
-    verdict = "Actively stripping (local >> required)."
+    verdict = "Actively stripping (local > required)."
 else:
-    verdict = "Past stripper (required >> local)."
+    verdict = "Past stripper (required > local)."
 
 st.subheader("Classification")
 st.write(f"Ratio p<sub>loc</sub> / p<sub>def</sub> = **{ratio:.3f}** → **{verdict}**", unsafe_allow_html=True)
