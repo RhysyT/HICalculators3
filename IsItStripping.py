@@ -355,7 +355,8 @@ st.write(f"Ratio p<sub>def</sub> / p<sub>loc</sub> = **{ratio:.3f}** → **{verd
 st.info(
     "Essential notes: (i) p<sub>loc</sub> uses the β–model density at the inferred *3D* radius and chosen speed; "
     "(ii) using the escape speed is likely an upper limit; "
-    "(iii) local ICM substructure can raise the true local density by factors of a few.", unsafe_allow_html=True
+    "(iii) local ICM substructure can raise the true local density by factors of a few." 
+    unsafe_allow_html=True
 )
 
 st.caption("Key references from Köppen+2018 : Equation 27 gives the required pressure based on the current deficiency level. Stripping radius is derived from equation 28. Equations 25 and 26 give the HI surface density profile and central surface density. Corrections for the molecular gas are described in section 7.1.")
