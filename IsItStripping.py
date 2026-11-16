@@ -355,7 +355,7 @@ st.write(f"Ratio p<sub>def</sub> / p<sub>loc</sub> = **{ratio:.3f}** → **{verd
 #st.info("Essential notes: (i) p<sub>loc</sub> uses the β–model density at the inferred *3D* radius and chosen speed; (ii) using the escape speed is likely an upper limit; (iii) local ICM substructure can raise the true local density by factors of a few.", unsafe_allow_html=True)
 
 st.info(
-    "Essential notes: (i) p~loc~ uses the β–model density at the inferred *3D* radius and chosen speed; "
+    "Essential notes: (i) pH<sub>loc</sub> uses the β–model density at the inferred *3D* radius and chosen speed; "
     "(ii) using the escape speed is likely an upper limit; "
     "(iii) local ICM substructure can raise the true local density by factors of a few."
 )
