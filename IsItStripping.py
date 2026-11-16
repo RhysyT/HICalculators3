@@ -356,12 +356,15 @@ st.write(f"Ratio p<sub>def</sub> / p<sub>loc</sub> = **{ratio:.3f}** → **{verd
 
 st.subheader("Essential notes")
 st.markdown("""- p<sub>loc</sub> uses the β–model density at the inferred *3D* radius and chosen speed""", unsafe_allow_html=True)
+st.markdown("""- Using the escape speed is likely an upper limit""", unsafe_allow_html=True)
+st.markdown("""- Local ICM substructure can raise the true local density by factors of a few""", unsafe_allow_html=True)
+st.markdown("""- HI deficiency is calculated with MHI<sub>expected</sub> = a + b log(d), where a = 7.51 and b - 1.36 (morphology independent)""", unsafe_allow_html=True)
 
-st.info(
-    "Essential notes: (i) pH<sub>loc</sub> uses the β–model density at the inferred *3D* radius and chosen speed; "
-    "(ii) using the escape speed is likely an upper limit; "
-    "(iii) local ICM substructure can raise the true local density by factors of a few."
-)
+#st.info(
+#    "Essential notes: (i) pH<sub>loc</sub> uses the β–model density at the inferred *3D* radius and chosen speed; "
+#    "(ii) using the escape speed is likely an upper limit; "
+#    "(iii) local ICM substructure can raise the true local density by factors of a few."
+#)
 
 st.caption("Key references from Köppen+2018 : Equation 27 gives the required pressure based on the current deficiency level. Stripping radius is derived from equation 28. Equations 25 and 26 give the HI surface density profile and central surface density. Corrections for the molecular gas are described in section 7.1.")
 
