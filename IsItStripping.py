@@ -210,10 +210,15 @@ st.markdown(
 whether a cluster galaxy is likely to be currently losing gas (or not yet lost much at all) or has done so in the past. This
 works by estimating (1) the ram pressure needed to reach the current HI deficiency and (2) the probable current local pressure
 a galaxy is actually experiencing, given a model of the cluster's mass profile and ICM density.""")
-st.markdown("""A galaxy is deemed to likely be a current, active stripper if the **required pressure** is comparable or less
-than the **local pressure**; i.e. it hasn't lost as much gas yet as the current pressure should be able to remove, therefore
-it's still losing gas. Conversely, if the pressure required to reach the current deficiency is much greater than the current
-estimated value, the galaxy is likely to be past stripper.""")
+st.markdown("""A galaxy is deemed to likely be a current, active stripper if the estimated local pressure (i.e. the current ram
+pressure) is comparable to or more than (half of) the pressure required according to its deficiency. That is, if the current
+presssure is more than enough to produce the current amount of gas loss, it's probably still losing gas. Conversely, if the pressure
+isn't high enough to account for its current gas loss, the model implies that it must have lost its gas in the past."""
+
+#**required pressure** is comparable or less
+#than the **local pressure**; i.e. it hasn't lost as much gas yet as the current pressure should be able to remove, therefore
+#it's still losing gas. Conversely, if the pressure required to reach the current deficiency is much greater than the current
+#estimated value, the galaxy is likely to be past stripper.""")
 st.markdown("""Users can alter the parameters of a β–model for the ICM, and either set a fixed speed for the galaxy or use
 an NFW-profile to use the locale escape velocity. By default, both use parameters based on the Virgo cluster.""")
 
