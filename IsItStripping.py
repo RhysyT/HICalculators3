@@ -27,7 +27,7 @@ KPC_TO_CM = 3.085677581e21  # 1 kpc in cm
 #   p[cm^-3 (km/s)^2] = K * (Sigma[Msun/pc^2] * v^2[km^2/s^2] / r[kpc]) * (1 + a e^{-r/R0})
 # when the geometrical factor g is included separately as 1/g.
 # Derivation (see chat): K = (MSUN_PC2_TO_G_CM2) / (KPC_TO_CM *  MU_ICM * mp_g)
-K_CONV = MSUN_PC2_TO_G_CM2 / (KPC_TO_CM * mp_g)  # ~ 0.040484... (before dividing by g)
+K_CONV = MSUN_PC2_TO_G_CM2 / (KPC_TO_CM * MU_ICM * mp_g)  # ~ 0.0675... (before dividing by g)
 # We'll divide by g explicitly in the formula, so no g folded into K_CONV.
 
 # Mathematical functions
