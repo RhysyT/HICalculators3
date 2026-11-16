@@ -352,9 +352,9 @@ if ratio >= 0.5 and ratio <=3.0:    # CHECK THIS
 elif ratio > 3.0:
     verdict = "Actively stripping (local >> required)."
 elif ratio >= 0.3 and ratio < 0.5:
-    verdict = "Past stripper (pressures comparable)."
-else:
     verdict = "Probably a past stripper (pressures comparable)."
+else < 0.3:
+    verdict = "Past stripper (local << required)."
 
 st.subheader("Classification")
 st.write(f"Ratio p<sub>loc</sub> / p<sub>def</sub> = **{ratio:.3f}** → **{verdict}**", unsafe_allow_html=True)
