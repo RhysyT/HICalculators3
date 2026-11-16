@@ -19,13 +19,14 @@ if 'initialized' not in st.session_state:
 # ---------- Physical constants ----------
 G = 4.300917270e-6  # gravitational constant in (kpc * (km/s)^2) / Msun
 mp_g = 1.67262192369e-24  # proton mass [g]
+MU_ICM = 0.6 # mean ICM particle mass in units of the proton mass
 MSUN_PC2_TO_G_CM2 = 2.089e-4  # 1 Msun/pc^2 to g/cm^2
 KPC_TO_CM = 3.085677581e21  # 1 kpc in cm
 
 # The "shortcut" conversion constant K that maps:
 #   p[cm^-3 (km/s)^2] = K * (Sigma[Msun/pc^2] * v^2[km^2/s^2] / r[kpc]) * (1 + a e^{-r/R0})
 # when the geometrical factor g is included separately as 1/g.
-# Derivation (see chat): K = (MSUN_PC2_TO_G_CM2) / (KPC_TO_CM * mp_g)
+# Derivation (see chat): K = (MSUN_PC2_TO_G_CM2) / (KPC_TO_CM *  MU_ICM * mp_g)
 K_CONV = MSUN_PC2_TO_G_CM2 / (KPC_TO_CM * mp_g)  # ~ 0.040484... (before dividing by g)
 # We'll divide by g explicitly in the formula, so no g folded into K_CONV.
 
